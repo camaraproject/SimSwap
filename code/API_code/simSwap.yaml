@@ -1,0 +1,99 @@
+openapi: 3.0.0
+info:
+  title: SIM SWAP API
+  version: 1.0.0
+servers:
+  - url: https://mobileconnect-test.telekom.de
+tags:
+  - name: Account Takeover Protection
+paths:
+  /token:
+    post:
+      tags:
+        - Account Takeover Protection
+      summary: Token
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: {}
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/x-www-form-urlencoded; charset=ISO-8859-1
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: base64 client_id:client_secret
+          example: 'Basic '
+        - name: grant_type
+          in: query
+          schema:
+            type: string
+          example: client_credentials
+        - name: scope
+          in: query
+          schema:
+            type: string
+          example: mc_atp
+        - name: client_id
+          in: query
+          schema:
+            type: string
+          description: provided during SP onboarding
+          example: test_client_id
+        - name: client_secret
+          in: query
+          schema:
+            type: string
+          description: provided during SP onboarding
+          example: test_client_secret
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /openid/userinfo:
+    post:
+      tags:
+        - Account Takeover Protection
+      summary: User Info
+      description: userinfo
+      requestBody:
+        content: {}
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: '*/*'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/x-www-form-urlencoded
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: Authorization token from Token request (token client_credentials)
+          example: Bearer wVWxnNgTZP9ukuldWTkqrCgoUout9Gnv8nND-UN8jLY
+        - name: User-ID-Type
+          in: header
+          schema:
+            type: string
+          example: msisdn
+        - name: User-ID
+          in: header
+          schema:
+            type: integer
+          example: '491758631807'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}

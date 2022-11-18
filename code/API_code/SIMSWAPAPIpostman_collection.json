@@ -1,0 +1,114 @@
+{
+	"info": {
+		"_postman_id": "3216afce-bc4a-4081-a7f5-6be79abf6156",
+		"name": "SIM SWAP API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10536234"
+	},
+	"item": [
+		{
+			"name": "Account Takeover Protection",
+			"item": [
+				{
+					"name": "Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded; charset=ISO-8859-1"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Basic ",
+								"description": "base64 client_id:client_secret"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://mobileconnect-test.telekom.de/token?grant_type=client_credentials&scope=mc_atp&client_id=test_client_id&client_secret=test_client_secret",
+							"protocol": "https",
+							"host": [
+								"mobileconnect-test",
+								"telekom",
+								"de"
+							],
+							"path": [
+								"token"
+							],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials"
+								},
+								{
+									"key": "scope",
+									"value": "mc_atp"
+								},
+								{
+									"key": "client_id",
+									"value": "test_client_id",
+									"description": "provided during SP onboarding"
+								},
+								{
+									"key": "client_secret",
+									"value": "test_client_secret",
+									"description": "provided during SP onboarding"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Info",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer wVWxnNgTZP9ukuldWTkqrCgoUout9Gnv8nND-UN8jLY",
+								"description": "Authorization token from Token request (token client_credentials)"
+							},
+							{
+								"key": "User-ID-Type",
+								"value": "msisdn"
+							},
+							{
+								"key": "User-ID",
+								"value": "491758631807"
+							}
+						],
+						"url": {
+							"raw": "https://mobileconnect-test.telekom.de/openid/userinfo",
+							"protocol": "https",
+							"host": [
+								"mobileconnect-test",
+								"telekom",
+								"de"
+							],
+							"path": [
+								"openid",
+								"userinfo"
+							]
+						},
+						"description": "userinfo"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

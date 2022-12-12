@@ -2,9 +2,9 @@
 
 CAMARA Sim Swap is based on Mobile Connect Account Takeover Protection (ATP) standardized product:
 
-[IDY.26 Mobile Connect Account Takeover Protection Definition and Technical Requirements](assets/docs/(placeholder4MCspec).docx)
-[IDY.56 Mobile Connect Client Credentials Profile](assets/docs/(placeholder4MCspec).docx)
-[IDY.56-1 Mobile Connect Client Credentials Profile for Attributes](assets/docs/(placeholder4MCspec).docx)
+[IDY.24 Mobile Connect Account Takeover Protection Definition and Technical Requirements](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.24-Mobile-Connect-Account-Takeover-Protection-Definition-and-Technical-Requirements-v2.0.pdf)
+[IDY.56 Mobile Connect Client Credentials Profile](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.56-Mobile-Connect-Client-Credentials-Profile-v1.0.pdf)
+[IDY.56-1 Mobile Connect Client Credentials Profile for Attributes](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.56.2-Mobile-Connect-Client-Credentials-for-Attributes-Configuration-B.pdf)
 [OAUTH2.0 - Client Credentials Grant](https://www.rfc-editor.org/rfc/rfc6749#section-4.4)
 
 ## About Mobile Connect
@@ -15,7 +15,7 @@ The Mobile Connect architecture consists of a Core framework around which additi
 
 ## Sim Swap / Account Takeover Protection definition
 
-Mobile Connect ATP allows Service Providers (SP) to check attributes associated with a User’s mobile account to provide a secure method of combatting identity fraud.
+simSwap APIs (MC ATP & simSwap) allows Service Providers (SP) to check attributes associated with a User’s mobile account to provide a secure method of combatting identity fraud.
 Many online banking accounts today are protected using secure online banking credentials (e.g., password and secret customer number), and additionally using the phone number associated with the User’s bank account to increase security. This two-factor security helps mitigate fraud if one of the factors is compromised, for example if the User’s online banking credentials have been stolen.
 Mobile Connect ATP allows SPs to perform additional checks on the User’s mobile phone status to determine whether or not this factor may have been compromised.  In particular, the service returns an indication of whether there has been a recent SIM swap and may optionally return other information relating to the User’s mobile account:
 
@@ -34,11 +34,11 @@ Mobile Connect ATP offers a range of practical use cases. Some of the use cases 
 3. Secure authentication (authenticate + ATP)
 4. Securing add new payee transactions in banking 
 
-## ATP Functional Description
+## MC ATP Functional Description
 
 In specific use cases, the SP (Service Provider) server needs to have access to a Resource Server with an access token not tied to the User. This must be done by using the Client Credentials grant (OAuth2.0). In other words, the Client Credentials grant type is used by an SP to obtain an access token outside of the context of a user.
 
-### ATP Service Flow
+### MC ATP Service Flow
 
 **Figure 1** illustrates the Client Credential mode flow. This specification details the parameters involved in the Access Token Request and Response.
 
@@ -57,6 +57,10 @@ The use of Client Credentials profile implies that personal data are not involve
 
 1. the service logic and the lawful data processing basis allow it.
 2. the SP and the Operator agree that the Operator is not involved in the customer consent management (**i.e.: legitimate interest and/or consent managed exclusively on Service Provider side**).
+
+### UML Diagram
+
+[PUML sequence diagram for MC ATP client credentials](../UML/sequenceDiagram.puml)
 
 ## ATP Service Specification
 
@@ -87,9 +91,14 @@ YAML proposal:
 1. [DT](../../code/API_code/simSwap.yaml)
 2. [Orange](../../code/API_code/checkSimSwap-v0.3.0.camara.swagger.yaml)
 
-#### Token Request
+#### Mobile Connect Account Takeover Protection with SIM Swap
 
->POST /token?grant_type=client_credentials&scope=mc_atp HTTP/1.1
+CAMARA utilize MC ATP API service that use OAUTH 2.0 Client Credentials grant to fulfill API serve request
+
+##### Token Request
+
+>POST /token?grant_type=client_credentials&scope=mc_atp
+HTTP/1.1
 Content-Type: application/x-www-form-urlencoded; charset=ISO-8859-1
 Authorization: Basic {client_id:client_secret}
 Host: mobileconnect.telekom.de
@@ -97,7 +106,7 @@ Accept-Encoding: gzip, deflate, br
 Connection: keep-alive
 Content-Length: 0
 
-#### Token Response
+##### Token Response
 
 >HTTP/1.1 200 OK
 Date: Fri, 18 Nov 2022 08:01:19 GMT
@@ -109,7 +118,7 @@ Pragma: no-cache
 Strict-Transport-Security: max-age=15724800; includeSubDomains
 {"access_token":"{AccessToken}","scope":"mc_atp","token_type":"Bearer","expires_in":"500"}
 
-#### Resource Request
+##### Resource Request
 
 >POST /openid/userinfo HTTP/1.1
 Content-Type: application/x-www-form-urlencoded
@@ -121,20 +130,72 @@ Accept-Encoding: gzip, deflate, br
 Connection: keep-alive
 Content-Length: 0
 
-#### Resource Response
+##### Resource Response - Boolean setting
 
-- Boolean
 >{
     "simChange":"false"
     "correlation_id":"6d9d6d48-b01b-4460-a9f0-d696bcdfeb95"
 }
-- Date
->{
-    "simChange": "2020-07-13",
-    "correlation_id": "59c82672-107b-4019-b469-169bf955d8f1"
-}
-- Timestamp
+
+##### Resource Response - Timestamp setting
+
 >{
     "simChange": "2019-10-18T00:00:00",
     "correlation_id": "11e75083-9f82-4732-9b8d-fd37539f7e6b"
+}
+
+#### simSwap API - dedicated resource endpoint
+
+CAMARA delivers dedicated endpoint to resolve simSwap API service. This follows OAUTH2.0 code flow (3-legged-tokens)
+
+##### Token Request - OAUTH 2.0: code flow (3-legged-tokens)
+
+>POST /token?grant_type=auhtorization_code&code={code}&redirect_uri={redirect_uri}&client_id={client_id} HTTP/1.1
+Content-Type: application/x-www-form-urlencoded;
+Host: server.example.com
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Content-Length: 0
+
+##### Token Response - OAUTH 2.0: code flow (3-legged-tokens)
+
+>HTTP/1.1 200 OK
+Date: Fri, 18 Nov 2022 08:01:19 GMT
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+Cache-Control: no-store
+Pragma: no-cache
+Strict-Transport-Security: max-age=15724800; includeSubDomains
+{"access_token":"{AccessToken}","scope":"{scope}","token_type":"Bearer","expires_in":"500"}
+
+##### Resource Request - simSwap verify
+
+>POST /simSwap/verify HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer {AccessToken}
+Host: server.example.com
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Content-Length: 0
+
+##### Resource Response
+
+>{
+    "simChange":"false"
+}
+
+##### Resource Request - simSwap timestamp
+
+>POST /simSwap/last HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer {AccessToken}
+Host: server.example.com
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Content-Length: 0
+
+##### Resource Response
+>{
+    "simChange": "2019-10-18T00:00:00",
 }

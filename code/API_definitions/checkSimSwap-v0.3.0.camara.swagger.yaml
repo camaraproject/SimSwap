@@ -190,7 +190,7 @@ components:
           authorizationUrl: https://auth.example.com/authorize
           tokenUrl: https://auth.example.com/token
           scopes:
-            simSwapCheck: checkSimSwap
+            check-sim-swap: checkSimSwap operation
             simSwapDate: getSimSwapDate
   schemas:
     SimSwapInfo:

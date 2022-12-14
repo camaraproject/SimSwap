@@ -45,7 +45,7 @@ paths:
       operationId: retrieveSimSwapDate``
       requestBody:
         description: |+
-          Create a simSwap date request. A MSISDN identifier is required.        
+          Create a SIM swap date request for a MSISDN identifier.        
         content :
           application/json:
             schema:

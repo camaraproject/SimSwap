@@ -1,0 +1,164 @@
+openapi: 3.0.0
+info:
+  title: CAMARA simSwap
+  description: CAMARA simSwap API based on Mobile Connect Account Takeover Protection API definition.
+  version: 0.1.0
+servers:
+  - url: https://api.server.test
+    description: API server providing CAMARA APIs
+tags:
+  - name: Mobile Connect ATP
+paths:
+  /token:
+    post:
+      tags:
+        - Mobile Connect ATP
+      summary: Token
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: {}
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/x-www-form-urlencoded; charset=ISO-8859-1
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: base64(client_id:client_secret)
+          example: 'Basic '
+        - name: grant_type
+          in: query
+          schema:
+            type: string
+          example: client_credentials
+        - name: scope
+          in: query
+          schema:
+            type: string
+          example: mc_atp
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                access_token: mkmaJ53--rCK1SBUIjxzavoJCcFbx3453dKmZr39A8k
+                scope: mc_atp
+                token_type: Bearer
+                expires_in: '500'
+  /openid/userinfo:
+    post:
+      tags:
+        - Mobile Connect ATP
+      summary: User Info
+      description: userinfo
+      requestBody:
+        content: {}
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: '*/*'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/x-www-form-urlencoded
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: Authorization token from Token request (token client_credentials)
+          example: Bearer 81edUBMJBXQaZA-tiUdammZ5v9149MTklvy6_i93F7c
+        - name: User-ID-Type
+          in: header
+          schema:
+            type: string
+          example: msisdn
+        - name: User-ID
+          in: header
+          schema:
+            type: integer
+          description: Test MSISDN
+          example: '4915164818763'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/atpTimestamp'
+                  - $ref: '#/components/schemas/atpBoolean'
+              examples:
+                example-0:
+                  summary: User Info - BOOLEAN
+                  value:
+                    simChange: 'false'
+                    isUncontidionalCallDivertActive: 'true'
+                    isLostStolen: 'false'
+                    deviceChange: '2022-12-06'
+                    accountState: 'active'
+                    correlation_id: 3149eec1-fc29-4bf6-8097-ddfd4a06d3db
+                example-1:
+                  summary: User Info - DATE
+                  value:
+                    simChange: '2020-07-13'
+                    correlation_id: 59c82672-107b-4019-b469-169bf955d8f1
+security:
+  - oAuth2ClientCredentials: []
+  - BasicAuth: []
+
+components:
+  schemas:
+    atpBoolean:
+      type: object
+      properties:
+        simChange:
+          type: boolean
+          required: true
+          example: 'simChange: true'
+        isUncontidionalCallDivertActive:
+          type: string
+          required: false
+        isLostStolen:
+          type: boolean
+          required: false
+        deviceChange:
+          type: string
+          required: false
+        accountState:
+          type: string
+          enum:
+            - active
+            - inactive
+    atpTimestamp:
+      type: object
+      properties:
+        simChange:
+          type: string
+          required: true
+          example: 'simChange: 2022-12-06'
+        isUncontidionalCallDivertActive:
+          type: string
+          required: false
+        isLostStolen:
+          type: boolean
+          required: false
+        deviceChange:
+          type: string
+          required: false
+        accountState:
+          type: string
+          enum:
+            - active
+            - inactive

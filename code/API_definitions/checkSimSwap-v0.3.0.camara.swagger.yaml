@@ -206,7 +206,7 @@ components:
         swapped:
           type: boolean
           description: Indicates whether the SIM card has been swapped during the
-            delay. Should be valued only if an age is passed in the request.
+            period within the provided age.
     MSISDN:
       type: string
       pattern: '^\+?[0-9]{5,15}$'

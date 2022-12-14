@@ -7,7 +7,7 @@ info:
 
     The API provided 2 operations:
 
-    - POST retrieveSimSwapDate : provide timestamp of latest sim swap,
+    - POST retrieve-date : provide timestamp of latest SIM swap,
 
     - POST check: check if SIM swap has been performed during a past period (defined in the request with 'age' attribute).
   termsOfService: http://swagger.io/terms/

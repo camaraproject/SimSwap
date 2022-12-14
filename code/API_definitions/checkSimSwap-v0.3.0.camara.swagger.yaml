@@ -204,7 +204,7 @@ components:
     SimSwapInfo:
       type: object
       properties:
-        sim_change: 
+        latest_sim_change: 
           type: string
           format: date-time
           description: timestanp of latest SIM swap performed

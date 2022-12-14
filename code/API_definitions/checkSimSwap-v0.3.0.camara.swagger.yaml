@@ -3,7 +3,8 @@ info:
   title: SIM Swap
   description: |+
     SIM Swap API provides the customer the ability to obtain information on any recent SIM pairing change
-     related to the User’s mobile account. 
+     related to the User's mobile account. 
+
 
     The API provided 2 operations:
 

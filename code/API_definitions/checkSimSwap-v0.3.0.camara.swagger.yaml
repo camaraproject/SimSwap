@@ -139,7 +139,7 @@ paths:
                     code: INVALID_INPUT
                     message: "Expected property is missing: msisdn"
                 AgeRequired:
-                  summary: msisdn is required as part of ueId
+                  summary: age is required
                   value: 
                     code: INVALID_INPUT
                     message: "Expected property is missing: age"                    

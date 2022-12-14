@@ -232,7 +232,7 @@ components:
       properties:
         msisdn:
           $ref: "#/components/schemas/MSISDN"
-        age:
+        max_age:
           type: integer
           example: 240
           description: |

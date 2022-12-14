@@ -236,7 +236,8 @@ components:
           type: integer
           example: 240
           description: |
-            Delay in hours to be checked for simswap.
+            Period in hours to be checked for SIM swap.
+
           format: int32
           minimum: 1
           maximum: 24000

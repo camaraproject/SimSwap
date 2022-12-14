@@ -146,11 +146,6 @@ paths:
                   value: 
                     code: INVALID_INPUT
                     message: "Expected property is missing: msisdn"
-                AgeRequired:
-                  summary: age is required
-                  value: 
-                    code: INVALID_INPUT
-                    message: "Expected property is missing: age"  
                 AgeExceededMax:
                   summary: age exceeds maximum authorized
                   value: 

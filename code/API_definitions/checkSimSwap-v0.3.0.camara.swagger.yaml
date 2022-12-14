@@ -87,7 +87,7 @@ paths:
                 $ref: "#/components/schemas/ErrorInfo"
               example:
                 code: CONFLICT
-                message: "Another resquest is created for the same UE"
+                message: "Another resquest is created for the same MSISDN"
         "500":
           description: Server error
           content:

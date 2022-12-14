@@ -115,7 +115,7 @@ paths:
         required: true
       responses:
         "200":
-          description: check simSwap created
+          description: Returns whether a SIM swap has been performed during a past period
           content:
             application/json:
               schema:

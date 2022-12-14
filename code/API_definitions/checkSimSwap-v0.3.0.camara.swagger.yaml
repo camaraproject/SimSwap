@@ -208,7 +208,6 @@ components:
           type: string
           format: date-time
           description: timestanp of latest SIM swap performed
-
     CheckSimSwapInfo:
       type: object
       properties:

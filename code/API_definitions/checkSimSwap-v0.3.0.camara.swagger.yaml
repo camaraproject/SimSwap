@@ -99,7 +99,7 @@ paths:
                 message: "Session could not be created"
         "503":
           $ref: "#/components/responses/Generic503" 
-  /checkSimSwap:
+  /check:
     post:
       tags:
       - Check simSwap

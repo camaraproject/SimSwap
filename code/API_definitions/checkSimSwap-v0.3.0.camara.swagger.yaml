@@ -34,7 +34,7 @@ servers:
         default: http://localhost:9091
         description: API root
       basePath:
-        default: simSwap/v0
+        default: sim-swap/v0
         description: Base path for the simSwap API
 paths:
   /retrieveSimSwapDate/:

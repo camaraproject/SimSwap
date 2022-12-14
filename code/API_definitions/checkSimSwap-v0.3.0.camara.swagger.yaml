@@ -114,7 +114,7 @@ paths:
               $ref: "#/components/schemas/CreateCheckSimSwap"
         required: true
       responses:
-        "201":
+        "200":
           description: check simSwap created
           content:
             application/json:

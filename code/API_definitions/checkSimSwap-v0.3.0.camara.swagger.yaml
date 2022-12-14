@@ -106,6 +106,10 @@ paths:
           $ref: "#/components/responses/Generic503" 
   /check:
     post:
+      security:
+        - oAuth2ClientCredentials
+        - three_legged:
+          - check-sim-swap  
       tags:
       - Check SIM swap
       description: check if SIM swap has been performed during a past period

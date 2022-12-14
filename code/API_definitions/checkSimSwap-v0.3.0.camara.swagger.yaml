@@ -134,7 +134,7 @@ paths:
                     code: INVALID_INPUT
                     message: "Schema validation failed at  ..."
                 MsisdnRequired:
-                  summary: msisdn is required as part of ueId
+                  summary: MSISDN is required
                   value: 
                     code: INVALID_INPUT
                     message: "Expected property is missing: msisdn"

@@ -183,14 +183,6 @@ components:
         clientCredentials:
           tokenUrl: '{tokenUrl}'
           scopes: {}
-    BasicAuth:
-      type: http
-      scheme: basic
-    apiKey:
-      type: apiKey
-      description: API key to authorize requests
-      name: apikey
-      in: query
     three_legged:
       type: oauth2
       flows:

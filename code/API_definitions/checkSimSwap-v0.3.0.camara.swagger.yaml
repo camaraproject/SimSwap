@@ -40,7 +40,7 @@ paths:
   /retrieveSimSwapDate/:
     post:
       tags:
-        - Retrieve simSwap date
+        - Retrieve SIM swap date
       description: Get timestamp of last MSISDN <-> IMSI pairing change for a mobile user account provided with MSIDN.
       operationId: createSimSwapDateRequest
       requestBody:

@@ -9,7 +9,8 @@ info:
 
     - POST retrieve-date : provide timestamp of latest SIM swap,
 
-    - POST check: check if SIM swap has been performed during a past period (defined in the request with 'age' attribute).
+    - POST check: check if SIM swap has been performed during a past period (defined in the request with 'max_age' attribute).
+
   termsOfService: http://swagger.io/terms/
   contact:
     email: project-email@sample.com

@@ -47,7 +47,8 @@ paths:
       tags:
         - Retrieve SIM swap date
       description: Get timestamp of last MSISDN <-> IMSI pairing change for a mobile user account provided with MSIDN.
-      operationId: retrieveSimSwapDate``
+      operationId: retrieveSimSwapDate
+
       requestBody:
         description: |+
           Create a SIM swap date request for a MSISDN identifier.        

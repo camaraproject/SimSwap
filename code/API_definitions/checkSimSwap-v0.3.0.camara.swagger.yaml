@@ -107,7 +107,7 @@ paths:
       operationId: createCheckSimSwap
       requestBody:
         description: |+
-          Create a Check simSwap request. A MSISDN identifier and age are required.        
+          Create a check SIM swap request for a MSISDN identifier.        
         content :
           application/json:
             schema:

@@ -116,7 +116,8 @@ paths:
       tags:
       - Check SIM swap
       description: check if SIM swap has been performed during a past period
-      operationId: createCheckSimSwap
+      operationId: checkSimSwap
+
       requestBody:
         description: |+
           Create a check SIM swap request for a MSISDN identifier.        

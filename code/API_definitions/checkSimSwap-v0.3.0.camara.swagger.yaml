@@ -40,7 +40,7 @@ paths:
   /retrieve-date:
     post:
       security:
-        - oAuth2ClientCredentials
+        - oAuth2ClientCredentials: []
         - three_legged:
           - retrieve-sim-swap-date  
       tags:
@@ -107,7 +107,7 @@ paths:
   /check:
     post:
       security:
-        - oAuth2ClientCredentials
+        - oAuth2ClientCredentials: []
         - three_legged:
           - check-sim-swap  
       tags:
@@ -150,7 +150,12 @@ paths:
                   summary: age is required
                   value: 
                     code: INVALID_INPUT
-                    message: "Expected property is missing: age"                    
+                    message: "Expected property is missing: age"  
+                AgeExceededMax:
+                  summary: age exceeds maximum authorized
+                  value: 
+                    code: INVALID_INPUT
+                    message: "Expected property is wrong valued: age must not exceed 2400 hours"   
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
@@ -237,7 +242,6 @@ components:
       type: object
       required:
         - msisdn
-        - age
       properties:
         msisdn:
           $ref: "#/components/schemas/MSISDN"
@@ -249,7 +253,7 @@ components:
 
           format: int32
           minimum: 1
-          maximum: 24000
+          maximum: 2400
           default: 240
     CreateSimSwapDate:
       type: object

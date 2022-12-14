@@ -191,7 +191,7 @@ components:
           tokenUrl: https://auth.example.com/token
           scopes:
             check-sim-swap: checkSimSwap operation
-            simSwapDate: getSimSwapDate
+            retrieve-sim-swap-date: retrieveSimSwapDate operation
   schemas:
     SimSwapInfo:
       type: object

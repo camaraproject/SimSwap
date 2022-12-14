@@ -102,7 +102,7 @@ paths:
   /check:
     post:
       tags:
-      - Check simSwap
+      - Check SIM swap
       description: check if SIM swap has been performed during a past period
       operationId: createCheckSimSwap
       requestBody:

@@ -103,7 +103,7 @@ paths:
     post:
       tags:
       - Check simSwap
-      description: Manage request and response for a simSwap check for a mobile user account provided with MSIDN.
+      description: check if SIM swap has been performed during a past period
       operationId: createCheckSimSwap
       requestBody:
         description: |+

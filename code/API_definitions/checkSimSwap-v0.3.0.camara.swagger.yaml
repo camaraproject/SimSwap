@@ -53,7 +53,7 @@ paths:
         required: true
       responses:
         "200":
-          description: Contains information about sim swap change
+          description: Contains information about SIM swap change
           content:
             application/json:
               schema:

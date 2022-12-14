@@ -39,6 +39,10 @@ servers:
 paths:
   /retrieve-date:
     post:
+      security:
+        - oAuth2ClientCredentials
+        - three_legged:
+          - retrieve-sim-swap-date  
       tags:
         - Retrieve SIM swap date
       description: Get timestamp of last MSISDN <-> IMSI pairing change for a mobile user account provided with MSIDN.

@@ -37,7 +37,7 @@ servers:
         default: sim-swap/v0
         description: Base path for the simSwap API
 paths:
-  /retrieveSimSwapDate/:
+  /retrieve-date:
     post:
       tags:
         - Retrieve SIM swap date

@@ -125,40 +125,36 @@ components:
       properties:
         simChange:
           type: boolean
-          required: true
           example: 'simChange: true'
         isUncontidionalCallDivertActive:
           type: string
-          required: false
         isLostStolen:
           type: boolean
-          required: false
         deviceChange:
           type: string
-          required: false
         accountState:
           type: string
           enum:
             - active
             - inactive
+      required:
+        - simSwap
     atpTimestamp:
       type: object
       properties:
         simChange:
           type: string
-          required: true
           example: 'simChange: 2022-12-06'
         isUncontidionalCallDivertActive:
           type: string
-          required: false
         isLostStolen:
           type: boolean
-          required: false
         deviceChange:
           type: string
-          required: false
         accountState:
           type: string
           enum:
             - active
             - inactive
+      required:
+        - simChange

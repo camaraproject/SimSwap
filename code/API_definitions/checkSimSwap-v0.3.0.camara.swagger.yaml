@@ -22,13 +22,6 @@ info:
 externalDocs:
   description: Product documentation at Camara
   url: https://github.com/camaraproject/
-security:
-  - oAuth2ClientCredentials: []
-  - BasicAuth: []
-  - apiKey: []
-  - three_legged:
-    - checkSimSwap
-    - getSimSwapDate
 servers:
   - url: "{apiRoot}/{basePath}"
     variables:
@@ -76,12 +69,13 @@ paths:
                   summary: Schema validation failed
                   value: 
                     code: INVALID_INPUT
+                    status: 400
                     message: "Schema validation failed at  ..."
                 MsisdnRequired:
                   summary: MSISDN is required
-
                   value: 
                     code: INVALID_INPUT
+                    status: 400
                     message: "Expected property is missing: msisdn"
         "401":
           $ref: "#/components/responses/Generic401"
@@ -95,6 +89,7 @@ paths:
                 $ref: "#/components/schemas/ErrorInfo"
               example:
                 code: CONFLICT
+                status: 409
                 message: "Another resquest is created for the same MSISDN"
         "500":
           description: Server error
@@ -104,6 +99,7 @@ paths:
                 $ref: "#/components/schemas/ErrorInfo"
               example:
                 code: INTERNAL
+                status: 500
                 message: "Session could not be created"
         "503":
           $ref: "#/components/responses/Generic503" 
@@ -144,16 +140,19 @@ paths:
                   summary: Schema validation failed
                   value: 
                     code: INVALID_INPUT
+                    status: 400
                     message: "Schema validation failed at  ..."
                 MsisdnRequired:
                   summary: MSISDN is required
                   value: 
                     code: INVALID_INPUT
+                    status: 400
                     message: "Expected property is missing: msisdn"
                 AgeExceededMax:
                   summary: age exceeds maximum authorized
                   value: 
                     code: INVALID_INPUT
+                    status: 400
                     message: "Expected property is wrong valued: age must not exceed 2400 hours"   
         "401":
           $ref: "#/components/responses/Generic401"
@@ -167,6 +166,7 @@ paths:
                 $ref: "#/components/schemas/ErrorInfo"
               example:
                 code: CONFLICT
+                status: 409
                 message: "Another resquest is created for the same MSISDN"
         "500":
           description: Server error
@@ -176,6 +176,7 @@ paths:
                 $ref: "#/components/schemas/ErrorInfo"
               example:
                 code: INTERNAL
+                status: 500
                 message: "Session could not be created"
         "503":
           $ref: "#/components/responses/Generic503"
@@ -225,6 +226,9 @@ components:
         code:
           type: string
           description: Code given to this error
+        status:
+          type: string
+          description: Status given to this error from list of Hypertext Transfer Protocol (HTTP) response status codes
         message:
           type: string
           description: Detailed error description
@@ -260,6 +264,7 @@ components:
             $ref: "#/components/schemas/ErrorInfo"
           example:
             code: INVALID_INPUT
+            status: 400
             message: "Schema validation failed at  ..."
     Generic401:
       description: Unauthorized
@@ -269,6 +274,7 @@ components:
             $ref: "#/components/schemas/ErrorInfo"
           example:
             code: UNAUTHORIZED
+            status: 401
             message: "Authorization failed: ..."
     Generic403:
       description: Forbidden
@@ -278,6 +284,7 @@ components:
             $ref: "#/components/schemas/ErrorInfo"
           example:
             code: FORBIDDEN
+            status: 403
             message: "Operation not allowed: ..."
     Generic503:
       description: Service unavailable
@@ -287,6 +294,7 @@ components:
             $ref: "#/components/schemas/ErrorInfo"
           example:
             code: SERVICE_UNAVALABLE
+            status: 503
             message: "Service unavailable"
 
 

@@ -14,33 +14,24 @@ paths:
       tags:
         - Mobile Connect ATP
       summary: Token
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties: {}
+      security:
+        - BasicAuth: []
       parameters:
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: application/x-www-form-urlencoded; charset=ISO-8859-1
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          description: base64(client_id:client_secret)
-          example: 'Basic '
         - name: grant_type
           in: query
+          required: true
           schema:
             type: string
+            enum:
+              - client_credentials
           example: client_credentials
         - name: scope
           in: query
+          required: true
           schema:
             type: string
+            enum:
+              - mc_atp
           example: mc_atp
       responses:
         '200':
@@ -60,32 +51,23 @@ paths:
         - Mobile Connect ATP
       summary: User Info
       description: userinfo
+      security:
+        - bearerAuth: []
       requestBody:
         content: {}
       parameters:
-        - name: Accept
-          in: header
-          schema:
-            type: string
-          example: '*/*'
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: application/x-www-form-urlencoded
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          description: Authorization token from Token request (token client_credentials)
-          example: Bearer 81edUBMJBXQaZA-tiUdammZ5v9149MTklvy6_i93F7c
         - name: User-ID-Type
           in: header
+          required: true
           schema:
             type: string
+            enum:
+              - msisdn
+              - encr_msisdn
           example: msisdn
         - name: User-ID
           in: header
+          required: true
           schema:
             type: integer
           description: Test MSISDN
@@ -115,8 +97,7 @@ paths:
                     simChange: '2020-07-13'
                     correlation_id: 59c82672-107b-4019-b469-169bf955d8f1
 security:
-  - oAuth2ClientCredentials: []
-  - BasicAuth: []
+  - Oauth2: []
 
 components:
   schemas:
@@ -138,7 +119,7 @@ components:
             - active
             - inactive
       required:
-        - simSwap
+        - simChange
     atpTimestamp:
       type: object
       properties:
@@ -158,3 +139,19 @@ components:
             - inactive
       required:
         - simChange
+
+  securitySchemes:
+    Oauth2:
+      type: oauth2
+      description: Mobile Connect Client Credentials
+      flows:
+        clientCredentials:
+          tokenUrl: /token
+          scopes:
+            mc_atp: Mobile Connect ATP
+    bearerAuth:
+      type: http
+      scheme: bearer  
+    BasicAuth:
+      type: http
+      scheme: basic

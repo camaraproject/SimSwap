@@ -149,7 +149,7 @@ paths:
                     status: 400
                     message: "Expected property is missing: msisdn"
                 AgeExceededMax:
-                  summary: age exceeds maximum authorized
+                  summary: max_age exceeds maximum authorized
                   value: 
                     code: INVALID_INPUT
                     status: 400

@@ -153,7 +153,7 @@ paths:
                   value: 
                     code: INVALID_INPUT
                     status: 400
-                    message: "Expected property is wrong valued: age must not exceed 2400 hours"   
+                    message: "Expected property is wrong valued: max_age must not exceed 2400 hours"   
         "401":
           $ref: "#/components/responses/Generic401"
         "403":

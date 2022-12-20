@@ -65,6 +65,12 @@ paths:
                 scope: mc_atp
                 token_type: Bearer
                 expires_in: '500'
+        '400':
+          description: invalid reqest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serverError'
   /openid/userinfo:
     post:
       tags:
@@ -94,7 +100,7 @@ paths:
           example: '4915164818763'
       responses:
         '200':
-          description: OK
+          description: successful request
           content:
             application/json:
               schema:
@@ -116,6 +122,13 @@ paths:
                   value:
                     simChange: '2020-07-13'
                     correlation_id: 59c82672-107b-4019-b469-169bf955d8f1
+        '400':
+          description: invalid reqest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serverError'
+
 security:
   - Oauth2: []
 
@@ -159,6 +172,18 @@ components:
             - inactive
       required:
         - simChange
+    serverError:
+      type: object
+      properties:
+        error_description:
+          type: string
+          example: Mandatory parameter code is invalid
+        error:
+          type: string
+          example: invalid_request
+      required:
+        - error
+        - error_description
 
   securitySchemes:
     Oauth2:

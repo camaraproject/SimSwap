@@ -100,7 +100,8 @@ Following table provides an overview of common error names, codes, and messages 
 | No | Error Name | Error Code | Error Message |
 | --- | ---------- | ---------- | ------------- |
 |1	|400 |	INVALID_INPUT |	"Expected property is missing: msisdn" |
-|2	|400 |	INVALID_INPUT |	"Expected property is missing: age" |
+|2	|400 |	INVALID_INPUT |	"Expected property is missing: max_age" |
+
 |10	|401 |	UNAUTHORIZED |	"No authorization to invoke operation" |
 |11	|403 |	FORBIDDEN |	"Operation not allowed" |
 |12	|404 |	NOT_FOUND |	"Payment Id does not exist" |

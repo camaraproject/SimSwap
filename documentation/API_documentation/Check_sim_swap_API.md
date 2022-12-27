@@ -40,7 +40,7 @@ SIM Swap API considers 2 security models: Three-legged access tokens with dedica
 
 **Identifier for the the mobile line to be checked**
 
-In order to identify the mobile line to be checked, a msisdn must be provided. 
+In order to identify the mobile line to be checked, a MSISDN must be provided. 
 
 
 Sample API invocations are presented in Section 4.6.

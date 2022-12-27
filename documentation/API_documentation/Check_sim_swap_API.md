@@ -1,6 +1,7 @@
 # Overview
 
-<span class="colour" style="color:rgb(0, 0, 0)">The SIM Swap API provides programmable interface for developers and other users (capabilities consumers) to request last date of Sim Swap performed on the mobile line invoice, or, to ask for a check if a simswap has been performed during a delay. </span> 
+The SIM Swap API provides a programmable interface for developers and other users (capabilities consumers) to request the last date of a SIM swap performed on the mobile line, or, to check whether a SIM swap has been performed during a past period.
+
 
 ## 1\. Introduction
 

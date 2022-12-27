@@ -10,7 +10,7 @@ The SIM Swap API performs real-time checks on the activation date of a SIM card 
 The SIM Swap API is useful to prevent fraud by reducing the risk of account takeover fraud by strengthening SIM based authentication processes such as SMS One-time passwords. Fraudsters are using Simswap techniques to intercept SMS messages and reset passwords or receive verification codes that allow them to access protected accounts.
 
 The SIM Swap API is used by an application to get information about a mobile line latest simswap date. It can be easily integrated and used through this secured API and 
-allows ISV to get this information an easy & secured way. The API provides management of 2 resources answering 2 distinct questions:<br>
+allows ISV to get this information an easy & secured way. The API provides management of 2 resources answering 2 distinct questions:
 - When last simswap occured ?
 - Does a simswap occured during last n hours ?
 <br>

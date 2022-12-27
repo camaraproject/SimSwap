@@ -50,7 +50,8 @@ Sample API invocations are presented in Section 4.6.
 The SIM Swap API could  make use of the OAUTH 2.0 client credentials grant which is applicable for server to server use cases involving trusted partners
 or clients without any protected user data involved.
 In this method the API invoker client is registered as a confidential client with an authorization grant type of client_credentials [[1]](#1).
-The SIM Swap API could also be protected thru a 3-legged process in order to get end used consent before to provide information.
+The SIM Swap API could also be protected through a 3-legged process, in order to be combined with end user consent gathering, before any personal information is provided.
+
 Depending on local legal regulation, Network provider may require the 3-legged process to provide simswap information.
 
 

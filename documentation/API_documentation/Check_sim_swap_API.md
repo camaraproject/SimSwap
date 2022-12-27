@@ -52,7 +52,8 @@ or clients without any protected user data involved.
 In this method the API invoker client is registered as a confidential client with an authorization grant type of client_credentials [[1]](#1).
 The SIM Swap API could also be protected through a 3-legged process, in order to be combined with end user consent gathering, before any personal information is provided.
 
-Depending on local legal regulation, Network provider may require the 3-legged process to provide simswap information.
+Depending on local legal regulation, Network provider may require the 3-legged process to provide SIM swap information.
+
 
 
 ## 4\. API Documentation

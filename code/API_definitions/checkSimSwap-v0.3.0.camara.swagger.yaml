@@ -293,7 +293,8 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           example:
-            code: SERVICE_UNAVALABLE
+            code: SERVICE_UNAVAILABLE
+
             status: 503
             message: "Service unavailable"
 

@@ -128,7 +128,7 @@ Please note, the credentials for API authentication purposes need to be adjusted
 
 | Snippet 2. Request last simswap date  |
 | ----------------------------------------------- |
-| curl -X 'POST' `https://sample-base-url/simSwap/v0/check`   <br>    -H 'accept: application/json' <br>    -H 'Content-Type: application/json'<br>    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbG...."<br>    -d '{ "msisdn": "+33068741256", <br> "max_age": 240}'  |
+| curl -X 'POST' `https://sample-base-url/sim-swap/v0/check`   <br>    -H 'accept: application/json' <br>    -H 'Content-Type: application/json'<br>    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbG...."<br>    -d '{ "msisdn": "+33068741256", <br> "max_age": 240}'  |
 | response will be: <br> 201 <br>   -d '{ "swapped": "false" }'|
 <br>
 

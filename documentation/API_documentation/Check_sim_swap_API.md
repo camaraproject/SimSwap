@@ -122,7 +122,7 @@ Please note, the credentials for API authentication purposes need to be adjusted
 
 | Snippet 1. Request last simswap date  |
 | ----------------------------------------------- |
-| curl -X 'POST' `https://sample-base-url/simSwap/v0/retrieve-date`   <br>    -H 'accept: application/json' <br>    -H 'Content-Type: application/json'<br>    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbG...."<br>    -d '{ "msisdn": "+33068741256"}'  |
+| curl -X 'POST' `https://sample-base-url/sim-swap/v0/retrieve-date`   <br>    -H 'accept: application/json' <br>    -H 'Content-Type: application/json'<br>    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbG...."<br>    -d '{ "msisdn": "+33068741256"}'  |
 | response will be: <br> 201 <br>   -d '{ "latest_sim_change": "2020-10-11T13:33:26.618Z" }'|
 <br>
 

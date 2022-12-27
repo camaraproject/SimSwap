@@ -36,7 +36,7 @@ Before starting to use the API, the developer needs to know about the specified 
 
 **Authentication**
 
-Security access token based on three legged are described for this API with dedicated scope.<br> Security access keys such as OAuth 2.0 client credentials used by Client applications to invoke the simSwap API.
+SIM Swap API considers 2 security models: Three-legged access tokens with dedicated scopes, and OAuth 2.0 client credentials, which is applicable for server to server use cases involving trusted partners or when protected user data is not involved.
 
 **Identifier for the the mobile line to be checked**
 

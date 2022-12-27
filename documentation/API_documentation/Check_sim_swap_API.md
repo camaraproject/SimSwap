@@ -72,7 +72,6 @@ Following table defines API endpoints of exposed REST based for SIM Swap API ope
 
 
 #### SIM Swap API Resource Operations:
-<br>
 
 | **Request last simswap date** |
 | -------------------------- |

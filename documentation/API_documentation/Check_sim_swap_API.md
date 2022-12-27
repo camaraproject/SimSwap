@@ -16,7 +16,8 @@ allows ISV to get this information an easy & secured way. The API provides manag
 
 Depending on the network provider implementation, legal enforcement, etc... either one or both resources could be implemented. 
 
-__Note__: simswap is covered as well in Mobile Connect (MC) ATP (Account-Takeover-Protection) process. The MC pattern is exposed in another Camara API from the simswap API family. Network provided are free to implement the MC version, or this version, or both.
+__Note__:  SIM swap is covered as well in the Mobile Connect (MC) ATP (Account-Takeover-Protection) process. The MC pattern is exposed in another Camara API from the SIM Swap API family. Network providers are free to implement the MC version, this version, or both.
+
 
 
 ## 2\. Quick Start

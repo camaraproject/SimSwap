@@ -70,7 +70,7 @@ Following table defines API endpoints of exposed REST based for SIM Swap API ope
 
 | **Endpoint** | **Operation** | **Description** |
 | -------- | --------- | ----------- |
-| POST<br>  \<base-url>/simSwap/v0/retrieve-date | **Request last SIM swap date** | Create request in order to get the latest SIM swap date |
+| POST /sim-swap/v0/retrieve-date | **Request last SIM swap date** | Create request in order to get the latest SIM swap date |
 | POST<br>  \<base-url>/simSwap/v0/check | **SIM Swap** | Create request to check if a SIM swap occurred during a defined period (like last 48hours) |
 
 

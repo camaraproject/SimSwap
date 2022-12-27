@@ -31,7 +31,7 @@ Before starting to use the API, the developer needs to know about the specified 
 
 2 endpoints are defined in the SIM Swap API:
 
-- POST /<base-url>/simSwap/v0/retrieve-date : a msisdn is passed in the request, the last SIM swap date is provided in response
+- POST /sim-swap/v0/retrieve-date : a MSISDN is passed in the request, and the last SIM swap date is provided in the response
 - POST /<base-url>/simSwap/v0/check : a msisdn and an age is passed in the request, a 'swapped' boolean is provided in response.
 
 **Authentication**

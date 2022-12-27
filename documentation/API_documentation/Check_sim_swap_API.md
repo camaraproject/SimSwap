@@ -24,7 +24,8 @@ __Note__:  SIM swap is covered as well in the Mobile Connect (MC) ATP (Account-T
 
 The usage of the API is based on distinct resources.
 
-Before starting to use the API, the developer needs to know about the below specified details:
+Before starting to use the API, the developer needs to know about the specified details below:
+
 
 **API service endpoint**
 

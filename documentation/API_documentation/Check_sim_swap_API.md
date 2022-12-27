@@ -13,7 +13,6 @@ The SIM Swap API is used by an application to get information about a mobile lin
 allows ISV to get this information an easy & secured way. The API provides management of 2 resources answering 2 distinct questions:
 - When last simswap occured ?
 - Does a simswap occured during last n hours ?
-<br>
 
 Depending on the network provider implementation, legal enforcement, etc... either one or both resources could be implemented. 
 <br>

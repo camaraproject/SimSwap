@@ -91,7 +91,8 @@ Following table defines API endpoints of exposed REST based for SIM Swap API ope
 | -------------------------- |
 | **HTTP Request**<br> POST /sim-swap/v0/check<br>**Query Parameters**<br> No query parameters are defined.<br>**Path Parameters**<br> No path parameter are defined <br>**Request Body Parameters**<br> **msisdn**: Subscriber number in E.164 format (starting with country code). Optionally prefixed with '+'.<br> **max_age**: Delay in hours to be checked for simswap.
 
- <br>**Response**<br> **200: Contains information about SIM swap check**<br>  Response body: <br>**swapped** : Indicates whether the SIM card has been swapped during the delay. Should be valued only if an age is passed in the request. <br> **400:** **Invalid input.**<br> **401:** **Un-authorized. <br> **403:** Forbidden.**<br> **409:** **Conflict.**<br> **500:** **Server Error.**<br> **503:** **Service temporarily unavailable.** |
+ <br>**Response**<br> **200: Contains information about SIM swap check**<br>  Response body: <br>**swapped** : Indicates whether the SIM card has been swapped during the delay. Should be valued only if an age is passed in the request. <br> **400:** **Invalid input.**<br> **401:** **Un-authorized. <br> **403:** Forbidden.**<br> **409:** **Conflict.**<br> **500:** **Server Error.**<br> **503:** **Service temporarily unavailable.**<br>
+
 <br>
 <br>
 ### 4.3 Errors

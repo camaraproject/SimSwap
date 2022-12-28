@@ -81,7 +81,8 @@ Following table defines API endpoints of exposed REST based for SIM Swap API ope
 | -------------------------- |
 | **HTTP Request**<br> POST /sim-swap/v0/retrieve-date<br>**Query Parameters**<br> No query parameters are defined.<br>**Path Parameters**<br> No path parameter are defined <br>**Request Body Parameters**<br> **msisdn**: Subscriber number in E.164 format (starting with country code). Optionally prefixed with '+'.
 
- <br>**Response**<br> **200: Contains information about sim swap change**<br>  Response body: <br>**latest_sim_change** : timestanp of latest SIM swap performed. <br> **400:** **Invalid input.**<br> **401:** **Un-authorized. <br> **403:** Forbidden.**<br> **409:** **Conflict.**<br> **500:** **Server Error.**<br> **503:** **Service temporarily unavailable.** |
+ <br>**Response**<br> **200: Contains information about sim swap change**<br>  Response body: <br>**latest_sim_change** : timestamp of latest SIM swap performed. <br> **400:** **Invalid input.**<br> **401:** **Un-authorized. <br> **403:** Forbidden.**<br> **409:** **Conflict.**<br> **500:** **Server Error.**<br> **503:** **Service temporarily unavailable.** <br>
+
 <br>
 
 <br>

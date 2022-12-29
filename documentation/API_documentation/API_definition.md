@@ -75,7 +75,7 @@ The use of Client Credentials profile implies that personal data are not involve
 
 ### Resource Request
 
-Folllwing mechanism is defined to indicate the MC User whose data is being queried in the request. Namely, the following HTTP headers MUST be used for that purpose:
+Following mechanism is defined to indicate the MC User whose data is being queried in the request. Namely, the following HTTP headers MUST be used for that purpose:
 
 |HTTP Header|Usage Category|Description|
 |:---|:---|:---|

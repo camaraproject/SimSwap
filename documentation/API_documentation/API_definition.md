@@ -88,8 +88,8 @@ Both the names and the values of these HTTP headers MUST be treated as case inse
 
 YAML proposal:
 
-1. [DT](../../code/API_code/simSwap.yaml)
-2. [Orange](../../code/API_code/checkSimSwap-v0.3.0.camara.swagger.yaml)
+1. [MC](../../code/API_code/simSwap.yaml)
+2. [OAS](../../code/API_code/checkSimSwap-v0.3.0.camara.swagger.yaml)
 
 #### Mobile Connect Account Takeover Protection with SIM Swap
 

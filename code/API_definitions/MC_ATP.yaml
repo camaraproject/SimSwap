@@ -1,0 +1,202 @@
+openapi: 3.0.0
+info:
+  title: SIM Swap
+  description: CAMARA simSwap API based on Mobile Connect Account Takeover Protection API definition.
+  version: 0.1.0
+  contact:
+    name: Support
+    email: support@example.com
+    url: https://support.example.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+externalDocs:
+  description: GSMA Mobile Connect Account Takeover Protection
+  url: https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.24-Mobile-Connect-Account-Takeover-Protection-Definition-and-Technical-Requirements-v2.0.pdf
+servers:
+  - url: https://{countryServer}.{domain}
+    variables:
+      countryServer:
+        default: api.server
+        description: a server specific to country where API is delivered
+      domain:
+        default: com
+        description: a domain where server is delivered
+    description: API server providing CAMARA APIs
+tags:
+  - name: Mobile Connect ATP
+paths:
+  /token:
+    post:
+      tags:
+        - Mobile Connect ATP
+      summary: Token
+      externalDocs:
+        description: Mobile Connect Client Credentials for Attributes
+        url: https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.56.2-Mobile-Connect-Client-Credentials-for-Attributes-Configuration-B.pdf
+      security:
+        - BasicAuth: []
+      parameters:
+        - name: grant_type
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - client_credentials
+          example: client_credentials
+        - name: scope
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - mc_atp
+          example: mc_atp
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                access_token: mkmaJ53--rCK1SBUIjxzavoJCcFbx3453dKmZr39A8k
+                scope: mc_atp
+                token_type: Bearer
+                expires_in: '500'
+        '400':
+          description: invalid reqest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serverError'
+  /openid/userinfo:
+    post:
+      tags:
+        - Mobile Connect ATP
+      summary: User Info
+      description: userinfo
+      security:
+        - bearerAuth: []
+      requestBody:
+        content: {}
+      parameters:
+        - name: User-ID-Type
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - msisdn
+              - encr_msisdn
+          example: msisdn
+        - name: User-ID
+          in: header
+          required: true
+          schema:
+            type: integer
+          description: Test MSISDN
+          example: '4915164818763'
+      responses:
+        '200':
+          description: successful request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/atpTimestamp'
+                  - $ref: '#/components/schemas/atpBoolean'
+              examples:
+                example-0:
+                  summary: User Info - BOOLEAN
+                  value:
+                    simChange: 'false'
+                    isUncontidionalCallDivertActive: 'true'
+                    isLostStolen: 'false'
+                    deviceChange: '2022-12-06'
+                    accountState: 'active'
+                    correlation_id: 3149eec1-fc29-4bf6-8097-ddfd4a06d3db
+                example-1:
+                  summary: User Info - DATE
+                  value:
+                    simChange: '2020-07-13'
+                    correlation_id: 59c82672-107b-4019-b469-169bf955d8f1
+        '400':
+          description: invalid reqest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serverError'
+
+security:
+  - Oauth2: []
+
+components:
+  schemas:
+    atpBoolean:
+      type: object
+      properties:
+        simChange:
+          type: boolean
+          example: 'simChange: true'
+        isUncontidionalCallDivertActive:
+          type: string
+        isLostStolen:
+          type: boolean
+        deviceChange:
+          type: string
+        accountState:
+          type: string
+          enum:
+            - active
+            - inactive
+      required:
+        - simChange
+    atpTimestamp:
+      type: object
+      properties:
+        simChange:
+          type: string
+          example: 'simChange: 2022-12-06'
+        isUncontidionalCallDivertActive:
+          type: string
+        isLostStolen:
+          type: boolean
+        deviceChange:
+          type: string
+        accountState:
+          type: string
+          enum:
+            - active
+            - inactive
+      required:
+        - simChange
+    serverError:
+      type: object
+      properties:
+        error_description:
+          type: string
+          example: Mandatory parameter code is invalid
+        error:
+          type: string
+          example: invalid_request
+      required:
+        - error
+        - error_description
+
+  securitySchemes:
+    Oauth2:
+      type: oauth2
+      description: Mobile Connect Client Credentials
+      flows:
+        clientCredentials:
+          tokenUrl: /token
+          scopes:
+            mc_atp: Mobile Connect ATP
+    bearerAuth:
+      type: http
+      scheme: bearer  
+    BasicAuth:
+      type: http
+      scheme: basic

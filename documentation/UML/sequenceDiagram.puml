@@ -1,0 +1,18 @@
+@startuml
+participant "SP backend" as sp
+box "Mobile Connect ID Gateway"
+participant "/token" as token
+participant "/userInfo" as userinfo
+end box
+
+activate sp
+sp -> token: scope: mc_atp
+activate token
+sp <- token: access_token
+deactivate token
+
+sp -> userinfo: header: {User-id-type: msisdn,user-id:{$msisdn}}
+activate userinfo
+sp <- userinfo: body: {simChange:{timestamp}}
+deactivate userinfo
+@enduml

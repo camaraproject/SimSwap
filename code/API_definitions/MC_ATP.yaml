@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: CAMARA simSwap
+  title: SIM Swap
   description: SIM Swap API based on Mobile Connect Account Takeover Protection API definition.
   version: 0.1.0
   contact:

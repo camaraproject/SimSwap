@@ -22,6 +22,9 @@ Repository to describe, develop, document and test the SimSwap API family
 * Schedule: tbd
 * Meeting link: tbd
 
+## Results
+* Sub Project is in progress
+
 ## Contributorship and mailing list
 * To subscribe / unsubscribe to the mailing list of this Sub Project and thus be / resign as Contributor please visit <https://lists.camaraproject.org/g/sp-ssw>.
 * A message to all Contributors of this Sub Project can be sent using <sp-ssw@lists.camaraproject.org>.

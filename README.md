@@ -24,6 +24,9 @@ Repository to describe, develop, document and test the SimSwap API family
 * Meetings are held virtually in MS Teams
 * Current schedule & meeting links: [Meetings information](documentation/MeetingMinutes/README.MD)
 
+## Results
+* Sub Project is in progress
+
 ## Contributorship and mailing list
 
 * To subscribe / unsubscribe to the mailing list of this Sub Project and thus be / resign as Contributor please visit <https://lists.camaraproject.org/g/sp-ssw>.

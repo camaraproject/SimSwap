@@ -6,9 +6,11 @@
 <a href="https://github.com/camaraproject/SimSwap/blob/main/LICENSE" title="License"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg?style=plastic"></a>
 
 # SimSwap
+
 Repository to describe, develop, document and test the SimSwap API family
 
 ## Scope
+
 * Service APIs for “SimSwap” (see APIBacklog.md)  
 * It provides the customer with the ability to:  
   * obtain information on any recent SIM pairing change related to the User’s mobile account.
@@ -18,10 +20,11 @@ Repository to describe, develop, document and test the SimSwap API family
 * Location: virtually  
 
 ## Meetings
-* Meetings are held virtually
-* Schedule: tbd
-* Meeting link: tbd
+
+* Meetings are held virtually in MS Teams
+* Current schedule & meeting links: [Meetings information](documentation/MeetingMinutes/README.MD)
 
 ## Contributorship and mailing list
+
 * To subscribe / unsubscribe to the mailing list of this Sub Project and thus be / resign as Contributor please visit <https://lists.camaraproject.org/g/sp-ssw>.
 * A message to all Contributors of this Sub Project can be sent using <sp-ssw@lists.camaraproject.org>.

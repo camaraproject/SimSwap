@@ -25,6 +25,7 @@ Repository to describe, develop, document and test the SimSwap API family
 * Current schedule & meeting links: [Meetings information](documentation/MeetingMinutes/README.MD)
 
 ## Results
+
 * Sub Project is in progress
 
 ## Contributorship and mailing list

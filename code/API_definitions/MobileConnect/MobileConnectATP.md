@@ -42,7 +42,7 @@ In specific use cases, the SP (Service Provider) server needs to have access to 
 
 **Figure 1** illustrates the Client Credential mode flow. This specification details the parameters involved in the Access Token Request and Response.
 
-![Figure 1 - Mobile Connect Client Credentials Mode Flow](assets/images/figure1cc.png)
+![Figure 1 - Mobile Connect Client Credentials Mode Flow](/SimSwap/documentation/API_documentation/assets/images/figure1cc.png)
 
 The high level flow is as follows:
 
@@ -60,7 +60,7 @@ The use of Client Credentials profile implies that personal data are not involve
 
 ### UML Diagram
 
-[PUML sequence diagram for MC ATP client credentials](../UML/sequenceDiagram.puml)
+[PUML sequence diagram for MC ATP client credentials](/SimSwap/documentation/UML/sequenceDiagram.puml)
 
 ## ATP Service Specification
 
@@ -86,10 +86,10 @@ Both the names and the values of these HTTP headers MUST be treated as case inse
 
 ### ATP API details
 
-YAML proposal:
+YAML files:
 
-1. [MC](../../code/API_code/simSwap.yaml)
-2. [OAS](../../code/API_code/checkSimSwap-v0.3.0.camara.swagger.yaml)
+1. [MC](/SimSwap/code/API_definitions/MobileConnect/MC_ATP.yaml)
+2. [OAS](/SimSwap/code/API_definitions/CAMARA/checkSimSwap-v0.3.0.camara.swagger.yaml)
 
 #### Mobile Connect Account Takeover Protection with SIM Swap
 
@@ -196,6 +196,7 @@ Connection: keep-alive
 Content-Length: 0
 
 ##### Resource Response
+
 >{
     "simChange": "2019-10-18T00:00:00",
 }

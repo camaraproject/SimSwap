@@ -52,8 +52,8 @@ Upon successful onboarding following details are shared:
 
 |Flavour|Details Page|
 |---|---|
-|CAMARA|[DetailsPage](/SimSwap/code/API_definitions/CAMARA/Check_sim_swap_API.md)|
-|Mobile Connect|[DetailsPage](/SimSwap/code/API_definitions/MobileConnect/MobileConnectATP.md)|
+|CAMARA|[DetailsPage](../../code/API_definitions/CAMARA/Check_sim_swap_API.md)|
+|Mobile Connect|[DetailsPage](../../code/API_definitions/MobileConnect/MobileConnectATP.md)|
 
 
 ### Endpoint definitions
@@ -80,5 +80,5 @@ Described inside yaml files.
 
 |Flavour|yaml|
 |---|---|
-|CAMARA SIM swap|[yaml](/SimSwap/code/API_definitions/CAMARA/checkSimSwap-v0.3.0.camara.swagger.yaml)|
-|Mobile Connect Account Takeover Protection|[yaml](/SimSwap/code/API_definitions/MobileConnect/MC_ATP.yaml)|
+|CAMARA SIM swap|[yaml](../../code/API_definitions/CAMARA/checkSimSwap-v0.3.0.camara.swagger.yaml)|
+|Mobile Connect Account Takeover Protection|[yaml](../../code/API_definitions/MobileConnect/MC_ATP.yaml)|

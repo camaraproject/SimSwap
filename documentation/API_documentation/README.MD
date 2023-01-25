@@ -43,8 +43,8 @@ Upon successful onboarding following details are shared:
 
 ## Authentication and/or Authorization
 
-[Camara AuthN/AuthZ Concept]()
-[Mobile Connect ATP use OAUTH2.0 Client Credendials for Authentication](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.56-Mobile-Connect-Client-Credentials-Profile-v1.0.pdf)
+* [Camara AuthN/AuthZ Concept]()
+* [Mobile Connect ATP use OAUTH2.0 Client Credendials for Authentication](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.56-Mobile-Connect-Client-Credentials-Profile-v1.0.pdf)
 
 ## Documentation
 

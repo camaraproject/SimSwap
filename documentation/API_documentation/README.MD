@@ -17,7 +17,7 @@ CAMARA community agreed to enable SIM swap API in two complementary flavours:
 2. Contact CAMARA API maintainers to get guidance on the onboarding process:
 
    * [Deutsche Telekom - Dawid Wróblewski](https://github.com/DT-DawidWroblewski)
-   * [Telefonica - Mona Mokhber](https://github.com/monamok)
+   * [Telefonica - José Luis Urien](https://github.com/jlurien)
    * [Orange - Ludovic Robert](https://github.com/bigludo7)
 
 ### Onboarding process for Mobile Connect
@@ -62,7 +62,7 @@ Upon successful onboarding following details are shared:
 |Flavour|Endpoint type|Endpoint path|
 |---|---|---|
 |CAMARA|AuthN/AuthZ||
-||resource|/verify|
+||resource|/retrieve-date<br>/check|
 |Mobile Connect|AuthN|/token|
 ||resource|/userinfo|
 

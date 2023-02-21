@@ -52,8 +52,8 @@ Upon successful onboarding following details are shared:
 
 |Flavour|Details Page|
 |---|---|
-|CAMARA|[DetailsPage](../../code/API_definitions/CAMARA/Check_sim_swap_API.md)|
-|Mobile Connect|[DetailsPage](../../code/API_definitions/MobileConnect/MobileConnectATP.md)|
+|CAMARA|[DetailsPage](../../documentation/API_documentation/CAMARA/Check_sim_swap_API.md)|
+|Mobile Connect|[DetailsPage](../../documentation/API_documentation/MobileConnect/MobileConnectATP.md)|
 
 
 ### Endpoint definitions

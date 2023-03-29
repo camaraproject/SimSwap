@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: SIM Swap
-  description: |+
+  description: |
     SIM Swap API provides the customer the ability to obtain information on any recent SIM pairing change
      related to the User's mobile account. 
 
@@ -43,7 +43,7 @@ paths:
       description: Get timestamp of last MSISDN <-> IMSI pairing change for a mobile user account provided with MSIDN.
       operationId: retrieveSimSwapDate
       requestBody:
-        description: |+
+        description: |
           Create a SIM swap date request for a MSISDN identifier.        
         content :
           application/json:
@@ -82,7 +82,7 @@ paths:
       description: check if SIM swap has been performed during a past period
       operationId: checkSimSwap
       requestBody:
-        description: |+
+        description: |
           Create a check SIM swap request for a MSISDN identifier.        
         content :
           application/json:

@@ -1,0 +1,259 @@
+openapi: 3.0.3
+info:
+  title: SIM Swap
+  description: |+
+    SIM Swap API provides the customer the ability to obtain information on any recent SIM pairing change
+     related to the User's mobile account. 
+
+
+    The API provided 2 operations:
+
+    - POST retrieve-date : provide timestamp of latest SIM swap,
+
+    - POST check: check if SIM swap has been performed during a past period (defined in the request with 'maxAge' attribute).
+
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: project-email@sample.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.4.0
+externalDocs:
+  description: Product documentation at Camara
+  url: https://github.com/camaraproject/
+servers:
+  - url: "{apiRoot}/{basePath}"
+    variables:
+      apiRoot:
+        default: http://localhost:9091
+        description: API root
+      basePath:
+        default: sim-swap/v0
+        description: Base path for the simSwap API
+paths:
+  /retrieve-date:
+    post:
+      security:
+        - oAuth2ClientCredentials: []
+        - three_legged:
+          - retrieve-sim-swap-date  
+      tags:
+        - Retrieve SIM swap date
+      description: Get timestamp of last MSISDN <-> IMSI pairing change for a mobile user account provided with MSIDN.
+      operationId: retrieveSimSwapDate
+      requestBody:
+        description: |+
+          Create a SIM swap date request for a MSISDN identifier.        
+        content :
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSimSwapDate"
+        required: true
+      responses:
+        "200":
+          description: Contains information about SIM swap change
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SimSwapInfo"
+        "400":
+          $ref: "#/components/responses/Generic400"
+        "401":
+          $ref: "#/components/responses/Generic401"
+        "403":
+          $ref: "#/components/responses/Generic403"
+        "409":
+          $ref: "#/components/responses/Generic409"
+        "500":
+          $ref: "#/components/responses/Generic500"
+        "503":
+          $ref: "#/components/responses/Generic503"
+        "504":
+          $ref: "#/components/responses/Generic504"
+  /check:
+    post:
+      security:
+        - oAuth2ClientCredentials: []
+        - three_legged:
+          - check-sim-swap  
+      tags:
+      - Check SIM swap
+      description: check if SIM swap has been performed during a past period
+      operationId: checkSimSwap
+      requestBody:
+        description: |+
+          Create a check SIM swap request for a MSISDN identifier.        
+        content :
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCheckSimSwap"
+        required: true
+      responses:
+        "200":
+          description: Returns whether a SIM swap has been performed during a past period
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckSimSwapInfo"
+        "400":
+          $ref: "#/components/responses/Generic400"
+        "401":
+          $ref: "#/components/responses/Generic401"
+        "403":
+          $ref: "#/components/responses/Generic403"
+        "409":
+          $ref: "#/components/responses/Generic409"
+        "500":
+          $ref: "#/components/responses/Generic500"
+        "503":
+          $ref: "#/components/responses/Generic503"
+        "504":
+          $ref: "#/components/responses/Generic504"
+components:
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: '{tokenUrl}'
+          scopes: {}
+    three_legged:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.example.com/authorize
+          tokenUrl: https://auth.example.com/token
+          scopes:
+            check-sim-swap: checkSimSwap operation
+            retrieve-sim-swap-date: retrieveSimSwapDate operation
+  schemas:
+    SimSwapInfo:
+      type: object
+      properties:
+        latestSimChange: 
+          type: string
+          format: date-time
+          description: timestamp of latest SIM swap performed
+    CheckSimSwapInfo:
+      type: object
+      properties:
+        swapped:
+          type: boolean
+          description: Indicates whether the SIM card has been swapped during the
+            period within the provided age.
+    MSISDN:
+      type: string
+      pattern: '^\+?[0-9]{5,15}$'
+      example: "123456789"
+      description: Subscriber number in E.164 format (starting with country code). Optionally prefixed with '+'.
+    ErrorInfo:
+      type: object
+      required:
+        - status
+        - code
+        - message
+      properties:
+        status:
+          type: integer
+          description: HTTP response status code
+        code:
+          type: string
+          description: Code given to this error
+        message:
+          type: string
+          description: Detailed error description
+    CreateCheckSimSwap:
+      type: object
+      required:
+        - msisdn
+      properties:
+        msisdn:
+          $ref: "#/components/schemas/MSISDN"
+        maxAge:
+          type: integer
+          example: 240
+          description: |
+            Period in hours to be checked for SIM swap.
+          format: int32
+          minimum: 1
+          maximum: 2400
+          default: 240
+    CreateSimSwapDate:
+      type: object
+      required:
+        - msisdn
+      properties:
+        msisdn:
+          $ref: "#/components/schemas/MSISDN"
+  responses:
+    Generic400:
+      description: Problem with the client request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorInfo'
+          example:
+            status: 400
+            code: INVALID_ARGUMENT
+            message: Client specified an invalid argument, request body or query param
+    Generic401:
+      description: Authentication problem with the client request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorInfo'
+          example:
+            status: 401
+            code: UNAUTHENTICATED
+            message: Request not authenticated due to missing, invalid, or expired credentials
+    Generic403:
+      description: Client does not have sufficient permission
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorInfo'
+          example:
+            status: 403
+            code: PERMISSION_DENIED
+            message: Client does not have sufficient permissions to perform this action
+    Generic409:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorInfo'
+          example:
+            status: 409
+            code: CONFLICT
+            message: Another request is created for the same MSISDN
+    Generic500:
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorInfo'
+          example:
+            status: 500
+            code: INTERNAL
+            message: Server error
+    Generic503:
+      description: Service unavailable. Typically the server is down
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorInfo'
+          example:
+            status: 503
+            code: UNAVAILABLE
+            message: Service unavailable
+    Generic504:
+      description: Request time exceeded. If it happens repeatedly, consider reducing the request complexity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorInfo'
+          example:
+            status: 504
+            code: TIMEOUT
+            message: Request timeout exceeded. Try later

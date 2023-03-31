@@ -14,7 +14,6 @@ Repository to describe, develop, document and test the SimSwap API family
 * Service APIs for “SimSwap” (see APIBacklog.md)  
 * It provides the customer with the ability to:  
   * obtain information on any recent SIM pairing change related to the User’s mobile account.
-  * NOTE: The scope of this API family should be limited (at least at a first stage) to 4G and 5G.  
 * Describe, develop, document and test the APIs (with 1-2 Telcos)  
 * Started: October 2022
 * Location: virtually  

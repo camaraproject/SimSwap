@@ -88,8 +88,8 @@ Both the names and the values of these HTTP headers MUST be treated as case inse
 
 YAML files:
 
-1. [MC](MC_ATP.yaml)
-2. [OAS](../CAMARA/checkSimSwap-v0.3.0.camara.swagger.yaml)
+1. [MC](../../../code/API_definitions/MobileConnect/MC_ATP.yaml)
+2. [OAS](../../../code/API_definitions/CAMARA/checkSimSwap.camara.swagger.yaml)
 
 #### Mobile Connect Account Takeover Protection with SIM Swap
 

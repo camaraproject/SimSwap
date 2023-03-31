@@ -60,7 +60,7 @@ Depending on local legal regulation, Network provider may require the 3-legged p
 
 ### 4.1 API Version
 
-0.3.0
+0.4.0
 
 ### 4.2 Details
 
@@ -81,15 +81,15 @@ Following table defines API endpoints of exposed REST based for SIM Swap API ope
 | **Request last simswap date** |
 | -------------------------- |
 | **HTTP Request**<br> POST /sim-swap/v0/retrieve-date<br>**Query Parameters**<br> No query parameters are defined.<br>**Path Parameters**<br> No path parameter are defined <br>**Request Body Parameters**<br> **msisdn**: Subscriber number in E.164 format (starting with country code). Optionally prefixed with '+'.|
- |**Response**<br> **200: Contains information about sim swap change**<br>  Response body: <br>**latest_sim_change** : timestamp of latest SIM swap performed. <br> **400:** **Invalid input.**<br> **401:** **Un-authorized. <br> **403:** Forbidden.**<br> **409:** **Conflict.**<br> **500:** **Server Error.**<br> **503:** **Service temporarily unavailable.** <br>|
+ |**Response**<br> **200: Contains information about sim swap change**<br>  Response body: <br>**latestSimChange** : timestamp of latest SIM swap performed. <br> **400:** **INVALID_ARGUMENT**<br> **401:** **UNAUTHENTICATED** <br> **403:** **PERMISSION_DENIED** <br> **409:** **Conflict** <br> **500:** **INTERNAL** <br> **503:** **UNAVAILABLE**<br> **504:** **TIMEOUT** <br>|
 
 <br>
 
 
 | **SIM Swap** |
 | -------------------------- |
-| **HTTP Request**<br> POST /sim-swap/v0/check<br>**Query Parameters**<br> No query parameters are defined.<br>**Path Parameters**<br> No path parameter are defined <br>**Request Body Parameters**<br> **msisdn**: Subscriber number in E.164 format (starting with country code). Optionally prefixed with '+'.<br> **max_age**: Delay in hours to be checked for simswap.
-|**Response**<br> **200: Contains information about SIM swap check**<br>  Response body: <br>**swapped** : Indicates whether the SIM card has been swapped during the delay. Should be valued only if an age is passed in the request. <br> **400:** **Invalid input.**<br> **401:** **Un-authorized. <br> **403:** Forbidden.**<br> **409:** **Conflict.**<br> **500:** **Server Error.**<br> **503:** **Service temporarily unavailable.**<br>
+| **HTTP Request**<br> POST /sim-swap/v0/check<br>**Query Parameters**<br> No query parameters are defined.<br>**Path Parameters**<br> No path parameter are defined <br>**Request Body Parameters**<br> **msisdn**: Subscriber number in E.164 format (starting with country code). Optionally prefixed with '+'.<br> **maxAge**: Delay in hours to be checked for simswap.
+|**Response**<br> **200: Contains information about SIM swap check**<br>  Response body: <br>**swapped** : Indicates whether the SIM card has been swapped during the delay. Should be valued only if an age is passed in the request. <br> **400:** **INVALID_ARGUMENT**<br> **401:** **UNAUTHENTICATED** <br> **403:** **PERMISSION_DENIED** <br> **409:** **Conflict** <br> **500:** **INTERNAL** <br> **503:** **UNAVAILABLE**<br> **504:** **TIMEOUT** <br>|
 
 <br>
  
@@ -102,13 +102,12 @@ Following table provides an overview of common error names, codes, and messages 
 
 | No | Error Name | Error Code | Error Message |
 | --- | ---------- | ---------- | ------------- |
-|1	|400 |	INVALID_INPUT |	"Expected property is missing: msisdn" |
-|2	|400 |	INVALID_INPUT |	"Expected property is missing: max_age" |
-|3	|401 |	UNAUTHORIZED |	"No authorization to invoke operation" |
-|4	|403 |	FORBIDDEN |	"Operation not allowed" |
-|5	|409 |	CONFLICT |	"Another resquest is created for the same MSISDN" |
-|6	|500 |	INTERNAL |	"Session could not be created" |
-|7	|503 |	SERVICE_UNAVAILABLE |	"Service unavailable" |
+|1	|400 |	INVALID_ARGUMENT |	"Client specified an invalid argument, request body or query param" |
+|2	|401 |	UNAUTHENTICATED |	"Request not authenticated due to missing, invalid, or expired credentials" |
+|3	|403 |	PERMISSION_DENIED |	"Client does not have sufficient permissions to perform this action" |
+|4	|500 |	INTERNAL | "Server error" |
+|5	|503 |	UNAVAILABLE | "Service unavailable" |
+|6	|504 |	TIMEOUT | "Request timeout exceeded. Try later." |
 
 <br>
  
@@ -126,12 +125,12 @@ Please note, the credentials for API authentication purposes need to be adjusted
 | Snippet 1. Request last simswap date  |
 | ----------------------------------------------- |
 | curl -X 'POST' `https://sample-base-url/sim-swap/v0/retrieve-date`   <br>    -H 'accept: application/json' <br>    -H 'Content-Type: application/json'<br>    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbG...."<br>    -d '{ "msisdn": "+33068741256"}'  |
-| response will be: <br> 200 <br>   -d '{ "latest_sim_change": "2020-10-11T13:33:26.618Z" }'|
+| response will be: <br> 200 <br>   -d '{ "latestSimChange": "2020-10-11T13:33:26.618Z" }'|
 <br>
 
 | Snippet 2. Request last simswap date  |
 | ----------------------------------------------- |
-| curl -X 'POST' `https://sample-base-url/sim-swap/v0/check`   <br>    -H 'accept: application/json' <br>    -H 'Content-Type: application/json'<br>    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbG...."<br>    -d '{ "msisdn": "+33068741256", <br> "max_age": 240}'  |
+| curl -X 'POST' `https://sample-base-url/sim-swap/v0/check`   <br>    -H 'accept: application/json' <br>    -H 'Content-Type: application/json'<br>    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbG...."<br>    -d '{ "msisdn": "+33068741256", <br> "maxAge": 240}'  |
 | response will be: <br> 200 <br>   -d '{ "swapped": "false" }'|
 <br>
 

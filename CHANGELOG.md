@@ -2,34 +2,65 @@
 
 ## Table of Contents
 
+- v0.4.0
 - v0.3.0
 
 **Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until it has been released. For example, changes may be reverted before a release is published. For the best results, use the latest published release.**
 
-# v0.3.0
-- API [definition](https://github.com/camaraproject/SimSwap/tree/main/code/API_definitions)
-- API [documentation](https://github.com/camaraproject/SimSwap/tree/main/documentation)
+## Version Details
+**Note Meeting Minutes commit histories are not included in ChangeLogs here.**
+
+# v0.4.0
 
 ### Added
-* Initial docs for CAMARA version and Mobile Connect ATP version of SIM Swap.
-* Initial service api definition for CAMARA version of Sim Swap.
-* Initial service api definition for Mobile Connect ATP version of Sim Swap.
-* Specific OAS definition of simswap with retrieveSimSwapDate and checkSimSwap.
+* [2022.03.31] - [v0.4.0] - Guidelines alignment errors and camel case. [Details](https://github.com/camaraproject/SimSwap/pull/20)
+* [2022.03.31] - [v0.4.0] - Add 4G/5G API limitation in Readme. [Details](https://github.com/camaraproject/SimSwap/pull/23)
+* [2022.05.11] - [v0.4.0] - Add Changelog and gitignore file. [Details](https://github.com/camaraproject/SimSwap/pull/28)
+
 
 ### Changed
-* Reshaped the content of docs.
+* [2022.03.31] - [v0.4.0] - API documentation repo fine tuning. [Details](https://github.com/camaraproject/SimSwap/pull/22)
+
 
 ### Fixed
-TBD
+None
+
 
 ### Removed
-TBD
+None
+
 
 ### New Contributors
 * @ShutingQing made their first contribution in https://github.com/camaraproject/SimSwap/pull/25
+
+
+
+# v0.3.0
+
+### Added
+* [2022.12.06] - [v0.3.0] - Update Maintainer group. [Details](https://github.com/camaraproject/SimSwap/pull/3)
+* [2022.12.30] - [v0.3.0] - Sim Swap OAS with 2 endpoints. [Details](https://github.com/camaraproject/SimSwap/pull/3)
+* [2022.12.29] - [v0.3.0] - Add MC ATP yaml. [Details](https://github.com/camaraproject/SimSwap/pull/8)
+* [2022.12.30] - [v0.3.0] - Initial documentation for 2-endpoints sim swap api. [Details](https://github.com/camaraproject/SimSwap/pull/9)
+
+
+### Changed
+* [2022.01.24] - [v0.3.0] - Reshape readme and resources file. [Details](https://github.com/camaraproject/SimSwap/pull/13)
+* [2022.02.07] - [v0.3.0] - Update readme. [Details](https://github.com/camaraproject/SimSwap/pull/17)
+* [2022.02.21] - [v0.3.0] - Repo fine tuning. [Details](https://github.com/camaraproject/SimSwap/pull/18)
+
+
+### Fixed
+* [2022.01.24] - [v0.3.0] - Fix resources reference links. [Details](https://github.com/camaraproject/SimSwap/pull/14)
+* [2022.01.25] - [v0.3.0] - Fix resources reference links. [Details](https://github.com/camaraproject/SimSwap/pull/15)
+
+
+### Removed
+None
+
+
+### New Contributors
 * @jlurien made their first contribution in https://github.com/camaraproject/SimSwap/pull/17
 * @bigludo7 made their first contribution in https://github.com/camaraproject/SimSwap/pull/6
 * @monamok made their first contribution in https://github.com/camaraproject/SimSwap/pull/3
 * @DT-DawidWroblewski made their first contribution in https://github.com/camaraproject/SimSwap/pull/2
-
-**Full Changelog**: TBD

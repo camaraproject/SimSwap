@@ -27,7 +27,7 @@ Repository to describe, develop, document and test the SimSwap API family
 * Current schedule: bi-weekly
   * Thursday 8:30 AM CET
 * Meeting links: Microsoft Teams Meeting
-  * Thursday [click to join MS Teams](https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzIxMmIzM2YtYTU3ZS00NDUwLTg0MTktZjExNmVlZjU3ZDA1%40thread.v2/0?context=%7b%22Tid%22%3a%22a1859c9b-6466-499c-adbc-ddbcb69c97dd%22%2c%22Oid%22%3a%227716fdb3-6a83-4680-90c5-a32f08253ae4%22%7d)
+* [Click to join MS Teams](https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzIxMmIzM2YtYTU3ZS00NDUwLTg0MTktZjExNmVlZjU3ZDA1%40thread.v2/0?context=%7b%22Tid%22%3a%22a1859c9b-6466-499c-adbc-ddbcb69c97dd%22%2c%22Oid%22%3a%227716fdb3-6a83-4680-90c5-a32f08253ae4%22%7d)
 * For more information, click [Meetings information](documentation/MeetingMinutes/README.MD)
 
 ## Results and Status

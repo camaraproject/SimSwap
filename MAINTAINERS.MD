@@ -2,7 +2,7 @@
 |:-------------------:|-----------------------|
 | Deutsche Telekom AG | Dawid Wróblewski      |
 |        KDDI         | Toshiyasu Wakayama    |
+|       Huawei        | Shuting Qing          |
 |     Telefónica      | José Luis Urien       |
 |     Telefónica      | Mona Mokhber          |
 |     SK Telecom      | Jung Yun-sun (Serena) |
-|       Huawei        | Shuting Qing          |

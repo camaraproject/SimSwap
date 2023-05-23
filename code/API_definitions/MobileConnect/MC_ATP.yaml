@@ -2,19 +2,19 @@ openapi: 3.0.0
 info:
   title: SIM Swap
   description: CAMARA simSwap API based on Mobile Connect Account Takeover Protection API definition.
-  version: 0.1.0
+  version: 0.2.0
   contact:
     name: Support
-    email: support@example.com
-    url: https://support.example.com
+    email: sp-ssw+help@lists.camaraproject.org
+    url: https://github.com/camaraproject/SimSwap/issues
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 externalDocs:
-  description: GSMA Mobile Connect Account Takeover Protection
-  url: https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.24-Mobile-Connect-Account-Takeover-Protection-Definition-and-Technical-Requirements-v2.0.pdf
+  description: CAMARA SIM Swap API documentation
+  url: https://github.com/camaraproject/SimSwap/blob/main/documentation/API_documentation/README.MD
 servers:
-  - url: https://{countryServer}.{domain}
+  - url: "https://{countryServer}.{domain}/{basePath}"
     variables:
       countryServer:
         default: api.server
@@ -22,63 +22,21 @@ servers:
       domain:
         default: com
         description: a domain where server is delivered
-    description: API server providing CAMARA APIs
+      basePath:
+        default: sim-swap/v0
+        description: Base path for the simSwap API
 tags:
-  - name: Mobile Connect ATP
+  - name: ATP
 paths:
-  /token:
+  /userinfo:
     post:
       tags:
-        - Mobile Connect ATP
-      summary: Token
-      externalDocs:
-        description: Mobile Connect Client Credentials for Attributes
-        url: https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.56.2-Mobile-Connect-Client-Credentials-for-Attributes-Configuration-B.pdf
-      security:
-        - BasicAuth: []
-      parameters:
-        - name: grant_type
-          in: query
-          required: true
-          schema:
-            type: string
-            enum:
-              - client_credentials
-          example: client_credentials
-        - name: scope
-          in: query
-          required: true
-          schema:
-            type: string
-            enum:
-              - mc_atp
-          example: mc_atp
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                access_token: mkmaJ53--rCK1SBUIjxzavoJCcFbx3453dKmZr39A8k
-                scope: mc_atp
-                token_type: Bearer
-                expires_in: '500'
-        '400':
-          description: invalid reqest
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/serverError'
-  /openid/userinfo:
-    post:
-      tags:
-        - Mobile Connect ATP
+        - ATP
       summary: User Info
-      description: userinfo
+      description: Based on Mobile Connect Account Takeover Protection specification. Using MNO subscriber identity & attributes to protect SP against account takeover.
       security:
-        - bearerAuth: []
+        - MobileConnectOauth2ClientCredentials:
+          - mc_atp
       requestBody:
         content: {}
       parameters:
@@ -95,9 +53,9 @@ paths:
           in: header
           required: true
           schema:
-            type: integer
-          description: Test MSISDN
-          example: '4915164818763'
+            oneOf:
+              - $ref: "#/components/schemas/MSISDN"
+              - $ref: "#/components/schemas/encrMSISDN"
       responses:
         '200':
           description: successful request
@@ -128,10 +86,84 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/serverError'
-
-security:
-  - Oauth2: []
-
+  /retrieve-date:
+    post:
+      security:
+        - oAuth2ClientCredentials: []
+        - three_legged:
+          - retrieve-sim-swap-date  
+      tags:
+        - Retrieve SIM swap date
+      description: Get timestamp of last MSISDN <-> IMSI pairing change for a mobile user account provided with MSIDN.
+      operationId: retrieveSimSwapDate
+      requestBody:
+        description: |
+          Create a SIM swap date request for a MSISDN identifier.        
+        content :
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSimSwapDate"
+        required: true
+      responses:
+        "200":
+          description: Contains information about SIM swap change
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SimSwapInfo"
+        "400":
+          $ref: "#/components/responses/Generic400"
+        "401":
+          $ref: "#/components/responses/Generic401"
+        "403":
+          $ref: "#/components/responses/Generic403"
+        "409":
+          $ref: "#/components/responses/Generic409"
+        "500":
+          $ref: "#/components/responses/Generic500"
+        "503":
+          $ref: "#/components/responses/Generic503"
+        "504":
+          $ref: "#/components/responses/Generic504"
+  /check:
+    post:
+      security:
+        - oAuth2ClientCredentials: []
+        - three_legged:
+          - check-sim-swap  
+      tags:
+      - Check SIM swap
+      description: check if SIM swap has been performed during a past period
+      operationId: checkSimSwap
+      requestBody:
+        description: |
+          Create a check SIM swap request for a MSISDN identifier.        
+        content :
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCheckSimSwap"
+        required: true
+      responses:
+        "200":
+          description: Returns whether a SIM swap has been performed during a past period
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckSimSwapInfo"
+        "400":
+          $ref: "#/components/responses/Generic400"
+        "401":
+          $ref: "#/components/responses/Generic401"
+        "403":
+          $ref: "#/components/responses/Generic403"
+        "409":
+          $ref: "#/components/responses/Generic409"
+        "500":
+          $ref: "#/components/responses/Generic500"
+        "503":
+          $ref: "#/components/responses/Generic503"
+        "504":
+          $ref: "#/components/responses/Generic504"
 components:
   schemas:
     atpBoolean:
@@ -141,7 +173,7 @@ components:
           type: boolean
           example: 'simChange: true'
         isUncontidionalCallDivertActive:
-          type: string
+          type: boolean
         isLostStolen:
           type: boolean
         deviceChange:
@@ -158,6 +190,7 @@ components:
       properties:
         simChange:
           type: string
+          format: date
           example: 'simChange: 2022-12-06'
         isUncontidionalCallDivertActive:
           type: string
@@ -172,6 +205,52 @@ components:
             - inactive
       required:
         - simChange
+    SimSwapInfo:
+      type: object
+      properties:
+        latestSimChange: 
+          type: string
+          format: date-time
+          description: timestamp of latest SIM swap performed
+    CheckSimSwapInfo:
+      type: object
+      properties:
+        swapped:
+          type: boolean
+          description: Indicates whether the SIM card has been swapped during the
+            period within the provided age.
+    CreateCheckSimSwap:
+      type: object
+      required:
+        - msisdn
+      properties:
+        msisdn:
+          $ref: "#/components/schemas/MSISDN"
+        maxAge:
+          type: integer
+          example: 240
+          description: |
+            Period in hours to be checked for SIM swap.
+          format: int32
+          minimum: 1
+          maximum: 2400
+          default: 240
+    CreateSimSwapDate:
+      type: object
+      required:
+        - msisdn
+      properties:
+        msisdn:
+          $ref: "#/components/schemas/MSISDN"
+    MSISDN:
+      type: string
+      pattern: '^\+?[0-9]{5,15}$'
+      example: "123456789"
+      description: Subscriber number in E.164 format (starting with country code). Optionally prefixed with '+'.
+    encrMSISDN:
+      type: string
+      example: "RPrQMuMuwqOlgXkVbgL9GQ6I0hCdeBFPMF9BrC0CIXxdbjpfMTHAjP63E77MFhjkwwHP8lS5/kDD07+RmnSuwaa2BFg5rJTNyJErlrLFMij19hsl4XDlaESuBVN/naJ0wJVTK+eYBaIZtoQBcChGhZnVSSQEZYl2ep0k4CZxfSDtfckCd/roL9N028Kw5R/7VAdTnvWgTRgPWt14gndvIMhtY95Wt0aBxzzuXMR0xTkzA84obWzFlhD6agRuf8CrUUUmzvUR2ZPqtO0p7eOJNyDAvQc46gMvir5IG/t4NuNx68WDOKcsUQMY1mCn+zp9qhO1rRp0M79+Xj0B7Df2Bw=="
+      description: Encrypted MSISDN using the public key of the MNO.
     serverError:
       type: object
       properties:
@@ -184,19 +263,115 @@ components:
       required:
         - error
         - error_description
-
+    ErrorInfo:
+      type: object
+      required:
+        - status
+        - code
+        - message
+      properties:
+        status:
+          type: integer
+          description: HTTP response status code
+        code:
+          type: string
+          description: Code given to this error
+        message:
+          type: string
+          description: Detailed error description
+  responses:
+    Generic400:
+      description: Problem with the client request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorInfo'
+          example:
+            status: 400
+            code: INVALID_ARGUMENT
+            message: Client specified an invalid argument, request body or query param
+    Generic401:
+      description: Authentication problem with the client request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorInfo'
+          example:
+            status: 401
+            code: UNAUTHENTICATED
+            message: Request not authenticated due to missing, invalid, or expired credentials
+    Generic403:
+      description: Client does not have sufficient permission
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorInfo'
+          example:
+            status: 403
+            code: PERMISSION_DENIED
+            message: Client does not have sufficient permissions to perform this action
+    Generic409:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorInfo'
+          example:
+            status: 409
+            code: CONFLICT
+            message: Another request is created for the same MSISDN
+    Generic500:
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorInfo'
+          example:
+            status: 500
+            code: INTERNAL
+            message: Server error
+    Generic503:
+      description: Service unavailable. Typically the server is down
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorInfo'
+          example:
+            status: 503
+            code: UNAVAILABLE
+            message: Service unavailable
+    Generic504:
+      description: Request time exceeded. If it happens repeatedly, consider reducing the request complexity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorInfo'
+          example:
+            status: 504
+            code: TIMEOUT
+            message: Request timeout exceeded. Try later
   securitySchemes:
-    Oauth2:
+    MobileConnectOauth2ClientCredentials:
       type: oauth2
-      description: Mobile Connect Client Credentials
+      description: Mobile Connect Client Credentials for ATP service
       flows:
         clientCredentials:
-          tokenUrl: /token
+          tokenUrl: "{token}"
           scopes:
             mc_atp: Mobile Connect ATP
-    bearerAuth:
-      type: http
-      scheme: bearer  
-    BasicAuth:
-      type: http
-      scheme: basic
+    oAuth2ClientCredentials:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: '{tokenUrl}'
+          scopes: {}
+    three_legged:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.example.com/authorize
+          tokenUrl: https://auth.example.com/token
+          scopes:
+            check-sim-swap: checkSimSwap operation
+            retrieve-sim-swap-date: retrieveSimSwapDate operation
+  

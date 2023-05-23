@@ -13,10 +13,10 @@ Repository to describe, develop, document and test the SimSwap API family
 
 * Service APIs for “SimSwap” (see APIBacklog.md)  
 * It provides the customer with the ability to:
-  * Obtain information on the activation date of a SIM card on the mobile network in real time.
-  * NOTE: The scope of this API family should be limited (at least at a first stage) to 4G and 5G.
+  * Obtain information on any recent SIM pairing change related to a User’s mobile account. 
+  * NOTE: SIM pairing change means MSISDN <-> IMSI pairing change. Each SIM card comes with a distinct IMSI num, where MSISDN stands for a user's phone number. Each time a user apply for a new SIM card, supposed that he lost his original one, then what happen is MSISDN stays the same while IMSI changes.
 * Scenario:
-  * It reveals if an individual mobile phone number (MSISDN) has been ported to another SIM card, which is useful to prevent fraud by reducing the risk of account takeover fraud by strengthening SIM based authentication processes such as SMS One-time passwords. Fraudsters are using Simswap techniques to intercept SMS messages and reset passwords or receive verification codes that allow them to access protected accounts.
+  * Sim Swap delivers customer related data, that might help in general authentication. But is not just about SIM-based authentication. Currently, one scenario is, it can help on preventing fraud by reducing the risk of account take over fraud by strengthening SIM based authentication processes such as SMS One-time passwords. Fraudsters are using SIM Swap techniques to intercept SMS messages and reset passwords or receive verification codes that allow them to access protected accounts.
 * Describe, develop, document and test the APIs (with 1-2 Telcos)  
 * Started: October 2022
 * Location: virtually

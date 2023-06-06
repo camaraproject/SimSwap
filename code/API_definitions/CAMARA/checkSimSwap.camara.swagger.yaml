@@ -6,11 +6,11 @@ info:
      related to the User's mobile account. 
 
 
-    The API provided 2 operations:
+    The API provides 2 operations:
 
-    - POST retrieve-date : provide timestamp of latest SIM swap,
+    - POST retrieve-date : Provides timestamp of latest SIM swap
 
-    - POST check: check if SIM swap has been performed during a past period (defined in the request with 'maxAge' attribute).
+    - POST check: Checks if SIM swap has been performed during a past period (defined in the request with 'maxAge' attribute).
 
   termsOfService: http://swagger.io/terms/
   contact:
@@ -18,7 +18,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.4.0
+  version: 0.5.0-wip
 externalDocs:
   description: Product documentation at Camara
   url: https://github.com/camaraproject/
@@ -44,7 +44,7 @@ paths:
       operationId: retrieveSimSwapDate
       requestBody:
         description: |
-          Create a SIM swap date request for a MSISDN identifier.        
+          Create a SIM swap date request for a MSISDN identifier.
         content :
           application/json:
             schema:
@@ -76,14 +76,14 @@ paths:
       security:
         - oAuth2ClientCredentials: []
         - three_legged:
-          - check-sim-swap  
+          - check-sim-swap
       tags:
       - Check SIM swap
-      description: check if SIM swap has been performed during a past period
+      description: Check if SIM swap has been performed during a past period
       operationId: checkSimSwap
       requestBody:
         description: |
-          Create a check SIM swap request for a MSISDN identifier.        
+          Create a check SIM swap request for a MSISDN identifier.
         content :
           application/json:
             schema:
@@ -134,7 +134,7 @@ components:
         latestSimChange: 
           type: string
           format: date-time
-          description: timestamp of latest SIM swap performed
+          description: Timestamp of latest SIM swap performed
     CheckSimSwapInfo:
       type: object
       properties:
@@ -142,10 +142,10 @@ components:
           type: boolean
           description: Indicates whether the SIM card has been swapped during the
             period within the provided age.
-    MSISDN:
+    PhoneNumber:
       type: string
       pattern: '^\+?[0-9]{5,15}$'
-      example: "123456789"
+      example: '+346661113334'
       description: Subscriber number in E.164 format (starting with country code). Optionally prefixed with '+'.
     ErrorInfo:
       type: object
@@ -166,10 +166,10 @@ components:
     CreateCheckSimSwap:
       type: object
       required:
-        - msisdn
+        - phoneNumber
       properties:
-        msisdn:
-          $ref: "#/components/schemas/MSISDN"
+        phoneNumber:
+          $ref: "#/components/schemas/PhoneNumber"
         maxAge:
           type: integer
           example: 240
@@ -182,10 +182,10 @@ components:
     CreateSimSwapDate:
       type: object
       required:
-        - msisdn
+        - phoneNumber
       properties:
-        msisdn:
-          $ref: "#/components/schemas/MSISDN"
+        phoneNumber:
+          $ref: "#/components/schemas/PhoneNumber"
   responses:
     Generic400:
       description: Problem with the client request
@@ -226,7 +226,7 @@ components:
           example:
             status: 409
             code: CONFLICT
-            message: Another request is created for the same MSISDN
+            message: Another request is created for the same phone number
     Generic500:
       description: Server error
       content:

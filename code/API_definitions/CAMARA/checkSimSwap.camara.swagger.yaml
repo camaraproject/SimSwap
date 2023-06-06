@@ -226,7 +226,7 @@ components:
           example:
             status: 409
             code: CONFLICT
-            message: Another request is created for the same phone number
+            message: Another request is created for the same MSISDN
     Generic500:
       description: Server error
       content:

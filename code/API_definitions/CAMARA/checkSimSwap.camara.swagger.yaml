@@ -63,6 +63,8 @@ paths:
           $ref: "#/components/responses/Generic401"
         "403":
           $ref: "#/components/responses/Generic403"
+        "404":
+          $ref: "#/components/responses/Generic404"
         "409":
           $ref: "#/components/responses/Generic409"
         "500":
@@ -102,6 +104,8 @@ paths:
           $ref: "#/components/responses/Generic401"
         "403":
           $ref: "#/components/responses/Generic403"
+        "404":
+          $ref: "#/components/responses/Generic404"
         "409":
           $ref: "#/components/responses/Generic409"
         "500":
@@ -134,7 +138,7 @@ components:
         latestSimChange: 
           type: string
           format: date-time
-          description: Timestamp of latest SIM swap performed
+          description: Timestamp of latest SIM swap performed (using UTC)
     CheckSimSwapInfo:
       type: object
       properties:
@@ -217,6 +221,16 @@ components:
             status: 403
             code: PERMISSION_DENIED
             message: Client does not have sufficient permissions to perform this action
+    Generic404:
+      description: Resource Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorInfo'
+          example:
+            status: 404
+            code: SIMSWAP.PHONE_NUMBER_NOT_IN_OPERATOR_SCOPE
+            message: SI Swap can't be checked because this number is not managed by operator.
     Generic409:
       description: Conflict
       content:

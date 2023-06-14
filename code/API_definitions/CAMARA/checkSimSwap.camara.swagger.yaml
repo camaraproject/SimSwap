@@ -138,7 +138,7 @@ components:
         latestSimChange: 
           type: string
           format: date-time
-          description: Timestamp of latest SIM swap performed (using UTC)
+          description: Timestamp of latest SIM swap performed
     CheckSimSwapInfo:
       type: object
       properties:

@@ -229,8 +229,8 @@ components:
             $ref: '#/components/schemas/ErrorInfo'
           example:
             status: 404
-            code: SIM_SWAP.PHONE_NUMBER_NOT_MANAGED_BY_OPERATOR
-            message: SIM Swap can't be checked because this number is not managed by operator.
+            code: SIM_SWAP.UNKNOWN_PHONE_NUMBER
+            message: SIM Swap can't be checked because the phone number is unknown.
     Generic409:
       description: Conflict
       content:

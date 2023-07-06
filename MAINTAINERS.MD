@@ -5,3 +5,4 @@
 | Telefónica | José Luis Urien |
 | Telefónica | Mona Mokhber |
 | SK Telecom | Jung Yun-sun (Serena) |
+| Verizon | Syed Rehman |

@@ -2,9 +2,9 @@ openapi: 3.0.3
 info:
   title: SIM Swap
   description: |
-    SIM Swap API provides the customer the ability to obtain information on any recent SIM pairing change
-     related to the User's mobile account. 
-
+    SIM Swap API provides the customer the ability to obtain information on any recent SIM pairing change related to the User's mobile account.
+    
+    This API derives from the GSMA Mobile Connect Account Takeover Protection specification [Mobile Connect Account Takeover Protection](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.24-Mobile-Connect-Account-Takeover-Protection-Definition-and-Technical-Requirements-v2.0.pdf).  For more about Mobile Connect, please see [about Mobile Connect](https://mobileconnect.io/).
 
     The API provides 2 operations:
 

@@ -40,5 +40,5 @@ Described inside yaml files.
 |2|0.6.0|Camara only version<br>(Mobile Connect archived)|
 
 ## API Spec
-[API definition (code)](../../code/API_definitions/CAMARA/checkSimSwap-v0.3.0.camara.swagger.yaml)
+[API definition (code)](../../code/API_definitions/code/API_definitions/checkSimSwap.camara.swagger.yaml)
 

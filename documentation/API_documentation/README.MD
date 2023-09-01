@@ -10,7 +10,7 @@ CAMARA Sim Swap API aims to deliver information about last SIM change event to p
 
 ### Quick start
 
-1. Download one of yaml file.
+1. Download the yaml file.
 2. Contact CAMARA API maintainers to get guidance on the onboarding process:
 
    * [Deutsche Telekom - Dawid Wróblewski](https://github.com/DT-DawidWroblewski)

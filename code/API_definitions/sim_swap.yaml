@@ -2,15 +2,39 @@ openapi: 3.0.3
 info:
   title: SIM Swap
   description: |
-    SIM Swap API provides the customer the ability to obtain information on any recent SIM pairing change related to the User's mobile account.
+    The SIM swap API provides a programmable interface for developers and other users (capabilities consumers) to request the last date of a SIM swap performed on the mobile line, or, to check whether a SIM swap has been performed during a past period.
     
-    [GSMA Mobile Connect Account Takeover Protection specification](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.24-Mobile-Connect-Account-Takeover-Protection-Definition-and-Technical-Requirements-v2.0.pdf) was used as source of input for this API. For more about Mobile Connect, please see [Mobile Connect website](https://mobileconnect.io/).
+    # Introduction
+
+    The SIM Swap API performs real-time checks on the activation date of a SIM card on the mobile network. It reveals if an individual mobile phone number (MSISDN) has been ported to another SIM card.
+
+    The SIM Swap API is useful to prevent fraud by reducing the risk of account takeover fraud by strengthening SIM based authentication processes such as SMS One-time passwords. Fraudsters are using SIM swap techniques to intercept SMS messages and reset passwords or receive verification codes that allow them to access protected accounts.
+
+    This API is used by an application to get information about a mobile line latest SIM swap date. It can be easily integrated and used through this secured API and allows SPs (Service Provider) to get this information an easy & secured way. The API provides management of 2 resources answering 2 distinct questions:
+
+    * When did the last SIM swap occur?
+    * Has a SIM swap occurred during last n hours?
+    
+    Depending on the network provider implementation, legal enforcement, etc... either one or both resources could be implemented.
+
+    # Relevant terms and definitions
+
+    * **SIM swap**:
+    A SIM swap is a process in which a mobile phone user's current SIM card is deactivated or replaced with a new one. This is typically done by contacting the user's mobile service provider and requesting a new SIM card for various reasons, such as a lost or damaged SIM card, upgrading to a new phone, or changing phone numbers while keeping the same device.
+
+    # API functionality
 
     The API provides 2 operations:
 
-    - POST retrieve-date : Provides timestamp of latest SIM swap
+    - POST retrieve-date : Provides timestamp of latest SIM swap, if any, for a given phone number.
 
-    - POST check: Checks if SIM swap has been performed during a past period (defined in the request with 'maxAge' attribute).
+    - POST check: Checks if SIM swap has been performed during a past period (defined in the request with 'maxAge' attribute) for a given phone number.
+
+    # Further info and support
+
+    [GSMA Mobile Connect Account Takeover Protection specification](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.24-Mobile-Connect-Account-Takeover-Protection-Definition-and-Technical-Requirements-v2.0.pdf) was used as source of input for this API. For more about Mobile Connect, please see [Mobile Connect website](https://mobileconnect.io/).
+
+    (FAQs will be added in a later version of the documentation)
 
   termsOfService: http://swagger.io/terms/
   contact:

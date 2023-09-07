@@ -18,7 +18,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.4.1
+  version: 0.5.0-wip
 externalDocs:
   description: Product documentation at Camara
   url: https://github.com/camaraproject/SimSwap
@@ -35,13 +35,14 @@ paths:
   /retrieve-date:
     post:
       security:
-        - oAuth2ClientCredentials: []
-        - three_legged:
-          - retrieve-sim-swap-date  
+        - openId:
+          - sim-swap:retrieve-date
       tags:
         - Retrieve SIM swap date
       description: Get timestamp of last MSISDN <-> IMSI pairing change for a mobile user account provided with MSIDN.
       operationId: retrieveSimSwapDate
+      parameters:
+        - $ref: "#/components/parameters/X-Correlator"
       requestBody:
         description: |
           Create a SIM swap date request for a MSISDN identifier.
@@ -53,6 +54,9 @@ paths:
       responses:
         "200":
           description: Contains information about SIM swap change
+          headers:
+            X-Correlator:
+              $ref: '#/components/headers/X-Correlator'
           content:
             application/json:
               schema:
@@ -76,13 +80,14 @@ paths:
   /check:
     post:
       security:
-        - oAuth2ClientCredentials: []
-        - three_legged:
-          - check-sim-swap
+        - openId:
+          - sim-swap:check
       tags:
       - Check SIM swap
       description: Check if SIM swap has been performed during a past period
       operationId: checkSimSwap
+      parameters:
+        - $ref: "#/components/parameters/X-Correlator"
       requestBody:
         description: |
           Create a check SIM swap request for a MSISDN identifier.
@@ -94,6 +99,9 @@ paths:
       responses:
         "200":
           description: Returns whether a SIM swap has been performed during a past period
+          headers:
+            X-Correlator:
+              $ref: '#/components/headers/X-Correlator'
           content:
             application/json:
               schema:
@@ -116,21 +124,21 @@ paths:
           $ref: "#/components/responses/Generic504"
 components:
   securitySchemes:
-    oAuth2ClientCredentials:
-      type: oauth2
-      flows:
-        clientCredentials:
-          tokenUrl: '{tokenUrl}'
-          scopes: {}
-    three_legged:
-      type: oauth2
-      flows:
-        authorizationCode:
-          authorizationUrl: https://auth.example.com/authorize
-          tokenUrl: https://auth.example.com/token
-          scopes:
-            check-sim-swap: checkSimSwap operation
-            retrieve-sim-swap-date: retrieveSimSwapDate operation
+    openId:
+      type: openIdConnect
+      openIdConnectUrl: https://example.com/.well-known/openid-configuration
+  parameters:
+    X-Correlator:
+      name: X-Correlator
+      in: header
+      description: Correlation id for the different services
+      schema:
+        type: string
+  headers:
+    X-Correlator:
+      description: Correlation id for the different services
+      schema:
+        type: string
   schemas:
     SimSwapInfo:
       type: object
@@ -193,6 +201,9 @@ components:
   responses:
     Generic400:
       description: Problem with the client request
+      headers:
+        X-Correlator:
+          $ref: '#/components/headers/X-Correlator'
       content:
         application/json:
           schema:
@@ -203,6 +214,9 @@ components:
             message: Client specified an invalid argument, request body or query param
     Generic401:
       description: Authentication problem with the client request
+      headers:
+        X-Correlator:
+          $ref: '#/components/headers/X-Correlator'
       content:
         application/json:
           schema:
@@ -213,6 +227,9 @@ components:
             message: Request not authenticated due to missing, invalid, or expired credentials
     Generic403:
       description: Client does not have sufficient permission
+      headers:
+        X-Correlator:
+          $ref: '#/components/headers/X-Correlator'
       content:
         application/json:
           schema:
@@ -223,6 +240,9 @@ components:
             message: Client does not have sufficient permissions to perform this action
     Generic404:
       description: Resource Not Found
+      headers:
+        X-Correlator:
+          $ref: '#/components/headers/X-Correlator'
       content:
         application/json:
           schema:
@@ -233,6 +253,9 @@ components:
             message: SIM Swap can't be checked because the phone number is unknown.
     Generic409:
       description: Conflict
+      headers:
+        X-Correlator:
+          $ref: '#/components/headers/X-Correlator'
       content:
         application/json:
           schema:
@@ -243,6 +266,9 @@ components:
             message: Another request is created for the same MSISDN
     Generic500:
       description: Server error
+      headers:
+        X-Correlator:
+          $ref: '#/components/headers/X-Correlator'
       content:
         application/json:
           schema:
@@ -253,6 +279,9 @@ components:
             message: Server error
     Generic503:
       description: Service unavailable. Typically the server is down
+      headers:
+        X-Correlator:
+          $ref: '#/components/headers/X-Correlator'
       content:
         application/json:
           schema:
@@ -263,6 +292,9 @@ components:
             message: Service unavailable
     Generic504:
       description: Request time exceeded. If it happens repeatedly, consider reducing the request complexity
+      headers:
+        X-Correlator:
+          $ref: '#/components/headers/X-Correlator'
       content:
         application/json:
           schema:

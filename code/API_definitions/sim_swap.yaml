@@ -66,14 +66,6 @@ paths:
         - Retrieve SIM swap date
       description: Get timestamp of last MSISDN <-> IMSI pairing change for a mobile user account provided with MSIDN.
       operationId: retrieveSimSwapDate
-      requestBody:
-        description: |
-          Create a SIM swap date request for a MSISDN identifier.
-        content :
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateSimSwapDate"
-        required: true
       responses:
         "200":
           description: Contains information about SIM swap change
@@ -170,11 +162,6 @@ components:
           type: boolean
           description: Indicates whether the SIM card has been swapped during the
             period within the provided age.
-    PhoneNumber:
-      type: string
-      pattern: '^\+?[0-9]{5,15}$'
-      example: '+346661113334'
-      description: Subscriber number in E.164 format (starting with country code). Optionally prefixed with '+'.
     ErrorInfo:
       type: object
       required:
@@ -193,11 +180,7 @@ components:
           description: Detailed error description
     CreateCheckSimSwap:
       type: object
-      required:
-        - phoneNumber
       properties:
-        phoneNumber:
-          $ref: "#/components/schemas/PhoneNumber"
         maxAge:
           type: integer
           example: 240
@@ -207,13 +190,6 @@ components:
           minimum: 1
           maximum: 2400
           default: 240
-    CreateSimSwapDate:
-      type: object
-      required:
-        - phoneNumber
-      properties:
-        phoneNumber:
-          $ref: "#/components/schemas/PhoneNumber"
   responses:
     Generic400:
       description: Problem with the client request

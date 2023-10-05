@@ -58,8 +58,10 @@ security:
   - oAuth2ClientCredentials: []
   #  - BasicAuth: []
   #  - apiKey: []
-  - threeLegged:
+  - openId:
       - sim-swap:subscriptions:create
+      - sim-swap:subscriptions:read
+      - sim-swap:subscriptions:delete
 servers:
   - url: '{apiRoot}/{basePath}'
     variables:
@@ -82,7 +84,7 @@ paths:
       description: Create a sim swap event subscription for a phone number
       operationId: createSimSwapSubscription
       security:
-        - threeLegged:
+        - openId::
           - sim-swap:subscriptions:create
       requestBody:
         content:
@@ -160,6 +162,9 @@ paths:
       summary: 'Retrieve a list of sim swap event subscription'
       description: Retrieve a list of sim swap event subscription(s)
       operationId: retrieveSubscriptionList
+      security:
+        - openId::
+          - sim-swap:subscriptions:read
       responses:
         200:
           description: List of event subscription details
@@ -186,6 +191,9 @@ paths:
       summary: 'Retrieve a sim swap event subscription for a phone number'
       operationId: retrieveSubscription
       description: retrieve event subscription information for a given subscription.
+      security:
+        - openId::
+          - sim-swap:subscriptions:read
       parameters:
         - name: subscriptionId
           in: path
@@ -239,6 +247,9 @@ paths:
       summary: 'Delete a sim swap event subscription'
       operationId: deleteSubscription
       description: delete a  given event subscription.
+      security:
+        - openId::
+          - sim-swap:subscriptions:delete
       parameters:
         - name: subscriptionId
           in: path
@@ -304,16 +315,10 @@ components:
     #      description: API key to authorize requests
     #      name: apikey
     #      in: query
-    threeLegged:
-      type: oauth2
-      flows:
-        authorizationCode:
-          authorizationUrl: "{authorizationUrl}"
-          tokenUrl: "{tokenUrl}"
-          scopes:
-            sim-swap:subscriptions:create: create subscription for sim swap information
+    openId:
+      type: openIdConnect
+      openIdConnectUrl: https://example.com/.well-known/openid-configuration
   schemas:
-
     PhoneNumber:
       type: string
       pattern: '^\+?[0-9]{5,15}$'
@@ -342,6 +347,7 @@ components:
       type: object
       required:
         - webhook
+        - subscriptionDetail
       properties:
         subscriptionDetail:
           $ref: '#/components/schemas/SubscriptionDetail'
@@ -400,6 +406,9 @@ components:
 
     SubscriptionInfo:
       description: Represents a sim swaps subscription.
+      required:
+        - startsAt
+        - subscriptionId
       allOf:
         - $ref: '#/components/schemas/CreateSubscription'
         - type: object

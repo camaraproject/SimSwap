@@ -193,8 +193,6 @@ components:
           description: Detailed error description
     CreateCheckSimSwap:
       type: object
-      required:
-        - phoneNumber
       properties:
         phoneNumber:
           $ref: "#/components/schemas/PhoneNumber"
@@ -209,8 +207,6 @@ components:
           default: 240
     CreateSimSwapDate:
       type: object
-      required:
-        - phoneNumber
       properties:
         phoneNumber:
           $ref: "#/components/schemas/PhoneNumber"

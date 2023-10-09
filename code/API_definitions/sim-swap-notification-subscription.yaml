@@ -84,7 +84,8 @@ paths:
       description: Create a sim swap event subscription for a phone number
       operationId: createSimSwapSubscription
       security:
-        - openId::
+        - openId:
+
           - sim-swap:subscriptions:create
       requestBody:
         content:

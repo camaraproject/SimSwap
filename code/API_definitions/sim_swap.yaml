@@ -30,6 +30,13 @@ info:
 
     - POST check: Checks if SIM swap has been performed during a past period (defined in the request with 'maxAge' attribute) for a given phone number.
 
+    The API supports 2 security security schemes:
+
+    - clientCredentials
+    - openId
+
+    Security schemes that are available at particular CSP are discovered at openIdConnectUrl.
+
     # Further info and support
 
     [GSMA Mobile Connect Account Takeover Protection specification](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.24-Mobile-Connect-Account-Takeover-Protection-Definition-and-Technical-Requirements-v2.0.pdf) was used as source of input for this API. For more about Mobile Connect, please see [Mobile Connect website](https://mobileconnect.io/).
@@ -42,7 +49,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.5.0-wip
+  version: 0.8.0
 externalDocs:
   description: Product documentation at Camara
   url: https://github.com/camaraproject/SimSwap

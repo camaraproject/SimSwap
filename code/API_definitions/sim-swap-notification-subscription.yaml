@@ -192,7 +192,8 @@ paths:
       operationId: retrieveSubscription
       description: retrieve event subscription information for a given subscription.
       security:
-        - openId::
+        - openId:
+
           - sim-swap:subscriptions:read
       parameters:
         - name: subscriptionId

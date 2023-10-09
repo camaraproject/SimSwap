@@ -164,7 +164,8 @@ paths:
       description: Retrieve a list of sim swap event subscription(s)
       operationId: retrieveSubscriptionList
       security:
-        - openId::
+        - openId:
+
           - sim-swap:subscriptions:read
       responses:
         200:

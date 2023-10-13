@@ -250,7 +250,7 @@ components:
           example:
             status: 404
             code: SIM_SWAP.UNKNOWN_PHONE_NUMBER
-            message: SIM Swap can't be checked because the phone number is unknown.
+            message: SIM Swap can't be checked because the phone number is unknown
     Generic409:
       description: Conflict
       content:

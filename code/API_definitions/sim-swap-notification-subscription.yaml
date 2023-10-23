@@ -29,7 +29,7 @@ info:
 
     Note: Additionnally to these list, ``org.camaraproject.sim-swa.v0.subscription-ends`` notification `type` is sent when the subscription ends. 
     This notification did not requires dedicated subscription. 
-    It is used when the subscription expire time (required by the requester) has been reached or if the API server has to stop sending notification prematurely. 
+    It is used when the subscription expire time (required by the requester) has been reached or if the API server has to terminate subscription (e.g. when the corresponding phone number is not served by the operator anymore). 
 
     ### Notification callback
 
@@ -450,6 +450,7 @@ components:
         - source
         - specversion
         - type
+        - data
       properties:
         id:
           type: string
@@ -521,9 +522,12 @@ components:
       type : object
       required:
         - phoneNumber
+        - subscriptionId
       properties:
         phoneNumber:
           $ref: '#/components/schemas/PhoneNumber'
+        subscriptionId:
+          $ref: "#/components/schemas/SubscriptionId"
 
     SubscriptionEnds:
       description: Event detail structure for SUBSCRIPTION_ENDS event
@@ -531,12 +535,17 @@ components:
       required:
         - phoneNumber
         - terminationReason
+        - subscriptionId
       properties:
         phoneNumber:
           $ref: '#/components/schemas/PhoneNumber'
         terminationReason:
           type: string
           enum: ["SUBSCRIPTION_EXPIRED", "NETWORK_TERMINATED"]
+        subscriptionId:
+          $ref: "#/components/schemas/SubscriptionId"
+        terminationDescription:
+          type: string
 
   responses:
     Generic400:
@@ -618,6 +627,7 @@ components:
         datacontenttype: application/json
         data: 
             phoneNumber: 123456788
+            subscriptionId: 2ghy-55gg-7iup-yuo9
         time: 2023-01-18T13:18:23.682Z
 
     SUBSCRIPTION_ENDS:
@@ -630,4 +640,6 @@ components:
         data: 
             phoneNumber: 123456789
             terminationReason: SUBSCRIPTION_EXPIRED
+            subscriptionId: 2ghy-55gg-7iup-yuo9
+            terminationDescription: subscription expire time reached
         time: 2023-01-19T13:18:23.682Z

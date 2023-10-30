@@ -42,7 +42,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.4.1
+  version: 0.5.0-wip
 externalDocs:
   description: Product documentation at Camara
   url: https://github.com/camaraproject/SimSwap
@@ -59,9 +59,8 @@ paths:
   /retrieve-date:
     post:
       security:
-        - oAuth2ClientCredentials: []
-        - three_legged:
-          - retrieve-sim-swap-date  
+        - openId:
+          - sim-swap:retrieve-date
       tags:
         - Retrieve SIM swap date
       description: Get timestamp of last MSISDN <-> IMSI pairing change for a mobile user account provided with MSIDN.
@@ -100,9 +99,8 @@ paths:
   /check:
     post:
       security:
-        - oAuth2ClientCredentials: []
-        - three_legged:
-          - check-sim-swap
+        - openId:
+          - sim-swap:check
       tags:
       - Check SIM swap
       description: Check if SIM swap has been performed during a past period
@@ -140,21 +138,9 @@ paths:
           $ref: "#/components/responses/Generic504"
 components:
   securitySchemes:
-    oAuth2ClientCredentials:
-      type: oauth2
-      flows:
-        clientCredentials:
-          tokenUrl: '{tokenUrl}'
-          scopes: {}
-    three_legged:
-      type: oauth2
-      flows:
-        authorizationCode:
-          authorizationUrl: https://auth.example.com/authorize
-          tokenUrl: https://auth.example.com/token
-          scopes:
-            check-sim-swap: checkSimSwap operation
-            retrieve-sim-swap-date: retrieveSimSwapDate operation
+    openId:
+      type: openIdConnect
+      openIdConnectUrl: https://example.com/.well-known/openid-configuration
   schemas:
     SimSwapInfo:
       type: object

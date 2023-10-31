@@ -23,9 +23,19 @@ Repository to describe, develop, document and test the SimSwap API family
 * Meetings are held virtually in MS Teams
 * Current schedule & meeting links: [Meetings information](documentation/MeetingMinutes/README.MD)
 
-## Results
+## MoMs
 
-* Sub Project is in progress
+|No|Date|Location|
+|:-:|:-|:-|
+|1|15/11/2022|[MoM](/SimSwap/documentation/MeetingMinutes/2022_Week46_syncCalls.md)|
+|2|13/12/2022|[MoM](/SimSwap/documentation/MeetingMinutes/2022_Week50_syncCalls.md)|
+|3|10/01/2023|[MoM](/SimSwap/documentation/MeetingMinutes/2023_Week2_syncCalls.md)|
+|4|18/05/2023|[MoM](/SimSwap/documentation/MeetingMinutes/2023_Week20_syncCalls.md)|
+|5|01/06/2023|[MoM](/SimSwap/documentation/MeetingMinutes/2023_Week22_syncCalls.md)|
+|6|15/06/2023|[MoM](/SimSwap/documentation/MeetingMinutes/2023_Week24_syncCalls.md)|
+|7|29/06/2023|[MoM](/SimSwap/documentation/MeetingMinutes/2023_Week26_syncCalls.md)|
+|8|09/09/2023|[MoM](/SimSwap/documentation/MeetingMinutes/2023_Week36_syncCalls.md)|
+|8|21/09/2023|[MoM](/SimSwap/documentation/MeetingMinutes/2023_Week38_syncCalls.md)|
 
 ## Contributorship and mailing list
 

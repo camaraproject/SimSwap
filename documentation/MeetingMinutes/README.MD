@@ -57,8 +57,16 @@ every 2 weeks
 |2023/06/01|[click to join MS Teams](https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzIxMmIzM2YtYTU3ZS00NDUwLTg0MTktZjExNmVlZjU3ZDA1%40thread.v2/0?context=%7b%22Tid%22%3a%22a1859c9b-6466-499c-adbc-ddbcb69c97dd%22%2c%22Oid%22%3a%227716fdb3-6a83-4680-90c5-a32f08253ae4%22%7d)|
 |2023/06/13|[click to join MS Teams](https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzIxMmIzM2YtYTU3ZS00NDUwLTg0MTktZjExNmVlZjU3ZDA1%40thread.v2/0?context=%7b%22Tid%22%3a%22a1859c9b-6466-499c-adbc-ddbcb69c97dd%22%2c%22Oid%22%3a%227716fdb3-6a83-4680-90c5-a32f08253ae4%22%7d)|
 |2023/06/15|[click to join MS Teams](https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzIxMmIzM2YtYTU3ZS00NDUwLTg0MTktZjExNmVlZjU3ZDA1%40thread.v2/0?context=%7b%22Tid%22%3a%22a1859c9b-6466-499c-adbc-ddbcb69c97dd%22%2c%22Oid%22%3a%227716fdb3-6a83-4680-90c5-a32f08253ae4%22%7d)|
-|2023/06/27|[click to join MS Teams](https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzIxMmIzM2YtYTU3ZS00NDUwLTg0MTktZjExNmVlZjU3ZDA1%40thread.v2/0?context=%7b%22Tid%22%3a%22a1859c9b-6466-499c-adbc-ddbcb69c97dd%22%2c%22Oid%22%3a%227716fdb3-6a83-4680-90c5-a32f08253ae4%22%7d)|
 |2023/06/29|[click to join MS Teams](https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzIxMmIzM2YtYTU3ZS00NDUwLTg0MTktZjExNmVlZjU3ZDA1%40thread.v2/0?context=%7b%22Tid%22%3a%22a1859c9b-6466-499c-adbc-ddbcb69c97dd%22%2c%22Oid%22%3a%227716fdb3-6a83-4680-90c5-a32f08253ae4%22%7d)|
+|2023/09/09|[click to join MS Teams](https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzIxMmIzM2YtYTU3ZS00NDUwLTg0MTktZjExNmVlZjU3ZDA1%40thread.v2/0?context=%7b%22Tid%22%3a%22a1859c9b-6466-499c-adbc-ddbcb69c97dd%22%2c%22Oid%22%3a%227716fdb3-6a83-4680-90c5-a32f08253ae4%22%7d)|
+|2023/10/02|[click to join MS Teams](https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzIxMmIzM2YtYTU3ZS00NDUwLTg0MTktZjExNmVlZjU3ZDA1%40thread.v2/0?context=%7b%22Tid%22%3a%22a1859c9b-6466-499c-adbc-ddbcb69c97dd%22%2c%22Oid%22%3a%227716fdb3-6a83-4680-90c5-a32f08253ae4%22%7d)|
+|2023/10/19|[click to join MS Teams](https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzIxMmIzM2YtYTU3ZS00NDUwLTg0MTktZjExNmVlZjU3ZDA1%40thread.v2/0?context=%7b%22Tid%22%3a%22a1859c9b-6466-499c-adbc-ddbcb69c97dd%22%2c%22Oid%22%3a%227716fdb3-6a83-4680-90c5-a32f08253ae4%22%7d)|
+|2023/11/02|[click to join MS Teams](https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzIxMmIzM2YtYTU3ZS00NDUwLTg0MTktZjExNmVlZjU3ZDA1%40thread.v2/0?context=%7b%22Tid%22%3a%22a1859c9b-6466-499c-adbc-ddbcb69c97dd%22%2c%22Oid%22%3a%227716fdb3-6a83-4680-90c5-a32f08253ae4%22%7d)|
+|2023/11/16|[click to join MS Teams](https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzIxMmIzM2YtYTU3ZS00NDUwLTg0MTktZjExNmVlZjU3ZDA1%40thread.v2/0?context=%7b%22Tid%22%3a%22a1859c9b-6466-499c-adbc-ddbcb69c97dd%22%2c%22Oid%22%3a%227716fdb3-6a83-4680-90c5-a32f08253ae4%22%7d)|
+|2023/11/30|[click to join MS Teams](https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzIxMmIzM2YtYTU3ZS00NDUwLTg0MTktZjExNmVlZjU3ZDA1%40thread.v2/0?context=%7b%22Tid%22%3a%22a1859c9b-6466-499c-adbc-ddbcb69c97dd%22%2c%22Oid%22%3a%227716fdb3-6a83-4680-90c5-a32f08253ae4%22%7d)|
+|2023/12/14|[click to join MS Teams](https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzIxMmIzM2YtYTU3ZS00NDUwLTg0MTktZjExNmVlZjU3ZDA1%40thread.v2/0?context=%7b%22Tid%22%3a%22a1859c9b-6466-499c-adbc-ddbcb69c97dd%22%2c%22Oid%22%3a%227716fdb3-6a83-4680-90c5-a32f08253ae4%22%7d)|
+
+(2024 sessions shall be announced in December 2023)
 
 ## MoMs
 
@@ -67,3 +75,12 @@ every 2 weeks
 |Week 46|[MoMs](Week46_syncCalls.md)|
 |Week 50|[MoMs](2022_Week50_syncCalls.md)|
 |Week 2|[MoMs](2023_Week2_syncCalls.md)|
+|Week 14|[MoMs](2023_Week14_syncCalls.md)|
+|Week 20|[MoMs](2023_Week20_syncCalls.md)|
+|Week 22|[MoMs](2023_Week22_syncCalls.md)|
+|Week 24|[MoMs](2023_Week24_syncCalls.md)|
+|Week 26|[MoMs](2023_Week26_syncCalls.md)|
+|Week 36|[MoMs](2023_Week36_syncCalls.md)|
+|Week 38|[MoMs](2023_Week38_syncCalls.md)|
+|Week 40|[MoMs](2023_Week40_syncCalls.md)|
+|Week 42|[MoMs](2023_Week42_syncCalls.md)|

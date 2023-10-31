@@ -1,4 +1,4 @@
-Feature: Check if SIM Swap has been performed during a past period 
+Feature: Check if SIM Swap has been performed during a past period (POST /check)
 
   @Test_Verify_Swap_True
   Scenario: Confirm that a SIM has been swapped

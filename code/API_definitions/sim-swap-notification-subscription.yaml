@@ -395,7 +395,6 @@ components:
       type: string
       description: |
         swapped - Event triggered when a sim swap was performed for this phone number
-
       enum:
         - org.camaraproject.sim-swap.v0.swapped
 

@@ -1,6 +1,7 @@
 openapi: 3.0.3
 info:
-  title: Sim Swap Notification Subscription
+  title: Sim Swap Notification Subscriptions
+
   description: |
 This API provides the customer with the ability to subscribe to events related to a sim swap operation performed on an associated phone number.
 

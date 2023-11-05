@@ -519,7 +519,8 @@ components:
               $ref: '#/components/schemas/SubscriptionEnds'
 
     Swapped:
-      description: Event detail structure for ROAMING_ON & ROAMING_OFF event
+      description: Event detail structure for SWAPPED event
+
       type : object
       required:
         - phoneNumber

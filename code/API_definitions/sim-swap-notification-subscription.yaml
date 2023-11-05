@@ -249,7 +249,6 @@ paths:
       description: delete a  given event subscription.
       security:
         - openId:
-
           - sim-swap:subscriptions:delete
       parameters:
         - name: subscriptionId

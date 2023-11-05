@@ -73,7 +73,8 @@ servers:
         description: API root
       basePath:
         default: /sim-swap-notification-subscriptions/v0
-        description: Base path for the sim swap notification subscription API
+        description: Base path for the sim swap notification subscriptions API
+
 tags:
   - name: Sim swap notification subscription
     description: Operation to manage event subscription on sim swap event (swapped)

@@ -85,7 +85,6 @@ paths:
       operationId: createSimSwapSubscription
       security:
         - openId:
-
           - sim-swap:subscriptions:create
       requestBody:
         content:

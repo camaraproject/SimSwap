@@ -193,7 +193,6 @@ paths:
       description: retrieve event subscription information for a given subscription.
       security:
         - openId:
-
           - sim-swap:subscriptions:read
       parameters:
         - name: subscriptionId

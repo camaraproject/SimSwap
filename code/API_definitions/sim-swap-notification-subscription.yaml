@@ -214,7 +214,7 @@ paths:
                   value:
                     code: INVALID_INPUT
                     status: 400
-                    message: "Expected property is missing: eventSubscriptionId"
+                    message: "Expected property is missing: subscriptionId"
         401:
           $ref: "#/components/responses/Generic401"
         403:

@@ -190,13 +190,13 @@ paths:
           schema:
             $ref: '#/components/schemas/SubscriptionId'
       responses:
-        200:
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/SubscriptionInfo'
-        400:
+        "400":
           description: Invalid input
           content:
             application/json:

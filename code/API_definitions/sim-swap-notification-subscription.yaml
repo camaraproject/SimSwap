@@ -215,19 +215,19 @@ paths:
                     code: INVALID_INPUT
                     status: 400
                     message: "Expected property is missing: subscriptionId"
-        401:
+        "401":
           $ref: "#/components/responses/Generic401"
-        403:
+        "403":
           $ref: "#/components/responses/Generic403"
-        404:
+        "404":
           $ref: "#/components/responses/Generic404"
-        500:
+        "500":
           description: Server error
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorInfo"
-        503:
+        "503":
           $ref: "#/components/responses/Generic503"
     delete:
       tags:

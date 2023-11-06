@@ -120,29 +120,29 @@ paths:
                 - notificationsBearerAuth: [ ]
 
       responses:
-        201:
+        "201":
           description: Created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/SubscriptionInfo'
-        202 :
+        "202":
           description: Request accepted to be processed. It applies for async creation process.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/SubscriptionAsync'
-        400:
+        "400":
           $ref: '#/components/responses/Generic400'
-        401:
+        "401":
           $ref: '#/components/responses/Generic401'
-        403:
+        "403":
           $ref: '#/components/responses/Generic403'
-        409:
+        "409":
           $ref: '#/components/responses/Generic409'
-        500:
+        "500":
           $ref: '#/components/responses/Generic500'
-        503:
+        "503":
           $ref: '#/components/responses/Generic503'
     get:
       tags:

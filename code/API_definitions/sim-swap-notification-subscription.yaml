@@ -324,7 +324,7 @@ components:
         - subscriptionDetail
       properties:
         subscriptionDetail:
-          $ref: '#/components/schemas/SubscriptionDetail'
+          $ref: '#/components/schemas/CreateSubscriptionDetail'
         subscriptionExpireTime:
           type: string
           format: date-time
@@ -350,6 +350,18 @@ components:
             OAuth2 token to be used by the callback API endpoint. It MUST be indicated within HTTP Authorization header e.g. Authorization: Bearer $notificationAuthToken
 
     SubscriptionDetail:
+      description: The detail of the requested event subscription
+      type: object
+      required:
+        - type
+        - phoneNumber
+      properties:
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+        type:
+          $ref: '#/components/schemas/SimSwapEventType'
+
+    CreateSubscriptionDetail:
       description: The detail of the requested event subscription
       type: object
       required:
@@ -389,6 +401,15 @@ components:
           properties:
             subscriptionId:
               $ref: '#/components/schemas/SubscriptionId'
+            subscriptionDetail:
+              $ref: '#/components/schemas/SubscriptionDetail'
+            subscriptionExpireTime:
+              type: string
+              format: date-time
+              example: 2023-01-17T13:18:23.682Z
+              description: The subscription expiration time in date-time format.
+            webhook:
+              $ref: '#/components/schemas/Webhook'
             startsAt:
               type: string
               format: date-time

@@ -246,15 +246,15 @@ paths:
           schema:
             $ref: '#/components/schemas/SubscriptionId'
       responses:
-        204:
+        "204":
           description: event subscription deleted
-        202 :
+        "202":
           description: Request accepted to be processed. It applies for async deletion process.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/SubscriptionAsync'
-        400:
+        "400":
           description: Invalid input
           content:
             application/json:

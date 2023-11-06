@@ -154,7 +154,7 @@ paths:
         - openId:
           - sim-swap:subscriptions:read
       responses:
-        200:
+        "200":
           description: List of event subscription details
           content:
             application/json:
@@ -162,15 +162,15 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SubscriptionInfo'
-        400:
+        "400":
           $ref: '#/components/responses/Generic400'
-        401:
+        "401":
           $ref: '#/components/responses/Generic401'
-        403:
+        "403":
           $ref: '#/components/responses/Generic403'
-        500:
+        "500":
           $ref: '#/components/responses/Generic500'
-        503:
+        "503":
           $ref: '#/components/responses/Generic503'
   /subscriptions/{subscriptionId}:
     get:

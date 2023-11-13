@@ -35,7 +35,6 @@ paths:
   /retrieve-date:
     post:
       security:
-        - oAuth2ClientCredentials: []
         - three_legged:
           - retrieve-sim-swap-date  
       tags:
@@ -76,7 +75,6 @@ paths:
   /check:
     post:
       security:
-        - oAuth2ClientCredentials: []
         - three_legged:
           - check-sim-swap
       tags:
@@ -116,12 +114,6 @@ paths:
           $ref: "#/components/responses/Generic504"
 components:
   securitySchemes:
-    oAuth2ClientCredentials:
-      type: oauth2
-      flows:
-        clientCredentials:
-          tokenUrl: '{tokenUrl}'
-          scopes: {}
     three_legged:
       type: oauth2
       flows:

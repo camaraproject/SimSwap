@@ -29,7 +29,7 @@ Repository to describe, develop, document and test the SimSwap API family
 * **The latest available release and version of CAMARA SimSwap API is 0.4.0. This is the first alpha version of the API.** There are bug fixes to be expected and incompatible changes in upcoming releases. It is suitable for implementors, but it is not recommended to use the API with customers in productive environments.
 * Release 0.4.0 of the API is available within the [release-0.4.0 branch](https://github.com/camaraproject/SimSwap/tree/release-0.4.0):
 - API definition **with inline documentation**:
-  - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/main/code/API_definitions/sim_swap.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/release-0.4.0/code/API_definitions/sim_swap.yaml)
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/v0.4.0/code/API_definitions/sim_swap.yaml&nocors) 
   - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/v0.4.0/code/API_definitions/sim_swap.yaml)
 

@@ -9,7 +9,7 @@
 **This is the first alpha release of the CAMARA SimSwap API**
 
 - API definition **with inline documentation**:
-  - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/main/code/API_definitions/sim_swap.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/release-0.4.0/code/API_definitions/sim_swap.yaml)
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/v0.4.0/code/API_definitions/sim_swap.yaml&nocors) 
   - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/v0.4.0/code/API_definitions/sim_swap.yaml)
 
@@ -30,6 +30,9 @@
 * Guidelines alignment regarding errors and camel case by @monamok in https://github.com/camaraproject/SimSwap/pull/20
 * Glossary alignment by @monamok in https://github.com/camaraproject/SimSwap/pull/40
 * Cleaning up repo by @DT-DawidWroblewski in https://github.com/camaraproject/SimSwap/pull/48
+* Created a release branch release-0.4.0 based on [commit 6843563](https://github.com/camaraproject/SimSwap/commit/6843563242709cc82c6d5ea3cd6d484f14e44bfe)
+* Fixed the security schema as agreed to three-legged only within the release branch
+* Created CHANGELOG.md and updated README.md within the release branch
 
 ## New Contributors
 * @monamok made their first contribution in https://github.com/camaraproject/SimSwap/pull/3

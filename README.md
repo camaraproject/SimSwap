@@ -26,12 +26,12 @@ Repository to describe, develop, document and test the SimSwap API family
 ## Status and released versions
 
 * Note: Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. **For best results, use the latest available release**.
-* **The latest available release and version of CAMARA SimSwap API is 0.4.1. This is the first alpha version of the API.** There are bug fixes to be expected and incompatible changes in upcoming releases. It is suitable for implementors, but it is not recommended to use the API with customers in productive environments.
-* Release 0.4.1 of the API is available within the [release-0.4.1 branch](https://github.com/camaraproject/SimSwap/tree/release-0.4.1):
-  - API definition **with inline documentation**:
-    - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/main/code/API_definitions/sim_swap.yaml)
-    - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/main/code/API_definitions/sim_swap.yaml&nocors)
-    - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/main/code/API_definitions/sim_swap.yaml)
+* **The latest available release and version of CAMARA SimSwap API is 0.4.0. This is the first alpha version of the API.** There are bug fixes to be expected and incompatible changes in upcoming releases. It is suitable for implementors, but it is not recommended to use the API with customers in productive environments.
+* Release 0.4.0 of the API is available within the [release-0.4.0 branch](https://github.com/camaraproject/SimSwap/tree/release-0.4.0):
+- API definition **with inline documentation**:
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/main/code/API_definitions/sim_swap.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/v0.4.0/code/API_definitions/sim_swap.yaml&nocors) 
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/v0.4.0/code/API_definitions/sim_swap.yaml)
 
 ## Contributorship and mailing list
 

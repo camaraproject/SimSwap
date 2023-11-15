@@ -15,13 +15,12 @@
 
 ## Please note:
 
-- This is an alpha version, it should be considered as a draft
-- There are bug fixes to be expected and incompatible changes in upcoming versions 
+- This is an alpha version, there are bug fixes to be expected and incompatible changes in upcoming versions 
 - The release is suitable for implementors, but it is not recommended to use the API with customers in productive environments
 - Version numbers before v0.4.0 were used during the development of this version but not released
 - [GSMA Mobile Connect Account Takeover Protection specification](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.24-Mobile-Connect-Account-Takeover-Protection-Definition-and-Technical-Requirements-v2.0.pdf) was used as source of input for this API. For more about Mobile Connect, please see [Mobile Connect website](https://mobileconnect.io/).
 
-## What's Changed
+## What's New
 
 * SimSwap OAS with 2 endpoints (check & get date) by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/7
 * Added API documentation for the 2-endpoints SIM Swap API by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/9

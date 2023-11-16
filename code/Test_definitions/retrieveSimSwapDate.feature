@@ -1,7 +1,7 @@
 #
 # Revision: 0
 
-Feature: SIM Swap 0.4.0 - retrieveSimSwapDate
+Feature: SIM Swap - retrieveSimSwapDate
 
     Get timestamp of last MSISDN <-> IMSI pairing change for a mobile user account provided with MSIDN.
 

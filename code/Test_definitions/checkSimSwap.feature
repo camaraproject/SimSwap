@@ -1,7 +1,7 @@
 #
 # Revision: 0
 
-Feature: SIM Swap 0.4.0 - checkSimSwap
+Feature: SIM Swap - checkSimSwap
 
     check if SIM swap has been performed during a past period
 

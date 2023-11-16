@@ -1,3 +1,6 @@
+#
+# Revision: 0
+
 Feature: SIM Swap 0.4.0 - retrieveSimSwapDate
 
     Get timestamp of last MSISDN <-> IMSI pairing change for a mobile user account provided with MSIDN.
@@ -96,6 +99,63 @@ Feature: SIM Swap 0.4.0 - retrieveSimSwapDate
         When I request "retrieveSimSwapDate"
         Then the response status code is "404"
         And the API returns the error code "SIM_SWAP.UNKNOWN_PHONE_NUMBER"
+        And the API returns a human readable error message
+
+
+    @retrieveSimSwapDate_E19.104_PhoneNumberProvidedDoesNotMatchTheAccessToken
+    Scenario: Check that the response shows an error when phone number provided does not match the one in the access token
+        Given I want to test "retrieveSimSwapDate"
+        And a valid access_token
+        And the access token identifies the user
+        And the access token contains a phone number from the user
+        And the variable "[CONTEXT: phoneNumber]" is set to a phone number that does not belong to the Operator
+        And the request body is set to:
+            """
+            {
+              "phoneNumber": "[CONTEXT: phoneNumber]"
+            }
+            """
+        When I request "retrieveSimSwapDate"
+        Then the response status code is "403"
+        And the API returns the error code "SIM_SWAP.INVALID_TOKEN_CONTEXT"
+        And the API returns a human readable error message
+
+
+    @retrieveSimSwapDate_E19.105_PhoneNumberProvidedIsNotPresentInAccessToken
+    Scenario: Check that the response shows an error when phone number provided is not present in the access token
+        Given I want to test "retrieveSimSwapDate"
+        And a valid access_token
+        And the access token identifies the user
+        And the access token does not contain a phone number from the user
+        And the variable "[CONTEXT: phoneNumber]" is set to a phone number of the user
+        And the request body is set to:
+            """
+            {
+              "phoneNumber": "[CONTEXT: phoneNumber]"
+            }
+            """
+        When I request "retrieveSimSwapDate"
+        Then the response status code is "403"
+        And the API returns the error code "SIM_SWAP.INVALID_TOKEN_CONTEXT"
+        And the API returns a human readable error message
+
+
+    @retrieveSimSwapDate_E19.106_PhoneNumberNotProvidedAndAccessTokenDoesNotContainPhoneNumber
+    Scenario: Check that the response shows an error when phone number can not be deducted from access token and it is not provided in the request body
+        Given I want to test "retrieveSimSwapDate"
+        And a valid access_token
+        And the access token identifies the user
+        And the access token does not contain a phone number from the user
+        And the variable "[CONTEXT: phoneNumber]" is set to a phone number of the user
+        And the request body is set to:
+            """
+            {
+              "phoneNumber": ""
+            }
+            """
+        When I request "retrieveSimSwapDate"
+        Then the response status code is "403"
+        And the API returns the error code "SIM_SWAP.INVALID_TOKEN_CONTEXT"
         And the API returns a human readable error message
 
 

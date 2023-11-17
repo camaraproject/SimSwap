@@ -27,8 +27,8 @@ info:
       - ``org.camaraproject.sim-swap.v0.swapped`` - Event triggered when a sim swap occurs on the associated phoneNumber
 
 
-    Note: Additionnally to these list, ``org.camaraproject.sim-swa.v0.subscription-ends`` notification `type` is sent when the subscription ends. 
-    This notification did not requires dedicated subscription. 
+    Note: Additionnally to these list, ``org.camaraproject.sim-swap.v0.subscription-ends`` notification `type` is sent when the subscription ends. 
+    This notification does not require a dedicated subscription. 
     It is used when the subscription expire time (required by the requester) has been reached or if the API server has to terminate subscription (e.g. when the corresponding phone number is not served by the operator anymore). 
 
     ### Notification callback
@@ -52,7 +52,7 @@ info:
   version: 0.1.0-wip
 externalDocs:
   description: Product documentation at CAMARA
-  url: https://github.com/camaraproject/
+  url: hhttps://github.com/camaraproject/SimSwap
 servers:
   - url: '{apiRoot}/sim-swap-notification-subscriptions/v0'
     variables:
@@ -380,7 +380,7 @@ components:
       enum:
         - org.camaraproject.sim-swap.v0.swapped
 
-    RoamingNotificationEventType:
+    SimSwapNotificationEventType:
       type: string
       description: |
         swapped - Event triggered when a sim swap was performed for this phone number
@@ -449,9 +449,7 @@ components:
         source:
           $ref: '#/components/schemas/Source'
         type:
-          type: string
-          description: 'type of event as defined in each CAMARA API'
-          example: org.camaraproject.sim-swap.v0.swapped
+          $ref: '#/components/schemas/SimSwapNotificationEventType'
         specversion:
           type: string
           description: Version of the specification to which this event conforms (must be 1.0 if it conforms to cloudevents 1.0.2 version)

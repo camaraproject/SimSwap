@@ -148,7 +148,7 @@ components:
         latestSimChange: 
           type: string
           format: date-time
-          description: Timestamp of latest SIM swap performed
+          description: Timestamp of latest SIM swap performed. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone. Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
     CheckSimSwapInfo:
       type: object
       properties:
@@ -223,10 +223,17 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorInfo'
-          example:
-            status: 403
-            code: PERMISSION_DENIED
-            message: Client does not have sufficient permissions to perform this action
+          examples:
+            PermissionDenied:
+              value:
+                status: 403
+                code: PERMISSION_DENIED
+                message: Client does not have sufficient permissions to perform this action
+            InvalidTokenContext:
+              value:
+                status: 403
+                code: INVALID_TOKEN_CONTEXT
+                message: Phone number cannot be deducted from access token context
     Generic404:
       description: Resource Not Found
       content:

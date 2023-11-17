@@ -18,7 +18,6 @@
 - This is an alpha version, there are bug fixes to be expected and incompatible changes in upcoming versions 
 - The release is suitable for implementors, but it is not recommended to use the API with customers in productive environments
 - Version numbers before v0.4.0 were used during the development of this version but not released
-- [GSMA Mobile Connect Account Takeover Protection specification](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.24-Mobile-Connect-Account-Takeover-Protection-Definition-and-Technical-Requirements-v2.0.pdf) was used as source of input for this API. For more about Mobile Connect, please see [Mobile Connect website](https://mobileconnect.io/).
 
 ## What's New
 

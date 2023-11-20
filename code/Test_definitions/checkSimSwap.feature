@@ -108,7 +108,7 @@ Feature: SIM Swap - checkSimSwap
         And a valid access_token
         And the access token identifies the user
         And the access token contains a phone number from the user
-        And the variable "[CONTEXT: phoneNumber]" is set to a phone number that does not belong to the Operator
+        And the variable "[CONTEXT: phoneNumber]" is set to a phone number that did not match the one encoded in the access token
         And the request body is set to:
             """
             {

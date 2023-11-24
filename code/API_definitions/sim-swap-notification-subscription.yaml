@@ -6,6 +6,8 @@ info:
 
     # Introduction
 
+    This API empowers service providers and network operators with a seamless mechanism for managing and monitoring SIM card swaps, a process often used in legitimate device upgrades or replacements but also susceptible to abuse in fraudulent activities.
+
     # Relevant terms and definitions
 
     * **SIM swap**:
@@ -14,7 +16,8 @@ info:
     # API Functionality    
 
     The API exposes following capabilities:
-
+      * **/subscriptions**: This endpoint has two operations, one that allows to retrieve the list of Sim Swap event subscriptions and another one to create new event subscriptions.
+      * **/subscriptions/{subscriptionId}**: This endpoint also has two operations, one that allows to retrieve a particular event subscription by id and another one to delete an event subscription also using the id.
 
     ## Sim Swap notification subscription
 
@@ -27,7 +30,7 @@ info:
       - ``org.camaraproject.sim-swap.v0.swapped`` - Event triggered when a sim swap occurs on the associated phoneNumber
 
 
-    Note: Additionnally to these list, ``org.camaraproject.sim-swap.v0.subscription-ends`` notification `type` is sent when the subscription ends. 
+    Note: Additionally to these list, ``org.camaraproject.sim-swap.v0.subscription-ends`` notification `type` is sent when the subscription ends. 
     This notification does not require a dedicated subscription. 
     It is used when the subscription expire time (required by the requester) has been reached or if the API server has to terminate subscription (e.g. when the corresponding phone number is not served by the operator anymore). 
 
@@ -183,12 +186,7 @@ paths:
         - openId:
           - sim-swap:subscriptions:read
       parameters:
-        - name: subscriptionId
-          in: path
-          description: Subscription identifier that was obtained from the create subscription operation
-          required: true
-          schema:
-            $ref: '#/components/schemas/SubscriptionId'
+        - $ref: "#/components/parameters/SubscriptionId"
       responses:
         "200":
           description: OK
@@ -197,24 +195,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/SubscriptionInfo'
         "400":
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorInfo"
-              examples:
-                Generic400:
-                  summary: Schema validation failed
-                  value:
-                    code: INVALID_INPUT
-                    status: 400
-                    message: "Schema validation failed at  ..."
-                subscriptionIdRequired:
-                  summary: eventSubscription id is required
-                  value:
-                    code: INVALID_INPUT
-                    status: 400
-                    message: "Expected property is missing: subscriptionId"
+          $ref: '#/components/responses/SubscriptionIdRequired'
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
@@ -222,11 +203,7 @@ paths:
         "404":
           $ref: "#/components/responses/Generic404"
         "500":
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorInfo"
+          $ref: "#/components/responses/Generic500"
         "503":
           $ref: "#/components/responses/Generic503"
     delete:
@@ -239,12 +216,7 @@ paths:
         - openId:
           - sim-swap:subscriptions:delete
       parameters:
-        - name: subscriptionId
-          in: path
-          description: Subscription identifier that was obtained from the create event subscription operation
-          required: true
-          schema:
-            $ref: '#/components/schemas/SubscriptionId'
+        - $ref: "#/components/parameters/SubscriptionId"
       responses:
         "204":
           description: event subscription deleted
@@ -255,24 +227,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/SubscriptionAsync'
         "400":
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorInfo"
-              examples:
-                Generic400:
-                  summary: Schema validation failed
-                  value:
-                    code: INVALID_INPUT
-                    status: 400
-                    message: "Schema validation failed at  ..."
-                subscriptionIdRequired:
-                  summary: eventSubscription id is required
-                  value:
-                    code: INVALID_INPUT
-                    status: 400
-                    message: "Expected property is missing: subscriptionId"
+          $ref: '#/components/responses/SubscriptionIdRequired'
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
@@ -280,11 +235,7 @@ paths:
         "404":
           $ref: "#/components/responses/Generic404"
         "500":
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorInfo"
+          $ref: "#/components/responses/Generic500"
         "503":
           $ref: "#/components/responses/Generic503"
 components:
@@ -292,6 +243,14 @@ components:
     openId:
       type: openIdConnect
       openIdConnectUrl: https://example.com/.well-known/openid-configuration
+  parameters:
+    SubscriptionId:
+      name: subscriptionId
+      in: path
+      description: Subscription identifier that was obtained from the create event subscription operation
+      required: true
+      schema:
+        $ref: '#/components/schemas/SubscriptionId'
   schemas:
     PhoneNumber:
       type: string
@@ -574,6 +533,7 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           example:
+            status: 404
             code: NOT_FOUND
             message: "The specified resource is not found"
     Generic409:
@@ -583,6 +543,7 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           example:
+            status: 409
             code: CONFLICT
             message: "The specified resource is in a conflict"
     Generic500:
@@ -605,8 +566,26 @@ components:
             status: 503
             code: "UNAVAILABLE"
             message: "Service unavailable"
+    SubscriptionIdRequired:
+      description: Problem with the client request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            Generic400:
+              summary: Schema validation failed
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: "Client specified an invalid argument, request body or query param"
+            subscriptionIdRequired:
+              summary: subscription id is required
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: "Expected property is missing: subscriptionId"
   examples:
-
     SWAPPED:
       value:
         id: 123655

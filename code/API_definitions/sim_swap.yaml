@@ -6,7 +6,7 @@ info:
     
     # Introduction
 
-    The SIM Swap API performs real-time checks on the the last SIM Swap event.
+    The SIM Swap API performs real-time checks on the last SIM Swap event.
 
     The SIM Swap API is useful to prevent fraud by reducing the risk of account takeover fraud by strengthening SIM based authentication processes such as SMS One-time passwords. Fraudsters are using SIM swap techniques to intercept SMS messages and reset passwords or receive verification codes that allow them to access protected accounts.
 

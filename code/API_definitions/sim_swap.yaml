@@ -24,7 +24,7 @@ info:
     **SIM swap**:
     A SIM swap is a process in which a user's mobile phone number (MSISDN) is associated with a new SIM card (IMSI). This is typically done by contacting the user's mobile service provider and requesting a new SIM card for various reasons, such as a lost or damaged SIM card or upgrading to a new phone.
     
-    SimSwap also happens during other actions like changing user's phone number or changing mobile service provider keeping user's mobile phone number.
+    SimSwap also happens during other actions like changing user's phone number, changing mobile service provider keeping user's mobile phone number or when activating a new SIM associated to the same phone number, known as multisim service.
 
     # API functionality
 

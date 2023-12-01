@@ -6,21 +6,25 @@ info:
     
     # Introduction
 
-    The SIM Swap API performs real-time checks on the activation date of a SIM card on the mobile network. It reveals if an individual mobile phone number (MSISDN) has been ported to another SIM card.
+    The SIM Swap API performs real-time checks on the recent SIM Swap event.
 
     The SIM Swap API is useful to prevent fraud by reducing the risk of account takeover fraud by strengthening SIM based authentication processes such as SMS One-time passwords. Fraudsters are using SIM swap techniques to intercept SMS messages and reset passwords or receive verification codes that allow them to access protected accounts.
 
-    This API is used by an application to get information about a mobile line latest SIM swap date. It can be easily integrated and used through this secured API and allows SPs (Service Provider) to get this information an easy & secured way. The API provides management of 2 resources answering 2 distinct questions:
+    The SIM Swap API can also be used to protect non-automated actions. For example, when a call center expect contacts a user to clarify or confirm a sensitive operation. 
+
+    This API is used by an application to get information about a mobile line latest SIM swap date. It can be easily integrated and used through this secured API and allows SPs (Service Provider) to get this information an easy & secured way. The API provides management of 2 endpoints answering 2 distinct questions:
 
     * When did the last SIM swap occur?
     * Has a SIM swap occurred during last n hours?
     
-    Depending on the network provider implementation, legal enforcement, etc... either one or both resources could be implemented.
+    Depending on the network provider implementation, legal enforcement, etc... either one or both endpoints could be implemented.
 
     # Relevant terms and definitions
 
-    * **SIM swap**:
-    A SIM swap is a process in which a mobile phone user's current SIM card is deactivated or replaced with a new one. This is typically done by contacting the user's mobile service provider and requesting a new SIM card for various reasons, such as a lost or damaged SIM card, upgrading to a new phone, or changing phone numbers while keeping the same device.
+    **SIM swap**:
+    A SIM swap is a process in which a user's mobile phone number (MSISDN) is associated with a new SIM card (IMSI). This is typically done by contacting the user's mobile service provider and requesting a new SIM card for various reasons, such as a lost or damaged SIM card or upgrading to a new phone.
+    
+    SimSwap also happens during other actions like changing user's phone number or changing mobile service provider keeping user's mobile phone number.
 
     # API functionality
 

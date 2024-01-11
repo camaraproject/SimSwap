@@ -69,6 +69,8 @@ paths:
         - Retrieve SIM swap date
       description: Get timestamp of last MSISDN <-> IMSI pairing change for a mobile user account provided with MSIDN.
       operationId: retrieveSimSwapDate
+      parameters:
+        - $ref: '#/components/parameters/x-correlator'
       requestBody:
         description: |
           Create a SIM swap date request for a MSISDN identifier.
@@ -80,6 +82,9 @@ paths:
       responses:
         "200":
           description: Contains information about SIM swap change
+          headers:
+            x-correlator:
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
@@ -109,6 +114,8 @@ paths:
       - Check SIM swap
       description: Check if SIM swap has been performed during a past period
       operationId: checkSimSwap
+      parameters:
+        - $ref: '#/components/parameters/x-correlator'
       requestBody:
         description: |
           Create a check SIM swap request for a MSISDN identifier.
@@ -120,6 +127,9 @@ paths:
       responses:
         "200":
           description: Returns whether a SIM swap has been performed during a past period
+          headers:
+            x-correlator:
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
@@ -145,6 +155,18 @@ components:
     openId:
       type: openIdConnect
       openIdConnectUrl: https://example.com/.well-known/openid-configuration
+  parameters:
+    x-correlator:
+      name: x-correlator
+      in: header
+      description: Correlation id for the different services
+      schema:
+        type: string
+  headers:
+    x-correlator:
+      description: Correlation id for the different services
+      schema:
+        type: string
   schemas:
     SimSwapInfo:
       type: object
@@ -203,6 +225,9 @@ components:
   responses:
     Generic400:
       description: Problem with the client request
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -213,6 +238,9 @@ components:
             message: Client specified an invalid argument, request body or query param
     Generic401:
       description: Authentication problem with the client request
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -223,6 +251,9 @@ components:
             message: Request not authenticated due to missing, invalid, or expired credentials
     Generic403:
       description: Client does not have sufficient permission
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -240,6 +271,9 @@ components:
                 message: Phone number cannot be deducted from access token context
     Generic404:
       description: Resource Not Found
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -250,6 +284,9 @@ components:
             message: SIM Swap can't be checked because the phone number is unknown
     Generic409:
       description: Conflict
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -260,6 +297,9 @@ components:
             message: Another request is created for the same MSISDN
     Generic500:
       description: Server error
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -270,6 +310,9 @@ components:
             message: Server error
     Generic503:
       description: Service unavailable. Typically the server is down
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -280,6 +323,9 @@ components:
             message: Service unavailable
     Generic504:
       description: Request time exceeded. If it happens repeatedly, consider reducing the request complexity
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:

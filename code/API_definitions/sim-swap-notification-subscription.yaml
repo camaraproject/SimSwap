@@ -74,6 +74,8 @@ paths:
       summary: 'Create a sim swap event subscription for a phone number'
       description: Create a sim swap event subscription for a phone number
       operationId: createSimSwapSubscription
+      parameters:
+        - $ref: '#/components/parameters/x-correlator'
       security:
         - openId:
           - sim-swap:subscriptions:create
@@ -94,6 +96,8 @@ paths:
                 Important: this endpoint is to be implemented by the API consumer.
                 The sim swap server will call this endpoint whenever a swapped event occurs.
               operationId: postNotification
+              parameters:
+                - $ref: '#/components/parameters/x-correlator'
               requestBody:
                 required: true
                 content:
@@ -108,6 +112,9 @@ paths:
               responses:
                 "204":
                   description: Successful notification
+                  headers:
+                    x-correlator:
+                      $ref: '#/components/headers/x-correlator'
                 "400":
                   $ref: "#/components/responses/Generic400"
                 "401":
@@ -125,12 +132,18 @@ paths:
       responses:
         "201":
           description: Created
+          headers:
+            x-correlator:
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/SubscriptionInfo'
         "202":
           description: Request accepted to be processed. It applies for async creation process.
+          headers:
+            x-correlator:
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
@@ -153,12 +166,17 @@ paths:
       summary: 'Retrieve a list of sim swap event subscription'
       description: Retrieve a list of sim swap event subscription(s)
       operationId: retrieveSubscriptionList
+      parameters:
+        - $ref: '#/components/parameters/x-correlator'
       security:
         - openId:
           - sim-swap:subscriptions:read
       responses:
         "200":
           description: List of event subscription details
+          headers:
+            x-correlator:
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
@@ -180,16 +198,20 @@ paths:
       tags:
         - Sim swap notification subscription
       summary: 'Retrieve a sim swap event subscription for a phone number'
-      operationId: retrieveSubscription
       description: retrieve event subscription information for a given subscription.
+      operationId: retrieveSubscription
       security:
         - openId:
           - sim-swap:subscriptions:read
       parameters:
         - $ref: "#/components/parameters/SubscriptionId"
+        - $ref: '#/components/parameters/x-correlator'
       responses:
         "200":
           description: OK
+          headers:
+            x-correlator:
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
@@ -217,11 +239,18 @@ paths:
           - sim-swap:subscriptions:delete
       parameters:
         - $ref: "#/components/parameters/SubscriptionId"
+        - $ref: '#/components/parameters/x-correlator'
       responses:
         "204":
           description: event subscription deleted
+          headers:
+            x-correlator:
+              $ref: '#/components/headers/x-correlator'
         "202":
           description: Request accepted to be processed. It applies for async deletion process.
+          headers:
+            x-correlator:
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
@@ -251,6 +280,17 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/SubscriptionId'
+    x-correlator:
+      name: x-correlator
+      in: header
+      description: Correlation id for the different services
+      schema:
+        type: string
+  headers:
+    x-correlator:
+      description: Correlation id for the different services
+      schema:
+        type: string
   schemas:
     PhoneNumber:
       type: string
@@ -498,6 +538,9 @@ components:
   responses:
     Generic400:
       description: Problem with the client request
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -508,6 +551,9 @@ components:
             message: "Client specified an invalid argument, request body or query param"
     Generic401:
       description: Authentication problem with the client request
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -518,6 +564,9 @@ components:
             message: "Request not authenticated due to missing, invalid, or expired credentials"
     Generic403:
       description: Client does not have sufficient permission
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -528,6 +577,9 @@ components:
             message: "Client does not have sufficient permissions to perform this action"
     Generic404:
       description: Resource Not Found
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -538,6 +590,9 @@ components:
             message: "The specified resource is not found"
     Generic409:
       description: Conflict
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -548,6 +603,9 @@ components:
             message: "The specified resource is in a conflict"
     Generic500:
       description: Server error
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -558,6 +616,9 @@ components:
             message: "Server error"
     Generic503:
       description: Service unavailable. Typically the server is down.
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -568,6 +629,9 @@ components:
             message: "Service unavailable"
     SubscriptionIdRequired:
       description: Problem with the client request
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:

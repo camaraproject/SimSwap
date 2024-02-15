@@ -1,4 +1,4 @@
-# Week 2 meeting
+# Week 6 meeting
 
 ## Participants
 
@@ -35,5 +35,8 @@
 
 
 ## AoB
+
+* discussion about MWC 2024
+* add commits to sub-projects for next release
 
 ## APs

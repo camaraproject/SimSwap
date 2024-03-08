@@ -545,9 +545,10 @@ components:
     TerminationReason:
       type: string
       description: |
-        NETWORK_TERMINATED - API server stopped sending notification
-        SUBSCRIPTION_EXPIRED - Subscription expire time (optionally set by the requester) has been reached
-        MAX_EVENTS_REACHED - maximum number of events (optionally set by the requester) has been reached
+        - NETWORK_TERMINATED - API server stopped sending notification
+        - SUBSCRIPTION_EXPIRED - Subscription expire time (optionally set by the requester) has been reached
+        - MAX_EVENTS_REACHED - Maximum number of events (optionally set by the requester) has been reached
+
       enum:
         - MAX_EVENTS_REACHED
         - NETWORK_TERMINATED

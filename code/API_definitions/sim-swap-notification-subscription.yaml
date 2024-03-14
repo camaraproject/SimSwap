@@ -31,8 +31,11 @@ info:
 
 
     Note: Additionally to these list, ``org.camaraproject.sim-swap.v0.subscription-ends`` notification `type` is sent when the subscription ends. 
-    This notification does not require a dedicated subscription. 
-    It is used when the subscription expire time (required by the requester) has been reached or if the API server has to terminate subscription (e.g. when the corresponding phone number is not served by the operator anymore). 
+    This notification does not require dedicated subscription. 
+    It is used when:
+      - the subscription expire time (optionally set by the requester) has been reached 
+      - the maximum number of subscription events (optionally set by the requester) has been reached
+      - the API server has to stop sending notification prematurely
 
     ### Notification callback
 
@@ -329,6 +332,11 @@ components:
           format: date-time
           example: 2023-01-17T13:18:23.682Z
           description: The subscription expiration time in date-time format.
+        subscriptionMaxEvents:
+          type: integer
+          description: Identifies the maximum number of event reports to be generated (>=1) - Once this number is reached, the subscription ends.
+          minimum: 1
+          example: 5
         webhook:
           $ref: '#/components/schemas/Webhook'
 
@@ -528,12 +536,24 @@ components:
         phoneNumber:
           $ref: '#/components/schemas/PhoneNumber'
         terminationReason:
-          type: string
-          enum: ["SUBSCRIPTION_EXPIRED", "NETWORK_TERMINATED"]
+          $ref: "#/components/schemas/TerminationReason"
         subscriptionId:
           $ref: "#/components/schemas/SubscriptionId"
         terminationDescription:
           type: string
+
+    TerminationReason:
+      type: string
+      description: |
+        - NETWORK_TERMINATED - API server stopped sending notification
+        - SUBSCRIPTION_EXPIRED - Subscription expire time (optionally set by the requester) has been reached
+        - MAX_EVENTS_REACHED - Maximum number of events (optionally set by the requester) has been reached
+
+      enum:
+        - MAX_EVENTS_REACHED
+        - NETWORK_TERMINATED
+        - SUBSCRIPTION_EXPIRED
+
 
   responses:
     Generic400:

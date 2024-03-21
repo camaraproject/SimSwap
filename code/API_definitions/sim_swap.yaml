@@ -30,7 +30,7 @@ info:
 
     The API provides 2 operations:
 
-    - POST retrieve-date : Provides timestamp of latest SIM swap, if any, for a given phone number.
+    - POST retrieve-date : Provides timestamp of latest SIM swap, if any, for a given phone number. If no swap has been performed, the API will return the SIM activation date (the timestamp of the first time that the sim connected to the network) by default, unless this is not possible due to local regulations preventing the safekeeping of the information for longer than the stated period of time. If this is the case, a `null` value will be returned.
 
     - POST check: Checks if SIM swap has been performed during a past period (defined in the request with 'maxAge' attribute) for a given phone number.
 
@@ -173,13 +173,19 @@ components:
   schemas:
     SimSwapInfo:
       type: object
+      required:
+        - latestSimChange
       properties:
         latestSimChange: 
           type: string
           format: date-time
           description: Timestamp of latest SIM swap performed. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone. Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
+          nullable: true
+          example: "2023-07-03T14:27:08.312+02:00"
     CheckSimSwapInfo:
       type: object
+      required:
+        - swapped
       properties:
         swapped:
           type: boolean

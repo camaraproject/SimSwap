@@ -303,9 +303,9 @@ components:
   schemas:
     PhoneNumber:
       type: string
-      pattern: '^\+?[0-9]{5,15}$'
-      example: '123456789'
-      description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, optionally prefixed with '+'.
+      pattern: '^\+[1-9][0-9]{4,14}$'
+      example: '+123456789'
+      description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
 
     ErrorInfo:
       type: object
@@ -684,7 +684,7 @@ components:
         specversion: "1.0"
         datacontenttype: application/json
         data: 
-            phoneNumber: 123456788
+            phoneNumber: +123456788
             subscriptionId: 2ghy-55gg-7iup-yuo9
         time: 2023-01-18T13:18:23.682Z
 
@@ -696,7 +696,7 @@ components:
         specversion: "1.0"
         datacontenttype: application/json
         data: 
-            phoneNumber: 123456789
+            phoneNumber: +123456789
             terminationReason: SUBSCRIPTION_EXPIRED
             subscriptionId: 2ghy-55gg-7iup-yuo9
             terminationDescription: subscription expire time reached

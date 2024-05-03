@@ -68,6 +68,8 @@ paths:
       security:
         - openId:
           - sim-swap:retrieve-date
+        - openId:
+          - sim-swap
       tags:
         - Retrieve SIM swap date
       description: Get timestamp of last MSISDN <-> IMSI pairing change for a mobile user account provided with MSIDN.
@@ -113,6 +115,8 @@ paths:
       security:
         - openId:
           - sim-swap:check
+        - openId:
+          - sim-swap
       tags:
       - Check SIM swap
       description: Check if SIM swap has been performed during a past period

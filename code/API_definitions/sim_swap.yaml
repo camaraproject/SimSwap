@@ -3,27 +3,27 @@ info:
   title: SIM Swap
   description: |
     The SIM swap API provides a programmable interface for developers and other users (capabilities consumers) to request the last date of a SIM swap performed on the mobile line, or, to check whether a SIM swap has been performed during a past period.
-    
+
     # Introduction
 
     The SIM Swap API performs real-time checks on the last SIM Swap event.
 
     The SIM Swap API is useful to prevent fraud by reducing the risk of account takeover fraud by strengthening SIM based authentication processes such as SMS One-time passwords. Fraudsters are using SIM swap techniques to intercept SMS messages and reset passwords or receive verification codes that allow them to access protected accounts.
 
-    The SIM Swap API can also be used to protect non-automated actions. For example, when a call center expect contacts a user to clarify or confirm a sensitive operation. 
+    The SIM Swap API can also be used to protect non-automated actions. For example, when a call center expect contacts a user to clarify or confirm a sensitive operation.
 
     This API is used by an application to get information about a mobile line latest SIM swap date. It can be easily integrated and used through this secured API and allows SPs (Service Provider) to get this information an easy & secured way. The API provides management of 2 endpoints answering 2 distinct questions:
 
     * When did the last SIM swap occur?
     * Has a SIM swap occurred during last n hours?
-    
+
     Depending on the network provider implementation, legal enforcement, etc... either one or both endpoints could be implemented.
 
     # Relevant terms and definitions
 
     **SIM swap**:
     A SIM swap is a process in which a user's mobile phone number (MSISDN) is associated with a new SIM card (IMSI). This is typically done by contacting the user's mobile service provider and requesting a new SIM card for various reasons, such as a lost or damaged SIM card or upgrading to a new phone.
-    
+
     SimSwap also happens during other actions like changing user's phone number, changing mobile service provider keeping user's mobile phone number or when activating a new SIM associated to the same phone number, known as multisim service.
 
     # API functionality
@@ -67,7 +67,7 @@ paths:
     post:
       security:
         - openId:
-          - sim-swap:retrieve-date
+            - sim-swap:retrieve-date
       tags:
         - Retrieve SIM swap date
       description: Get timestamp of last MSISDN <-> IMSI pairing change for a mobile user account provided with MSIDN.
@@ -77,7 +77,7 @@ paths:
       requestBody:
         description: |
           Create a SIM swap date request for a MSISDN identifier.
-        content :
+        content:
           application/json:
             schema:
               $ref: "#/components/schemas/CreateSimSwapDate"
@@ -112,9 +112,9 @@ paths:
     post:
       security:
         - openId:
-          - sim-swap:check
+            - sim-swap:check
       tags:
-      - Check SIM swap
+        - Check SIM swap
       description: Check if SIM swap has been performed during a past period
       operationId: checkSimSwap
       parameters:
@@ -122,7 +122,7 @@ paths:
       requestBody:
         description: |
           Create a check SIM swap request for a MSISDN identifier.
-        content :
+        content:
           application/json:
             schema:
               $ref: "#/components/schemas/CreateCheckSimSwap"
@@ -176,7 +176,7 @@ components:
       required:
         - latestSimChange
       properties:
-        latestSimChange: 
+        latestSimChange:
           type: string
           format: date-time
           description: Timestamp of latest SIM swap performed. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone. Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)

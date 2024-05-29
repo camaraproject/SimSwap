@@ -359,7 +359,7 @@ components:
         notificationAuthToken:
           type: string
           example: "c8974e592c2fa383d4a3960714"
-          description: | 
+          description: |
             OAuth2 token to be used by the callback API endpoint. It MUST be indicated within HTTP Authorization header e.g. Authorization: Bearer $notificationAuthToken
 
     SubscriptionDetail:
@@ -440,7 +440,7 @@ components:
       type: object
       properties:
         subscriptionId:
-            $ref: '#/components/schemas/SubscriptionId'
+          $ref: '#/components/schemas/SubscriptionId'
 
     SubscriptionId:
       type: string

@@ -359,7 +359,7 @@ components:
             Note: for the Commonalities meta-release v0.4 we enforce to have only event type per subscription then for following meta-release use of array MUST be decided
              at API project level.
           type: array
-          example: 
+          example:
             - "org.camaraproject.sim-swap.v0.swapped"
           items:
             type: string

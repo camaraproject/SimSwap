@@ -13,7 +13,7 @@ info:
     * **SIM swap**:
     A SIM swap is a process in which a mobile phone user's current SIM card is deactivated or replaced with a new one. This is typically done by contacting the user's mobile service provider and requesting a new SIM card for various reasons, such as a lost or damaged SIM card, upgrading to a new phone, or changing phone numbers while keeping the same device.
 
-    # API Functionality  
+    # API Functionality
 
     The API exposes following capabilities:
       * **/subscriptions**: This endpoint has two operations, one that allows to retrieve the list of Sim Swap event subscriptions and another one to create new event subscriptions.
@@ -722,7 +722,7 @@ components:
         - type: object
           properties:
             protocolSettings:
-                $ref: "#/components/schemas/HTTPSettings"
+              $ref: "#/components/schemas/HTTPSettings"
 
     HTTPSettings:
       type: object
@@ -850,7 +850,7 @@ components:
         - type: object
           properties:
             protocolSettings:
-                $ref: "#/components/schemas/NATSSettings"
+              $ref: "#/components/schemas/NATSSettings"
 
     NATSSettings:
       type: object
@@ -1085,9 +1085,9 @@ components:
         type: org.camaraproject.sim-swap.v0.swapped
         specversion: "1.0"
         datacontenttype: application/json
-        data: 
-            phoneNumber: +123456788
-            subscriptionId: 2ghy-55gg-7iup-yuo9
+        data:
+          phoneNumber: +123456788
+          subscriptionId: 2ghy-55gg-7iup-yuo9
         time: 2023-01-18T13:18:23.682Z
 
     SUBSCRIPTION_ENDS:
@@ -1097,9 +1097,9 @@ components:
         type: org.camaraproject.sim-swap.v0.subscription-ends
         specversion: "1.0"
         datacontenttype: application/json
-        data: 
-            phoneNumber: +123456789
-            terminationReason: SUBSCRIPTION_EXPIRED
-            subscriptionId: 2ghy-55gg-7iup-yuo9
-            terminationDescription: subscription expire time reached
+        data:
+          phoneNumber: +123456789
+          terminationReason: SUBSCRIPTION_EXPIRED
+          subscriptionId: 2ghy-55gg-7iup-yuo9
+          terminationDescription: subscription expire time reached
         time: 2023-01-19T13:18:23.682Z

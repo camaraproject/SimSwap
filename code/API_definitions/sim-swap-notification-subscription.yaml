@@ -789,7 +789,7 @@ components:
         - type: object
           properties:
             protocolSettings:
-                $ref: "#/components/schemas/AMQPSettings"
+              $ref: "#/components/schemas/AMQPSettings"
 
     AMQPSettings:
       type: object

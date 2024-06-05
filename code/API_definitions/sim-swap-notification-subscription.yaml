@@ -359,7 +359,8 @@ components:
             Note: for the Commonalities meta-release v0.4 we enforce to have only event type per subscription then for following meta-release use of array MUST be decided
              at API project level.
           type: array
-          example: "org.camaraproject.sim-swap.v0.swapped"
+          example: 
+            - "org.camaraproject.sim-swap.v0.swapped"
           items:
             type: string
         config:
@@ -554,7 +555,7 @@ components:
         id:
           type: string
           description: The unique identifier of the subscription in the scope of the subscription manager. When this information is contained within an event notification, this concept SHALL be referred as `subscriptionId` as per [Commonalities Event Notification Model](https://github.com/camaraproject/Commonalities/blob/main/documentation/API-design-guidelines.md#122-event-notification).
-          example: 1119920371
+          example: "1119920371"
         startsAt:
           type: string
           format: date-time
@@ -641,14 +642,17 @@ components:
       type: string
       format: uri-reference
       minLength: 1
-      description: "Identifies the context in which an event happened in the specific Provider Implementation."
-      example:
-        - https://github.com/cloudevents
-        - mailto:cncf-wg-serverless@lists.cncf.io
-        - urn:uuid:6e8bc430-9c3a-11d9-9669-0800200c9a66
-        - cloudevents/spec/pull/123
-        - /sensors/tn-1234567/alerts
-        - 1-555-123-4567
+      description: |
+        Identifies the context in which an event happened, as a non-empty `URI-reference` like:
+        - URI with a DNS authority:
+          * https://github.com/cloudevents
+          * mailto:cncf-wg-serverless@lists.cncf.io
+        - Universally-unique URN with a UUID:
+          * urn:uuid:6e8bc430-9c3a-11d9-9669-0800200c9a66
+        - Application-specific identifier:
+          * /cloudevents/spec/pull/123
+          * 1-555-123-4567
+      example: "https://notificationSendServer12.supertelco.com"
 
     DateTime:
       type: string
@@ -999,6 +1003,7 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           example:
+            status: 415
             code: UNSUPPORTED_MEDIA_TYPE
             message: "The specified media type is not supported"
     CreateSubscription422:
@@ -1026,6 +1031,7 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           example:
+            status: 429
             code: TOO_MANY_REQUESTS
             message: "Endpoint does not support as many requests per time slot"
     Generic500:
@@ -1080,7 +1086,7 @@ components:
   examples:
     SWAPPED:
       value:
-        id: 123655
+        id: "123655"
         source: supertelco.notificationSendServer12
         type: org.camaraproject.sim-swap.v0.swapped
         specversion: "1.0"
@@ -1092,7 +1098,7 @@ components:
 
     SUBSCRIPTION_ENDS:
       value:
-        id: 123658
+        id: "123658"
         source: supertelco.notificationSendServer12
         type: org.camaraproject.sim-swap.v0.subscription-ends
         specversion: "1.0"

@@ -13,7 +13,7 @@ info:
     * **SIM swap**:
     A SIM swap is a process in which a mobile phone user's current SIM card is deactivated or replaced with a new one. This is typically done by contacting the user's mobile service provider and requesting a new SIM card for various reasons, such as a lost or damaged SIM card, upgrading to a new phone, or changing phone numbers while keeping the same device.
 
-    # API Functionality    
+    # API Functionality  
 
     The API exposes following capabilities:
       * **/subscriptions**: This endpoint has two operations, one that allows to retrieve the list of Sim Swap event subscriptions and another one to create new event subscriptions.
@@ -21,19 +21,19 @@ info:
 
     ## Sim Swap notification subscription
 
-    Theses endpoints allow to manage notification subscription on Sim Swap event. 
+    Theses endpoints allow to manage notification subscription on Sim Swap event.
     The CAMARA subscription model is detailed in the CAMARA API design guideline document and follows Cloudevents specification.
 
     It is mandatory in the subscription to provide the event `types` subscribed are several are managed in this API.
 
-    Only one event ``types`` is managed for this API: 
+    Only one event ``types`` is managed for this API:
       - ``org.camaraproject.sim-swap.v0.swapped`` - Event triggered when a sim swap occurs on the associated phoneNumber
 
 
-    Note: Additionally to these list, ``org.camaraproject.sim-swap.v0.subscription-ends`` notification `types` is sent when the subscription ends. 
-    This notification does not require dedicated subscription. 
+    Note: Additionally to these list, ``org.camaraproject.sim-swap.v0.subscription-ends`` notification `types` is sent when the subscription ends.
+    This notification does not require dedicated subscription.
     It is used when:
-      - the subscription expire time (optionally set by the requester) has been reached 
+      - the subscription expire time (optionally set by the requester) has been reached
       - the maximum number of subscription events (optionally set by the requester) has been reached
       - the API server has to stop sending notification prematurely
 
@@ -42,7 +42,7 @@ info:
     This endpoint describes the event notification received on subscription listener side when the event occurred. As for subscription, detailed description of the event notification is provided in the CAMARA API design guideline document.
 
     **WARNING**: This callback endpoint must be exposed on the listener side as `POST /{$request.body#/sink}`
-      will be posted by the sim swap resource server to the webhook url provided by notification 
+      will be posted by the sim swap resource server to the webhook url provided by notification
       listener.
 
     # Authorization and authentication
@@ -115,7 +115,7 @@ paths:
                       SWAPPED:
                         $ref: '#/components/examples/SWAPPED'
                       SUBSCRIPTION_ENDS:
-                        $ref: '#/components/examples/SUBSCRIPTION_ENDS'  
+                        $ref: '#/components/examples/SUBSCRIPTION_ENDS'
               responses:
                 "204":
                   description: Successful notification
@@ -634,8 +634,8 @@ components:
       discriminator:
         propertyName: "type"
         mapping:
-            org.camaraproject.sim-swap.v0.swapped: '#/components/schemas/EventSimSwap'
-            org.camaraproject.sim-swap.v0.subscription-ends: '#/components/schemas/EventSubscriptionEnds'
+          org.camaraproject.sim-swap.v0.swapped: '#/components/schemas/EventSimSwap'
+          org.camaraproject.sim-swap.v0.subscription-ends: '#/components/schemas/EventSubscriptionEnds'
 
     Source:
       type: string
@@ -673,7 +673,7 @@ components:
 
     Swapped:
       description: Event detail structure for ROAMING_ON & ROAMING_OFF event
-      type : object
+      type: object
       required:
         - phoneNumber
         - subscriptionId

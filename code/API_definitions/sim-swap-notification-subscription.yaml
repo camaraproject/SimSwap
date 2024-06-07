@@ -1130,13 +1130,13 @@ components:
       value:
         protocol: HTTP
         sink: https://endpoint.example.com/sink
-        sinkCredential: 
+        sinkCredential:
           credentialType: ACCESSTOKEN
           accessToken: "yJ2ZXIiOiIxLjAiLCJ0eXAiO..."
           accessTokenExpiresUtc: "1717753038"
           accessTokenType: "bearer"
         types:
-        - org.camaraproject.sim-swap-subscriptions.v0.swapped
+          - org.camaraproject.sim-swap-subscriptions.v0.swapped
         config:
           subscriptionDetail:
             phoneNumber: "+123456789"
@@ -1147,13 +1147,13 @@ components:
       value:
         protocol: HTTP
         sink: https://endpoint.example.com/sink
-        sinkCredential: 
+        sinkCredential:
           credentialType: ACCESSTOKEN
           accessToken: "yJ2ZXIiOiIxLjAiLCJ0eXAiO..."
           accessTokenExpiresUtc: "1717753038"
           accessTokenType: "bearer"
         types:
-        - org.camaraproject.sim-swap-subscriptions.v0.swapped
+          - org.camaraproject.sim-swap-subscriptions.v0.swapped
         config:
           subscriptionDetail:
             phoneNumber: "+123456789"
@@ -1168,13 +1168,13 @@ components:
       value:
         - protocol: HTTP
           sink: https://endpoint.example.com/sink
-          sinkCredential: 
+          sinkCredential:
             credentialType: ACCESSTOKEN
             accessToken: "yJ2ZXIiOiIxLjAiLCJ0eXAiO..."
             accessTokenExpiresUtc: "1717753038"
             accessTokenType: "bearer"
           types:
-          - org.camaraproject.sim-swap-subscriptions.v0.swapped
+            - org.camaraproject.sim-swap-subscriptions.v0.swapped
           config:
             subscriptionDetail:
               phoneNumber: "+123456789"

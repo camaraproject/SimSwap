@@ -370,8 +370,6 @@ components:
           description: |
             Camara Event types eligible for subscription:
             - org.camaraproject.sim-swap-subscriptions.v0.swapped: receive a notification when a sim swap is performed on the line.
-            Note: for the Commonalities meta-release v0.4 we enforce to have only event type per subscription then for following meta-release use of array MUST be decided
-             at API project level.
           type: array
           example:
             - "org.camaraproject.sim-swap-subscriptions.v0.swapped"
@@ -398,7 +396,7 @@ components:
     Config:
       description: |
         Implementation-specific configuration parameters needed by the subscription manager for acquiring events.
-        In CAMARA we have predefined attributes like `subscriptionExpireTime` or `subscriptionMaxEvents` to limit subscription lifetime.
+        In CAMARA we have predefined attributes like `subscriptionExpireTime` to limit subscription lifetime.
         Event type attributes must be defined in `subscriptionDetail`
       type: object
       required:
@@ -411,11 +409,6 @@ components:
           format: date-time
           example: 2025-01-17T13:18:23.682Z
           description: The subscription expiration time (in date-time format) requested by the API consumer. Up to API project decision to keep it.
-        subscriptionMaxEvents:
-          type: integer
-          description: Identifies the maximum number of event reports to be generated (>=1) requested by the API consumer - Once this number is reached, the subscription ends. Up to API project decision to keep it.
-          minimum: 1
-          example: 5
     SinkCredential:
       type: object
       properties:
@@ -1141,8 +1134,6 @@ components:
           subscriptionDetail:
             phoneNumber: "+123456789"
           subscriptionExpireTime: '2025-01-17T13:18:23.682Z'
-          subscriptionMaxEvents: 5
-
     SUBSCRIPTION_RESPONSE:
       value:
         protocol: HTTP
@@ -1158,7 +1149,6 @@ components:
           subscriptionDetail:
             phoneNumber: "+123456789"
           subscriptionExpireTime: '2025-01-17T13:18:23.682Z'
-          subscriptionMaxEvents: 5
         id: '1119920371'
         startsAt: '2024-06-07T16:10:15.302Z'
         expiresAt: '2024-06-07T16:10:15.302Z'
@@ -1179,7 +1169,6 @@ components:
             subscriptionDetail:
               phoneNumber: "+123456789"
             subscriptionExpireTime: '2025-01-17T13:18:23.682Z'
-            subscriptionMaxEvents: 5
           id: '1119920371'
           startsAt: '2024-06-07T16:10:15.302Z'
           expiresAt: '2024-06-07T16:10:15.302Z'

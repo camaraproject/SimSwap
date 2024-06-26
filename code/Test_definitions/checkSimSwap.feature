@@ -1,253 +1,176 @@
-#
-# Revision: 0
+Feature: CAMARA SIM Swap API, 0.5.0 - Operation checkSimSwap
 
-Feature: SIM Swap - checkSimSwap
+  # Input to be provided by the implementation to the tester
+  #
+  # Testing assets:
+  #
+  # References to OAS spec schemas refer to schemas specifies in sim_swap.yaml, version 0.5.0
 
-    check if SIM swap has been performed during a past period
+  check if SIM swap has been performed during a past period
 
-    Background: An environment where Operator's API GW exposes checkSimSwap
-        Given an environment with Operator's API GW
-        And the endpoint "sim-swap/v0/check"
-        And the method "post"
-        And the request body is set to:
-            """
-            {
-              "phoneNumber": "+346661113334"
-            }
-            """
-        And the header "x-correlator" is set to "[UUIDv4]"
+  Background: Common checkSimSwap setup
+    Given the resource "sim-swap/v0/check"
+    And the header "Content-Type" is set to "application/json"
+    And the header "Authorization" is set to a valid access token
+    And the header "x-correlator" is set to a UUID value
+    And the request body is set by default to a request body compliant with the schema
 
 
-    # Common errors
+  # This first scenario serves as a minimum, not testing any specific verificationResult
+  @check_sim_swap_1_generic_success_scenario
+  Scenario: Common validations for any sucess scenario
+    Given the request body property "$.phoneNumber" is set to a valid testing phoneNumber
+    When the request "checkSimSwap" is sent
+    Then the response status code is 200
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response body complies with the OAS schema at "/components/schemas/CheckSimSwapInfo"
 
+  # Scenarios testing specific situations
 
-    @checkSimSwap_E10.01
-    Scenario: Error response for expired access token
-        Given I want to test "checkSimSwap"
-        And an expired access_token
-        When I request "checkSimSwap"
-        Then the response status code is "401"
-        And the API returns the error code "UNAUTHENTICATED"
-        And the API returns a human readable error message
+  @check_sim_swap_2_valid_sim_swap_no_max_age
+  Scenario: Check that the response shows that the SIM has been swapped
+    Given the request body property "$.phoneNumber" is set to a phone number connected to the Operator's network that has been swapped in the last 240 hours
+    When the request "checkSimSwap" is sent
+    Then the response status code is 200
+    And the value of response property "$.swapped" == true
 
+  @check_sim_swap_3_valid_sim_swap_max_age
+  Scenario Outline: Check that the response shows that the SIM has been swapped
+    Given the request body property "$.phoneNumber" is set to a phone number connected to the Operator's network that has been swapped in the last "<hours>" hours, where "<hours>" is equal or less than provided "maxAge" request body parameter
+    When the request "checkSimSwap" is sent
+    Then the response status code is 200
+    And the value of response property "$.swapped" == true
 
-    @checkSimSwap_E10.02
-    Scenario: Error response for invalid access token
-        Given I want to test "checkSimSwap"
-        And an invalid access_token
-        When I request "checkSimSwap"
-        Then the response status code is "401"
-        And the API returns the error code "UNAUTHENTICATED"
-        And the API returns a human readable error message
+    Examples:
+      | hours |
+      | 260   |
+      | 120   |
+      | 24    |
+      | 12    |
 
+  @check_sim_swap_4_more_than_240_hours
+  Scenario: Check that the response shows that the SIM has not been swapped when the last swap was more than 240 hours ago
+    Given the request body property "$.phoneNumber" is set to a phone number connected to the Operator's network that has been swapped more than 240 hours ago
+    When the request "checkSimSwap" is sent
+    Then the response status code is 200
+    And the value of response property "$.swapped" == false
 
-    @checkSimSwap_E10.03
-    Scenario: Error response for no header "Authorization"
-        Given I want to test "checkSimSwap"
-        And the header "Authorization" is not sent
-        When I request "checkSimSwap"
-        Then the response status code is "401"
-        And the API returns the error code "UNAUTHENTICATED"
-        And the API returns a human readable error message
+  @check_sim_swap_5_out_of_max_age
+  Scenario: Check that the response shows that the SIM has not been swapped when the last swap was before the maxAge field
+    Given the request body property "$.maxAge" is set to the number of hours since the last SIM swap minus 1
+    And the request body property "$.phoneNumber" is set to a phone number connected to the network whose last SIM swap was more than "$.maxAge" hours ago
+    When the request "checkSimSwap" is sent
+    Then the response status code is 200
+    And the value of response property "$.swapped" == false
 
+  @check_sim_swap_6_no_sim_swap
+  Scenario: Check that the response shows that the SIM has not been swapped
+    Given the request body property "$.phoneNumber" is set to a phone number with a SIM that has never been swapped
+    When the request "checkSimSwap" is sent
+    Then the response status code is 200
+    And the value of response property "$.swapped" == false
 
-    # API Specific Errors
+  # Specific errors
 
+  @check_sim_swap_7_unknown_phone_number
+  Scenario: Error when the phone number does not belong to the Operator
+    Given the request body property "$.phoneNumber" is set to a phone number that does not belong to the Operator
+    When the request "checkSimSwap" is sent
+    Then the response status code is 404
+    And the response property "$.status" is 404
+    And the response property "$.code" is "SIM_SWAP.UNKNOWN_PHONE_NUMBER"
+    And the response property "$.message" contains a user friendly text
 
-    @checkSimSwap_E19.101_InvalidPhoneNumber
-    Scenario: Check that the response shows an error when the phone number is invalid
-        Given I want to test "checkSimSwap"
-        And a valid access_token
-        And the variable "[CONTEXT: phoneNumber]" is set to an invalid phone number
-        And the request body is set to:
-            """
-            {
-              "phoneNumber": "[CONTEXT: phoneNumber]"
-            }
-            """
-        When I request "checkSimSwap"
-        Then the response status code is "400"
-        And the API returns the error code "INVALID_ARGUMENT"
-        And the API returns a human readable error message
+  @check_sim_swap_8_phone_number_provided_does_not_belong_to_the_user
+  Scenario: Error when provided phone number does not belong to the user
+    Given the request body property "$.phoneNumber" is set to a valid testing phoneNumber that does not belong to the user
+    And the header "Authorization" is set to a valid access token emitted for a different phone number
+    When the request "checkSimSwap" is sent
+    Then the response status code is 404
+    And the response property "$.status" is 404
+    And the response property "$.code" is "NOT_FOUND"
+    And the response property "$.message" contains a user friendly text
 
+  @check_sim_swap_9_phone_number_provided_does_not_match_the_token
+  Scenario: Error when the phone number provided in the request body belongs to the user but does not match the phone number asssociated with the access token
+    Given the request body property "$.phoneNumber" is set to a valid testing phoneNumber that belongs to the user but does not match the one associated with the token
+    And the header "Authorization" is set to a valid access token
+    When the request "checkSimSwap" is sent
+    Then the response status code is 403
+    And the response property "$.status" is 403
+    And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
+    And the response property "$.message" contains a user friendly text
 
-    @checkSimSwap_E19.102_NoPhoneNumber
-    Scenario: Check that the response shows an error when the phone number is missing
-        Given I want to test "checkSimSwap"
-        And a valid access_token
-        And the request body is set to:
-            """
-            {}
-            """
-        When I request "checkSimSwap"
-        Then the response status code is "400"
-        And the API returns the error code "INVALID_ARGUMENT"
-        And the API returns a human readable error message
+  @check_sim_swap_10_phone_number_provided_cannot_be_deducted_from_access_token
+  Scenario: Error when the phone number is provided in the request body but cannot be deducted from the access token
+    Given the request body property "$.phoneNumber" is set to a valid testing phoneNumber of the user
+    And the header "Authorization" is set to a valid access token from which the phone number cannot be deduced
+    When the request "checkSimSwap" is sent
+    Then the response status code is 403
+    And the response property "$.status" is 403
+    And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
+    And the response property "$.message" contains a user friendly text
 
+  @check_sim_swap_11_phone_number_not_provided_and_cannot_be_deducted_from_access_token
+  Scenario: Error when phone number can not be deducted from access token and it is not provided in the request body
+    Given the header "Authorization" is set to a valid access token from which the phone number cannot be deduced
+    When the request "checkSimSwap" is sent
+    Then the response status code is 403
+    And the response property "$.status" is 403
+    And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
+    And the response property "$.message" contains a user friendly text
 
-    @checkSimSwap_E19.103_UnknownPhoneNumber
-    Scenario: Check that the response shows an error when the phone number does not belong to the Operator
-        Given I want to test "checkSimSwap"
-        And a valid access_token
-        And the variable "[CONTEXT: phoneNumber]" is set to a phone number that does not belong to the Operator
-        And the request body is set to:
-            """
-            {
-              "phoneNumber": "[CONTEXT: phoneNumber]"
-            }
-            """
-        When I request "checkSimSwap"
-        Then the response status code is "404"
-        And the API returns the error code "SIM_SWAP.UNKNOWN_PHONE_NUMBER"
-        And the API returns a human readable error message
+  @check_sim_swap_12_phone_number_conflict
+  Scenario: Error when another request is created for the same phoneNumber
+    Given the request body property "$.phoneNumber" is set to a valid testing phoneNumber
+    And the header "Authorization" is set to a valid access token emitted
+    And another request is created for the same phoneNumber
+    When the request "checkSimSwap" is sent
+    Then the response status code is 409
+    And the response property "$.status" is 409
+    And the response property "$.code" is "CONFLICT"
+    And the response property "$.message" contains a user friendly text
 
+  # Generic 401 errors
 
-    @checkSimSwap_E19.104_PhoneNumberProvidedDoesNotMatchTheAccessToken
-    Scenario: Check that the response shows an error when phone number provided does not match the one in the access token
-        Given I want to test "checkSimSwap"
-        And a valid access_token
-        And the access token identifies the user
-        And the access token contains a phone number from the user
-        And the variable "[CONTEXT: phoneNumber]" is set to a phone number that did not match the one encoded in the access token
-        And the request body is set to:
-            """
-            {
-              "phoneNumber": "[CONTEXT: phoneNumber]"
-            }
-            """
-        When I request "checkSimSwap"
-        Then the response status code is "403"
-        And the API returns the error code "SIM_SWAP.INVALID_TOKEN_CONTEXT"
-        And the API returns a human readable error message
+  @check_sim_swap_401.1_no_authorization_header
+  Scenario: No Authorization header
+    Given the header "Authorization" is removed
+    And the request body is set to a valid request body
+    When the request "checkSimSwap" is sent
+    Then the response status code is "401"
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
 
+  @check_sim_swap_401.2_expired_access_token
+  Scenario: Expired access token
+    Given the header "Authorization" is set to an expired access token
+    And the request body is set to a valid request body
+    When the request "checkSimSwap" is sent
+    Then the response status code is "401"
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
 
-    @checkSimSwap_E19.105_PhoneNumberProvidedIsNotPresentInAccessToken
-    Scenario: Check that the response shows an error when phone number provided is not present in the access token
-        Given I want to test "checkSimSwap"
-        And a valid access_token
-        And the access token identifies the user
-        And the access token does not contain a phone number from the user
-        And the variable "[CONTEXT: phoneNumber]" is set to a phone number of the user
-        And the request body is set to:
-            """
-            {
-              "phoneNumber": "[CONTEXT: phoneNumber]"
-            }
-            """
-        When I request "checkSimSwap"
-        Then the response status code is "403"
-        And the API returns the error code "SIM_SWAP.INVALID_TOKEN_CONTEXT"
-        And the API returns a human readable error message
+  @check_sim_swap_401.3_invalid_access_token
+  Scenario: Invalid access token
+    Given the header "Authorization" is set to an invalid access token
+    And the request body is set to a valid request body
+    When the request "checkSimSwap" is sent
+    Then the response status code is "401"
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
 
+  # Generic 400 errors
 
-    @checkSimSwap_E19.106_PhoneNumberNotProvidedAndAccessTokenDoesNotContainPhoneNumber
-    Scenario: Check that the response shows an error when phone number can not be deducted from access token and it is not provided in the request body
-        Given I want to test "checkSimSwap"
-        And a valid access_token
-        And the access token identifies the user
-        And the access token does not contain a phone number from the user
-        And the variable "[CONTEXT: phoneNumber]" is set to a phone number of the user
-        And the request body is set to:
-            """
-            {
-              "phoneNumber": ""
-            }
-            """
-        When I request "checkSimSwap"
-        Then the response status code is "403"
-        And the API returns the error code "SIM_SWAP.INVALID_TOKEN_CONTEXT"
-        And the API returns a human readable error message
-
-
-    # API Specific validations
-
-
-    @checkSimSwap_30.101_ValidSimSwapNoMaxAge
-    Scenario: Check that the response shows that the SIM has been swapped
-        Given I want to test "checkSimSwap" for a user which have a phone number connected to the Operator's network and swapped in the last 240 hours
-        And a valid access_token
-        And the variable "[CONTEXT: phoneNumber]" is set to a phone number connected to the network that has been swapped in the last 240 hours
-        And the request body is set to:
-            """
-            {
-              "phoneNumber": "[CONTEXT: phoneNumber]"
-            }
-            """
-        When I request "checkSimSwap"
-        Then the response status code is "200"
-        And the value of response property "$.swapped" == true
-
-
-    @checkSimSwap_30.102_ValidSimSwapMaxAge
-    Scenario Outline: Check that the response shows that the SIM has been swapped
-        Given I want to test "checkSimSwap" for a user which have a phone number connected to the Operator's network and swapped in the last "<hours>" hours
-        And a valid access_token
-        And the variable "[CONTEXT: phoneNumber]" is set to a phone number connected to the network that has been swapped in the last "<hours>" hours, where "<hours>" is equal or less than provided "maxAge" request body parameter
-        And the request body is set to:
-            """
-            {
-              "phoneNumber": "[CONTEXT: phoneNumber]",
-              "maxAge": 260
-            }
-            """
-        When I request "checkSimSwap"
-        Then the response status code is "200"
-        And the value of response property "$.swapped" == true
-
-        Examples:
-            | hours |
-            | 260   |
-            | 120   |
-            | 24    |
-            | 12    |
-
-
-    @checkSimSwap_30.103_MoreThan240Hours
-    Scenario: Check that the response shows that the SIM has not been swapped when the last swap was more than 240 hours ago
-        Given I want to test "checkSimSwap" for a user which have a phone number connected to the Operator's network and swapped more than 240 hours ago
-        And a valid access_token
-        And the variable "[CONTEXT: phoneNumber]" is set to a phone number connected to the network that has been swapped more than 240 hours ago
-        And the request body is set to:
-            """
-            {
-              "phoneNumber": "[CONTEXT: phoneNumber]"
-            }
-            """
-        When I request "checkSimSwap"
-        Then the response status code is "200"
-        And the value of response property "$.swapped" == false
-
-
-    @checkSimSwap_30.104_OutOfMaxAge
-    Scenario: Check that the response shows that the SIM has not been swapped when the last swap was before the maxAge field
-        Given I want to test "checkSimSwap" for a user which have a phone number connected to the Operator's network and swapped more than the maxAge field ago
-        And a valid access_token
-        And the variable "[CONTEXT: maxAge]" is set to the number of hours since the last SIM swap minus 1
-        And the variable "[CONTEXT: phoneNumber]" is set to a phone number connected to the network whose last SIM swap was more than "[CONTEXT: maxAge]" hours ago
-        And the request body is set to:
-            """
-            {
-              "phoneNumber": "[CONTEXT: phoneNumber]",
-              "maxAge": "[CONTEXT: maxAge]"
-            }
-            """
-        When I request "checkSimSwap"
-        Then the response status code is "200"
-        And the value of response property "$.swapped" == false
-
-
-    @checkSimSwap_30.105_NoSimSwap
-    Scenario: Check that the response shows that the SIM has not been swapped
-        Given I want to test "checkSimSwap" for a user which have a SIM that has never been swapped
-        And a valid access_token
-        And the variable "[CONTEXT: phoneNumber]" is set to a phone number with a SIM that has never been swapped
-        And the request body is set to:
-            """
-            {
-              "phoneNumber": "[CONTEXT: phoneNumber]"
-            }
-            """
-        When I request "checkSimSwap"
-        Then the response status code is "200"
-        And the value of response property "$.swapped" == false
-
+  @check_sim_swap_400.1_invalid_phone_number
+  Scenario: Check that the response shows an error when the phone number is invalid
+    Given the request body property "$.phoneNumber" does not comply with the OAS schema at "/components/schemas/PhoneNumber"
+    When the request "checkSimSwap" is sent
+    Then the response status code is 400
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text

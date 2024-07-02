@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Sim Swap Notification Subscription
+  title: Sim Swap Subscriptions
   description: |
     This API provides the customer with the ability to subscribe to event related to a sim swap operation performed on an associated phone number.
 
@@ -48,7 +48,9 @@ info:
 
     # Authorization and authentication
 
-    CAMARA guidelines defines a set of authorization flows which can grant API clients access to the API functionality, as outlined in the document [CAMARA-API-access-and-user-consent.md](https://github.com/camaraproject/IdentityAndConsentManagement/blob/main/documentation/CAMARA-API-access-and-user-consent.md). Which specific authorization flows are to be used will be determined during onboarding process, happening between the API Client and the Telco Operator exposing the API, taking into account the declared purpose for accessing the API, while also being subject to the prevailing legal framework dictated by local legislation.
+    [Camara Security and Interoperability Profile](https://github.com/camaraproject/IdentityAndConsentManagement/blob/main/documentation/CAMARA-Security-Interoperability.md) provides details on how a client requests an access token.
+
+    Which specific authorization flows are to be used will be determined during onboarding process, happening between the API Client and the Telco Operator exposing the API, taking into account the declared purpose for accessing the API, while also being subject to the prevailing legal framework dictated by local legislation.
 
     It is important to remark that in cases where personal user data is processed by the API, and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of 3-legged access tokens becomes mandatory. This measure ensures that the API remains in strict compliance with user privacy preferences and regulatory obligations, upholding the principles of transparency and user-centric data control.
 
@@ -73,14 +75,14 @@ servers:
         default: http://localhost:9091
         description: API root
 tags:
-  - name: Sim Swap Notification Subscription
+  - name: Sim Swap Subscription
     description: Operation to manage event subscription on sim swap event (swapped)
 
 paths:
   /subscriptions:
     post:
       tags:
-        - Sim Swap Notification Subscription
+        - Sim Swap Subscription
       summary: 'Create a sim swap event subscription for a phone number'
       description: Create a sim swap event subscription for a phone number
       operationId: createSimSwapSubscription
@@ -186,7 +188,7 @@ paths:
           $ref: "#/components/responses/Generic503"
     get:
       tags:
-        - Sim Swap Notification Subscription
+        - Sim Swap Subscription
       summary: 'Retrieve a list of sim swap event subscription'
       description: Retrieve a list of sim swap event subscription(s)
       operationId: retrieveSubscriptionList
@@ -225,7 +227,7 @@ paths:
   /subscriptions/{subscriptionId}:
     get:
       tags:
-        - Sim Swap Notification Subscription
+        - Sim Swap Subscription
       summary: 'Retrieve a sim swap event subscription for a phone number'
       description: retrieve event subscription information for a given subscription.
       operationId: retrieveSubscription
@@ -262,7 +264,7 @@ paths:
           $ref: "#/components/responses/Generic503"
     delete:
       tags:
-        - Sim Swap Notification Subscription
+        - Sim Swap Subscription
       summary: 'Delete a sim swap event subscription'
       operationId: deleteSubscription
       description: delete a  given event subscription.
@@ -371,10 +373,10 @@ components:
             Camara Event types eligible for subscription:
             - org.camaraproject.sim-swap-subscriptions.v0.swapped: receive a notification when a sim swap is performed on the line.
           type: array
-          example:
-            - "org.camaraproject.sim-swap-subscriptions.v0.swapped"
+          minItems: 1
+          maxItems: 1
           items:
-            type: string
+            $ref: "#/components/schemas/SubscriptionEventType"
         config:
           $ref: "#/components/schemas/Config"
       discriminator:
@@ -386,6 +388,13 @@ components:
           AMQP: "#/components/schemas/AMQPSubscriptionRequest"
           NATS: "#/components/schemas/NATSSubscriptionRequest"
           KAFKA: "#/components/schemas/ApacheKafkaSubscriptionRequest"
+
+    SubscriptionEventType:
+      type: string
+      description: |
+        swapped - Event triggered when a sim swap occurs on the line
+      enum:
+        - org.camaraproject.sim-swap-subscriptions.v0.swapped
 
     Protocol:
       type: string
@@ -508,7 +517,6 @@ components:
         phoneNumber:
           $ref: '#/components/schemas/PhoneNumber'
 
-
     CreateSubscriptionDetail:
       description: The detail of the requested event subscription
       type: object
@@ -555,8 +563,10 @@ components:
             Note: for the Commonalities meta-release v0.4 we enforce to have only event type per subscription then for following meta-release use of array MUST be decided
              at API project level.
           type: array
+          minItems: 1
+          maxItems: 1
           items:
-            type: string
+            $ref: "#/components/schemas/SubscriptionEventType"
         config:
           $ref: '#/components/schemas/Config'
         id:

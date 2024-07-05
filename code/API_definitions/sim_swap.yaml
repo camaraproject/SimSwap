@@ -24,7 +24,7 @@ info:
     **SIM swap**:
     A SIM swap is a process in which a user's mobile phone number (MSISDN) is associated with a new SIM card (IMSI). This is typically done by contacting the user's mobile service provider and requesting a new SIM card for various reasons, such as a lost or damaged SIM card or upgrading to a new phone.
 
-    SimSwap also happens during other actions like changing user's phone number, changing mobile service provider keeping user's mobile phone number or when activating a new SIM associated to the same phone number, known as multisim service.
+    SIM swap also happens during other actions like changing user's phone number, changing mobile service provider keeping user's mobile phone number or when activating a new SIM associated to the same phone number, known as multisim service. New subscription is considered as a SIM swap as well, the MSISDN which can be used by another person earlier, is associated with a SIM card it was not associated before.
 
     # API functionality
 
@@ -72,13 +72,13 @@ paths:
             - sim-swap
       tags:
         - Retrieve SIM swap date
-      description: Get timestamp of last MSISDN <-> IMSI pairing change for a mobile user account provided with MSIDN.
+      description: Get timestamp of last SIM swap event for a mobile user account provided with phone number.
       operationId: retrieveSimSwapDate
       parameters:
         - $ref: '#/components/parameters/x-correlator'
       requestBody:
         description: |
-          Create a SIM swap date request for a MSISDN identifier.
+          Create a SIM swap date request for a phone number.
         content:
           application/json:
             schema:
@@ -125,7 +125,7 @@ paths:
         - $ref: '#/components/parameters/x-correlator'
       requestBody:
         description: |
-          Create a check SIM swap request for a MSISDN identifier.
+          Create a check SIM swap request for a phone number.
         content:
           application/json:
             schema:
@@ -307,7 +307,7 @@ components:
           example:
             status: 409
             code: CONFLICT
-            message: Another request is created for the same MSISDN
+            message: Another request is created for the same phone number
     Generic500:
       description: Server error
       headers:

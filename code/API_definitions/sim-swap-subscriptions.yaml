@@ -1,0 +1,1186 @@
+openapi: 3.0.3
+info:
+  title: Sim Swap Subscriptions
+  description: |
+    This API provides the customer with the ability to subscribe to event related to a sim swap operation performed on an associated phone number.
+
+    # Introduction
+
+    This API empowers service providers and network operators with a seamless mechanism for managing and monitoring SIM card swaps, a process often used in legitimate device upgrades or replacements but also susceptible to abuse in fraudulent activities.
+
+    # Relevant terms and definitions
+
+    * **SIM swap**:
+    A SIM swap is a process in which a mobile phone user's current SIM card is deactivated or replaced with a new one. This is typically done by contacting the user's mobile service provider and requesting a new SIM card for various reasons, such as a lost or damaged SIM card, upgrading to a new phone, or changing phone numbers while keeping the same device.
+
+    # API Functionality
+
+    The API exposes following capabilities:
+      * **/subscriptions**: This endpoint has two operations, one that allows to retrieve the list of Sim Swap event subscriptions and another one to create new event subscriptions.
+      * **/subscriptions/{subscriptionId}**: This endpoint also has two operations, one that allows to retrieve a particular event subscription by id and another one to delete an event subscription also using the id.
+
+    ## Sim Swap notification subscription
+
+    Theses endpoints allow to manage notification subscription on Sim Swap event.
+    The CAMARA subscription model is detailed in the CAMARA API design guideline document and follows Cloudevents specification.
+
+    It is mandatory in the subscription to provide the event `types` subscribed are several are managed in this API.
+
+    Only one event ``types`` is managed for this API:
+      - ``org.camaraproject.sim-swap-subscriptions.v0.swapped`` - Event triggered when a sim swap occurs on the associated phoneNumber
+
+
+    Note: Additionally to these list, ``org.camaraproject.sim-swap-subscriptions.v0.subscription-ends`` notification `types` is sent when the subscription ends.
+    This notification does not require dedicated subscription.
+    It is used when:
+      - the subscription expire time (optionally set by the requester) has been reached
+      - the maximum number of subscription events (optionally set by the requester) has been reached
+      - the API server has to stop sending notification prematurely
+      - the Access Token sinkCredential (optionally set by the requester) expiration time has been reached
+
+    ### Notification callback
+
+    This endpoint describes the event notification received on subscription listener side when the event occurred. As for subscription, detailed description of the event notification is provided in the CAMARA API design guideline document.
+
+    **WARNING**: This callback endpoint must be exposed on the listener side as `POST /{$request.body#/sink}`
+      will be posted by the sim swap resource server to the webhook url provided by notification
+      listener.
+
+    # Authorization and authentication
+
+    [Camara Security and Interoperability Profile](https://github.com/camaraproject/IdentityAndConsentManagement/blob/main/documentation/CAMARA-Security-Interoperability.md) provides details on how a client requests an access token.
+
+    Which specific authorization flows are to be used will be determined during onboarding process, happening between the API Client and the Telco Operator exposing the API, taking into account the declared purpose for accessing the API, while also being subject to the prevailing legal framework dictated by local legislation.
+
+    It is important to remark that in cases where personal user data is processed by the API, and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of 3-legged access tokens becomes mandatory. This measure ensures that the API remains in strict compliance with user privacy preferences and regulatory obligations, upholding the principles of transparency and user-centric data control.
+
+    # Further info and support
+
+    (FAQs will be added in a later version of the documentation)
+
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: project-email@sample.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: wip
+externalDocs:
+  description: Product documentation at CAMARA
+  url: https://github.com/camaraproject/
+servers:
+  - url: '{apiRoot}/sim-swap-subscriptions/v0'
+    variables:
+      apiRoot:
+        default: http://localhost:9091
+        description: API root
+tags:
+  - name: Sim Swap Subscription
+    description: Operation to manage event subscription on sim swap event (swapped)
+
+paths:
+  /subscriptions:
+    post:
+      tags:
+        - Sim Swap Subscription
+      summary: 'Create a sim swap event subscription for a phone number'
+      description: Create a sim swap event subscription for a phone number
+      operationId: createSimSwapSubscription
+      parameters:
+        - $ref: "#/components/parameters/x-correlator"
+      security:
+        - openId:
+            - sim-swap-subscriptions:org.camaraproject.sim-swap-subscriptions.v0.swapped:create
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubscriptionRequest"
+            examples:
+              SUBSCRIPTION_REQUEST:
+                $ref: '#/components/examples/SUBSCRIPTION_REQUEST'
+        required: true
+      callbacks:
+        notifications:
+          "{$request.body#/sink}":
+            post:
+              summary: "notifications callback"
+              description: |
+                Important: this endpoint is to be implemented by the API consumer.
+                The sim swap server will call this endpoint whenever a swapped event occurs.
+              operationId: postNotification
+              parameters:
+                - $ref: "#/components/parameters/x-correlator"
+              requestBody:
+                required: true
+                content:
+                  application/cloudevents+json:
+                    schema:
+                      $ref: "#/components/schemas/CloudEvent"
+                    examples:
+                      SWAPPED:
+                        $ref: '#/components/examples/SWAPPED'
+                      SUBSCRIPTION_ENDS:
+                        $ref: '#/components/examples/SUBSCRIPTION_ENDS'
+              responses:
+                "204":
+                  description: Successful notification
+                  headers:
+                    x-correlator:
+                      $ref: "#/components/headers/x-correlator"
+                "400":
+                  $ref: "#/components/responses/Generic400"
+                "401":
+                  $ref: "#/components/responses/Generic401"
+                "403":
+                  $ref: "#/components/responses/Generic403"
+                "410":
+                  $ref: "#/components/responses/Generic410"
+                "429":
+                  $ref: "#/components/responses/Generic429"
+                "500":
+                  $ref: "#/components/responses/Generic500"
+                "503":
+                  $ref: "#/components/responses/Generic503"
+              security:
+                - {}
+                - notificationsBearerAuth: []
+
+      responses:
+        "201":
+          description: Created
+          headers:
+            x-correlator:
+              $ref: "#/components/headers/x-correlator"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Subscription"
+              examples:
+                SUBSCRIPTION_RESPONSE:
+                  $ref: '#/components/examples/SUBSCRIPTION_RESPONSE'
+        "202":
+          description: Request accepted to be processed. It applies for async creation process.
+          headers:
+            x-correlator:
+              $ref: "#/components/headers/x-correlator"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionAsync"
+        "400":
+          $ref: "#/components/responses/CreateSubscriptionBadRequest400"
+        "401":
+          $ref: "#/components/responses/Generic401"
+        "403":
+          $ref: "#/components/responses/CreateSubscription403"
+        "409":
+          $ref: "#/components/responses/Generic409"
+        "415":
+          $ref: "#/components/responses/Generic415"
+        "422":
+          $ref: "#/components/responses/CreateSubscription422"
+        "429":
+          $ref: "#/components/responses/Generic429"
+        "500":
+          $ref: "#/components/responses/Generic500"
+        "503":
+          $ref: "#/components/responses/Generic503"
+    get:
+      tags:
+        - Sim Swap Subscription
+      summary: 'Retrieve a list of sim swap event subscription'
+      description: Retrieve a list of sim swap event subscription(s)
+      operationId: retrieveSubscriptionList
+      parameters:
+        - $ref: "#/components/parameters/x-correlator"
+      security:
+        - openId:
+            - sim-swap-subscriptions:read
+      responses:
+        "200":
+          description: List of event subscription details
+          headers:
+            x-correlator:
+              $ref: "#/components/headers/x-correlator"
+          content:
+            application/json:
+              schema:
+                type: array
+                minItems: 0
+                items:
+                  $ref: '#/components/schemas/Subscription'
+              examples:
+                SUBSCRIPTIONS:
+                  $ref: '#/components/examples/SUBSCRIPTIONS'
+
+        "400":
+          $ref: "#/components/responses/Generic400"
+        "401":
+          $ref: "#/components/responses/Generic401"
+        "403":
+          $ref: "#/components/responses/Generic403"
+        "500":
+          $ref: "#/components/responses/Generic500"
+        "503":
+          $ref: "#/components/responses/Generic503"
+  /subscriptions/{subscriptionId}:
+    get:
+      tags:
+        - Sim Swap Subscription
+      summary: 'Retrieve a sim swap event subscription for a phone number'
+      description: retrieve event subscription information for a given subscription.
+      operationId: retrieveSubscription
+      security:
+        - openId:
+            - sim-swap-subscriptions:read
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionId"
+        - $ref: "#/components/parameters/x-correlator"
+      responses:
+        "200":
+          description: OK
+          headers:
+            x-correlator:
+              $ref: "#/components/headers/x-correlator"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Subscription"
+              examples:
+                SUBSCRIPTION:
+                  $ref: '#/components/examples/SUBSCRIPTION_RESPONSE'
+        "400":
+          $ref: "#/components/responses/SubscriptionIdRequired"
+        "401":
+          $ref: "#/components/responses/Generic401"
+        "403":
+          $ref: "#/components/responses/Generic403"
+        "404":
+          $ref: "#/components/responses/Generic404"
+        "500":
+          $ref: "#/components/responses/Generic500"
+        "503":
+          $ref: "#/components/responses/Generic503"
+    delete:
+      tags:
+        - Sim Swap Subscription
+      summary: 'Delete a sim swap event subscription'
+      operationId: deleteSubscription
+      description: delete a  given event subscription.
+      security:
+        - openId:
+            - sim-swap-subscriptions:delete
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionId"
+        - $ref: "#/components/parameters/x-correlator"
+      responses:
+        "204":
+          description: Sim swap notification subscription deleted
+          headers:
+            x-correlator:
+              $ref: "#/components/headers/x-correlator"
+        "202":
+          description: Request accepted to be processed. It applies for async deletion process.
+          headers:
+            x-correlator:
+              $ref: "#/components/headers/x-correlator"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionAsync"
+        "400":
+          $ref: "#/components/responses/SubscriptionIdRequired"
+        "401":
+          $ref: "#/components/responses/Generic401"
+        "403":
+          $ref: "#/components/responses/Generic403"
+        "404":
+          $ref: "#/components/responses/Generic404"
+        "500":
+          $ref: "#/components/responses/Generic500"
+        "503":
+          $ref: "#/components/responses/Generic503"
+components:
+  securitySchemes:
+    openId:
+      type: openIdConnect
+      openIdConnectUrl: https://example.com/.well-known/openid-configuration
+  parameters:
+    SubscriptionId:
+      name: subscriptionId
+      in: path
+      description: Subscription identifier that was obtained from the create event subscription operation
+      required: true
+      schema:
+        $ref: "#/components/schemas/SubscriptionId"
+    x-correlator:
+      name: x-correlator
+      in: header
+      description: Correlation id for the different services
+      schema:
+        type: string
+  headers:
+    x-correlator:
+      description: Correlation id for the different services
+      schema:
+        type: string
+  schemas:
+    PhoneNumber:
+      type: string
+      pattern: '^\+[1-9][0-9]{4,14}$'
+      example: '+123456789'
+      description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
+    ErrorInfo:
+      type: object
+      required:
+        - status
+        - code
+        - message
+      properties:
+        status:
+          type: integer
+          description: HTTP response status code
+        code:
+          type: string
+          description: Code given to this error
+        message:
+          type: string
+          description: Detailed error description
+
+    SubscriptionRequest:
+      description: The request for creating a sim swap event subscription
+      type: object
+      required:
+        - sink
+        - protocol
+        - config
+        - types
+      properties:
+        protocol:
+          $ref: "#/components/schemas/Protocol"
+        sink:
+          type: string
+          format: url
+          description: The address to which events shall be delivered using the selected protocol.
+          example: "https://endpoint.example.com/sink"
+        sinkCredential:
+          allOf:
+            - description: A sink credential provides authentication or authorization information necessary to enable delivery of events to a target.
+            - $ref: "#/components/schemas/SinkCredential"
+        types:
+          description: |
+            Camara Event types eligible for subscription:
+            - org.camaraproject.sim-swap-subscriptions.v0.swapped: receive a notification when a sim swap is performed on the line.
+          type: array
+          minItems: 1
+          maxItems: 1
+          items:
+            $ref: "#/components/schemas/SubscriptionEventType"
+        config:
+          $ref: "#/components/schemas/Config"
+      discriminator:
+        propertyName: protocol
+        mapping:
+          HTTP: "#/components/schemas/HTTPSubscriptionRequest"
+          MQTT3: "#/components/schemas/MQTTSubscriptionRequest"
+          MQTT5: "#/components/schemas/MQTTSubscriptionRequest"
+          AMQP: "#/components/schemas/AMQPSubscriptionRequest"
+          NATS: "#/components/schemas/NATSSubscriptionRequest"
+          KAFKA: "#/components/schemas/ApacheKafkaSubscriptionRequest"
+
+    SubscriptionEventType:
+      type: string
+      description: |
+        swapped - Event triggered when a sim swap occurs on the line
+      enum:
+        - org.camaraproject.sim-swap-subscriptions.v0.swapped
+
+    Protocol:
+      type: string
+      enum: ["HTTP", "MQTT3", "MQTT5", "AMQP", "NATS", "KAFKA"]
+      description: Identifier of a delivery protocol. Only HTTP is allowed for now
+      example: "HTTP"
+
+    Config:
+      description: |
+        Implementation-specific configuration parameters needed by the subscription manager for acquiring events.
+        In CAMARA we have predefined attributes like `subscriptionExpireTime` to limit subscription lifetime.
+        Event type attributes must be defined in `subscriptionDetail`
+      type: object
+      required:
+        - subscriptionDetail
+      properties:
+        subscriptionDetail:
+          $ref: "#/components/schemas/CreateSubscriptionDetail"
+        subscriptionExpireTime:
+          type: string
+          format: date-time
+          example: 2025-01-17T13:18:23.682Z
+          description: The subscription expiration time (in date-time format) requested by the API consumer. Up to API project decision to keep it.
+    SinkCredential:
+      type: object
+      properties:
+        credentialType:
+          type: string
+          enum:
+            - PLAIN
+            - ACCESSTOKEN
+            - REFRESHTOKEN
+          description: "The type of the credential."
+      discriminator:
+        propertyName: credentialType
+        mapping:
+          PLAIN: "#/components/schemas/PlainCredential"
+          ACCESSTOKEN: "#/components/schemas/AccessTokenCredential"
+          REFRESHTOKEN: "#/components/schemas/RefreshTokenCredential"
+      required:
+        - credentialType
+    PlainCredential:
+      type: object
+      description: A plain credential as a combination of an identifier and a secret.
+      allOf:
+        - $ref: "#/components/schemas/SinkCredential"
+        - type: object
+          required:
+            - identifier
+            - secret
+          properties:
+            identifier:
+              description: The identifier might be an account or username.
+              type: string
+            secret:
+              description: The secret might be a password or passphrase.
+              type: string
+    AccessTokenCredential:
+      type: object
+      description: An access token credential.
+      allOf:
+        - $ref: "#/components/schemas/SinkCredential"
+        - type: object
+          properties:
+            accessToken:
+              description: REQUIRED. An access token is a previously acquired token granting access to the target resource.
+              type: string
+            accessTokenExpiresUtc:
+              type: string
+              format: date-time
+              description: REQUIRED. An absolute UTC instant at which the token shall be considered expired.
+            accessTokenType:
+              description: REQUIRED. Type of the access token (See [OAuth 2.0](https://tools.ietf.org/html/rfc6749#section-7.1)).
+              type: string
+              enum:
+                - bearer
+          required:
+            - accessToken
+            - accessTokenExpiresUtc
+            - accessTokenType
+    RefreshTokenCredential:
+      type: object
+      description: An access token credential with a refresh token.
+      allOf:
+        - $ref: "#/components/schemas/SinkCredential"
+        - type: object
+          properties:
+            accessToken:
+              description: REQUIRED. An access token is a previously acquired token granting access to the target resource.
+              type: string
+            accessTokenExpiresUtc:
+              type: string
+              format: date-time
+              description: REQUIRED. An absolute UTC instant at which the token shall be considered expired.
+            accessTokenType:
+              description: REQUIRED. Type of the access token (See [OAuth 2.0](https://tools.ietf.org/html/rfc6749#section-7.1)).
+              type: string
+              enum:
+                - bearer
+            refreshToken:
+              description: REQUIRED. An refresh token credential used to acquire access tokens.
+              type: string
+            refreshTokenEndpoint:
+              type: string
+              format: uri
+              description: REQUIRED. A URL at which the refresh token can be traded for an access token.
+      required:
+        - accessToken
+        - accessTokenExpiresUtc
+        - accessTokenType
+        - refreshToken
+        - refreshTokenEndpoint
+
+    SubscriptionDetail:
+      description: The detail of the requested event subscription
+      type: object
+      required:
+        - phoneNumber
+      properties:
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+
+    CreateSubscriptionDetail:
+      description: The detail of the requested event subscription
+      type: object
+      required:
+        - phoneNumber
+      properties:
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+
+    SimSwapNotificationEventType:
+      type: string
+      description: |
+        swapped - Event triggered when a sim swap was performed for this phone number
+
+        subscription-ends: Event triggered when the subscription ends
+      enum:
+        - org.camaraproject.sim-swap-subscriptions.v0.swapped
+        - org.camaraproject.sim-swap-subscriptions.v0.subscription-ends
+
+    Subscription:
+      description: Represents a event-type subscription.
+      type: object
+      required:
+        - sink
+        - protocol
+        - config
+        - types
+        - id
+        - startsAt
+      properties:
+        protocol:
+          $ref: "#/components/schemas/Protocol"
+        sink:
+          type: string
+          format: url
+          description: The address to which events shall be delivered using the selected protocol.
+          example: "https://endpoint.example.com/sink"
+        sinkCredential:
+          $ref: '#/components/schemas/SinkCredential'
+        types:
+          description: |
+            Camara Event types eligible for subscription:
+            - org.camaraproject.sim-swap-subscriptions.v0.swapped: receive a notification when a sim swap is performed on the line.
+            Note: for the Commonalities meta-release v0.4 we enforce to have only event type per subscription then for following meta-release use of array MUST be decided
+             at API project level.
+          type: array
+          minItems: 1
+          maxItems: 1
+          items:
+            $ref: "#/components/schemas/SubscriptionEventType"
+        config:
+          $ref: '#/components/schemas/Config'
+        id:
+          type: string
+          description: The unique identifier of the subscription in the scope of the subscription manager. When this information is contained within an event notification, this concept SHALL be referred as `subscriptionId` as per [Commonalities Event Notification Model](https://github.com/camaraproject/Commonalities/blob/main/documentation/API-design-guidelines.md#122-event-notification).
+          example: "1119920371"
+        startsAt:
+          type: string
+          format: date-time
+          description: Date when the event subscription will begin/began
+        expiresAt:
+          type: string
+          format: date-time
+          description: Date when the event subscription will expire. Only provided when `subscriptionExpireTime` is indicated by API client or Telco Operator has specific policy about that.
+        status:
+          type: string
+          description: |-
+            Current status of the subscription - Management of Subscription State engine is not mandatory for now. Note not all statuses may be considered to be implemented. Details:
+              - `ACTIVATION_REQUESTED`: Subscription creation (POST) is triggered but subscription creation process is not finished yet.
+              - `ACTIVE`: Subscription creation process is completed. Subscription is fully operative.
+              - `INACTIVE`: Subscription is temporarily inactive, but its workflow logic is not deleted.
+              - `EXPIRED`: Subscription is ended (no longer active). This status applies when subscription is ended due to `SUBSCRIPTION_EXPIRED` event.
+              - `DELETED`: Subscription is ended as deleted (no longer active). This status applies when subscription information is kept (i.e. subscription workflow is no longer active but its metainformation is kept).
+          enum:
+            - ACTIVATION_REQUESTED
+            - ACTIVE
+            - EXPIRED
+            - INACTIVE
+            - DELETED
+      discriminator:
+        propertyName: protocol
+        mapping:
+          HTTP: '#/components/schemas/HTTPSubscriptionResponse'
+          MQTT3: '#/components/schemas/MQTTSubscriptionResponse'
+          MQTT5: '#/components/schemas/MQTTSubscriptionResponse'
+          AMQP: '#/components/schemas/AMQPSubscriptionResponse'
+          NATS: '#/components/schemas/NATSSubscriptionResponse'
+          KAFKA: '#/components/schemas/ApacheKafkaSubscriptionResponse'
+
+    SubscriptionAsync:
+      description: Response for a event-type subscription request managed asynchronously (Creation or Deletion)
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/SubscriptionId"
+
+    SubscriptionId:
+      type: string
+      description: The unique identifier of the subscription in the scope of the subscription manager. When this information is contained within an event notification, this concept SHALL be referred as subscriptionId as per Commonalities Event Notification Model.
+      example: qs15-h556-rt89-1298
+
+    CloudEvent:
+      description: The notification callback
+      required:
+        - id
+        - source
+        - specversion
+        - type
+        - time
+      properties:
+        id:
+          type: string
+          description: identifier of this event, that must be unique in the source context.
+        source:
+          $ref: "#/components/schemas/Source"
+        type:
+          $ref: "#/components/schemas/SimSwapNotificationEventType"
+        specversion:
+          type: string
+          description: Version of the specification to which this event conforms (must be 1.0 if it conforms to cloudevents 1.0.2 version)
+          enum:
+            - "1.0"
+        datacontenttype:
+          type: string
+          description: 'media-type that describes the event payload encoding, must be "application/json" for CAMARA APIs'
+          enum:
+            - application/json
+        data:
+          type: object
+          description: Event details payload described in each CAMARA API and referenced by its type
+        time:
+          $ref: "#/components/schemas/DateTime"
+      discriminator:
+        propertyName: "type"
+        mapping:
+          org.camaraproject.sim-swap-subscriptions.v0.swapped: '#/components/schemas/EventSimSwap'
+          org.camaraproject.sim-swap-subscriptions.v0.subscription-ends: '#/components/schemas/EventSubscriptionEnds'
+
+    Source:
+      type: string
+      format: uri-reference
+      minLength: 1
+      description: |
+        Identifies the context in which an event happened, as a non-empty `URI-reference` like:
+        - URI with a DNS authority:
+          * https://github.com/cloudevents
+          * mailto:cncf-wg-serverless@lists.cncf.io
+        - Universally-unique URN with a UUID:
+          * urn:uuid:6e8bc430-9c3a-11d9-9669-0800200c9a66
+        - Application-specific identifier:
+          * /cloudevents/spec/pull/123
+          * 1-555-123-4567
+      example: "https://notificationSendServer12.supertelco.com"
+
+    DateTime:
+      type: string
+      format: date-time
+      description: Timestamp of when the occurrence happened. Must adhere to RFC 3339.
+      example: "2018-04-05T17:31:00Z"
+
+    Event-typeEvent:
+      description: event structure for event-type event
+      allOf:
+        - $ref: "#/components/schemas/CloudEvent"
+        - type: object
+
+    EventSubscriptionEnds:
+      description: event structure for event subscription ends
+      allOf:
+        - $ref: "#/components/schemas/CloudEvent"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/SubscriptionEnds"
+
+    Swapped:
+      description: Event detail structure for ROAMING_ON & ROAMING_OFF event
+      type: object
+      required:
+        - phoneNumber
+        - subscriptionId
+      properties:
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+        subscriptionId:
+          $ref: "#/components/schemas/SubscriptionId"
+
+    SubscriptionEnds:
+      description: Event detail structure for SUBSCRIPTION_ENDS event
+      type: object
+      required:
+        - terminationReason
+        - subscriptionId
+      properties:
+        terminationReason:
+          $ref: "#/components/schemas/TerminationReason"
+        subscriptionId:
+          $ref: "#/components/schemas/SubscriptionId"
+        terminationDescription:
+          type: string
+
+    TerminationReason:
+      type: string
+      description: |
+        - NETWORK_TERMINATED - API server stopped sending notification
+        - SUBSCRIPTION_EXPIRED - Subscription expire time (optionally set by the requester) has been reached
+        - MAX_EVENTS_REACHED - Maximum number of events (optionally set by the requester) has been reached
+        - ACCESS_TOKEN_EXPIRED - Access Token sinkCredential (optionally set by the requester) expiration time has been reached
+      enum:
+        - MAX_EVENTS_REACHED
+        - NETWORK_TERMINATED
+        - SUBSCRIPTION_EXPIRED
+        - ACCESS_TOKEN_EXPIRED
+
+    HTTPSubscriptionRequest:
+      allOf:
+        - $ref: "#/components/schemas/SubscriptionRequest"
+        - type: object
+          properties:
+            protocolSettings:
+              $ref: "#/components/schemas/HTTPSettings"
+
+    HTTPSubscriptionResponse:
+      allOf:
+        - $ref: "#/components/schemas/Subscription"
+        - type: object
+          properties:
+            protocolSettings:
+              $ref: "#/components/schemas/HTTPSettings"
+
+    HTTPSettings:
+      type: object
+      properties:
+        headers:
+          type: object
+          description: |-
+            A set of key/value pairs that is copied into the HTTP request as custom headers.
+
+            NOTE: Use/Applicability of this concept has not been discussed in Commonalities under the scope of Meta Release v0.4. When required by an API project as an option to meet a UC/Requirement, please generate an issue for Commonalities discussion about it.
+          additionalProperties:
+            type: string
+        method:
+          type: string
+          description: The HTTP method to use for sending the message.
+          enum:
+            - POST
+
+    MQTTSubscriptionRequest:
+      allOf:
+        - $ref: "#/components/schemas/SubscriptionRequest"
+        - type: object
+          properties:
+            protocolSettings:
+              $ref: "#/components/schemas/MQTTSettings"
+
+    MQTTSubscriptionResponse:
+      allOf:
+        - $ref: "#/components/schemas/Subscription"
+        - type: object
+          properties:
+            protocolSettings:
+              $ref: "#/components/schemas/MQTTSettings"
+
+    MQTTSettings:
+      type: object
+      properties:
+        topicName:
+          type: string
+        qos:
+          type: integer
+          format: int32
+        retain:
+          type: boolean
+        expiry:
+          type: integer
+          format: int32
+        userProperties:
+          type: object
+      required:
+        - topicName
+
+    AMQPSubscriptionRequest:
+      allOf:
+        - $ref: "#/components/schemas/SubscriptionRequest"
+        - type: object
+          properties:
+            protocolSettings:
+              $ref: "#/components/schemas/AMQPSettings"
+
+    AMQPSubscriptionResponse:
+      allOf:
+        - $ref: "#/components/schemas/Subscription"
+        - type: object
+          properties:
+            protocolSettings:
+              $ref: "#/components/schemas/AMQPSettings"
+
+    AMQPSettings:
+      type: object
+      properties:
+        address:
+          type: string
+        linkName:
+          type: string
+        senderSettlementMode:
+          type: string
+          enum: ["settled", "unsettled"]
+        linkProperties:
+          type: object
+          additionalProperties:
+            type: string
+
+    ApacheKafkaSubscriptionRequest:
+      allOf:
+        - $ref: "#/components/schemas/SubscriptionRequest"
+        - type: object
+          properties:
+            protocolSettings:
+              $ref: "#/components/schemas/ApacheKafkaSettings"
+
+    ApacheKafkaSubscriptionResponse:
+      allOf:
+        - $ref: "#/components/schemas/Subscription"
+        - type: object
+          properties:
+            protocolSettings:
+              $ref: "#/components/schemas/ApacheKafkaSettings"
+
+    ApacheKafkaSettings:
+      type: object
+      properties:
+        topicName:
+          type: string
+        partitionKeyExtractor:
+          type: string
+        clientId:
+          type: string
+        ackMode:
+          type: integer
+      required:
+        - topicName
+
+    NATSSubscriptionRequest:
+      allOf:
+        - $ref: "#/components/schemas/SubscriptionRequest"
+        - type: object
+          properties:
+            protocolSettings:
+              $ref: "#/components/schemas/NATSSettings"
+
+    NATSSubscriptionResponse:
+      allOf:
+        - $ref: "#/components/schemas/Subscription"
+        - type: object
+          properties:
+            protocolSettings:
+              $ref: "#/components/schemas/NATSSettings"
+
+    NATSSettings:
+      type: object
+      properties:
+        subject:
+          type: string
+      required:
+        - subject
+  responses:
+    CreateSubscriptionBadRequest400:
+      description: Problem with the client request
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            InvalidArgument:
+              value:
+                status: 400
+                code: "INVALID_ARGUMENT"
+                message: "Client specified an invalid argument, request body or query param"
+            InvalidProtocol:
+              value:
+                status: 400
+                code: "INVALID_PROTOCOL"
+                message: "Only HTTP is supported"
+            InvalidCredential:
+              value:
+                status: 400
+                code: "INVALID_CREDENTIAL"
+                message: "Only Access token is supported"
+            InvalidToken:
+              value:
+                status: 400
+                code: "INVALID_TOKEN"
+                message: "Only bearer token is supported"
+    Generic400:
+      description: Problem with the client request
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          example:
+            status: 400
+            code: "INVALID_ARGUMENT"
+            message: "Client specified an invalid argument, request body or query param"
+    Generic401:
+      description: Authentication problem with the client request
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          example:
+            status: 401
+            code: "UNAUTHENTICATED"
+            message: "Request not authenticated due to missing, invalid, or expired credentials"
+
+    CreateSubscription403:
+      description: Client does not have sufficient permission
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            PermissionDenied:
+              value:
+                status: 403
+                code: "PERMISSION_DENIED"
+                message: "Client does not have sufficient permissions to perform this action"
+            TokenMismatch:
+              value:
+                status: 403
+                code: "SUBSCRIPTION_MISMATCH"
+                message: "Inconsistent access token for requested events subscription"
+    Generic403:
+      description: Client does not have sufficient permission
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          example:
+            status: 403
+            code: "PERMISSION_DENIED"
+            message: "Client does not have sufficient permissions to perform this action"
+    Generic404:
+      description: Resource Not Found
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          example:
+            status: 404
+            code: NOT_FOUND
+            message: "The specified resource is not found"
+    Generic409:
+      description: Conflict
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          example:
+            status: 409
+            code: CONFLICT
+            message: "The specified resource is in a conflict"
+    Generic410:
+      description: Gone
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          example:
+            status: 410
+            code: GONE
+            message: "The specified resource is no longer available at the requested address"
+    Generic415:
+      description: Unsupported Media Type
+      headers:
+        X-Correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          example:
+            status: 415
+            code: UNSUPPORTED_MEDIA_TYPE
+            message: "The specified media type is not supported"
+    CreateSubscription422:
+      description: Unprocessable Entity
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            PermissionDenied:
+              value:
+                status: 422
+                code: "MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED"
+                message: "Multi event types subscription not managed"
+    Generic429:
+      description: Too Many Requests
+      headers:
+        X-Correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          example:
+            status: 429
+            code: TOO_MANY_REQUESTS
+            message: "Endpoint does not support as many requests per time slot"
+    Generic500:
+      description: Server error
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          example:
+            status: 500
+            code: "INTERNAL"
+            message: "Server error"
+    Generic503:
+      description: Service unavailable. Typically the server is down.
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          example:
+            status: 503
+            code: "UNAVAILABLE"
+            message: "Service unavailable"
+    SubscriptionIdRequired:
+      description: Problem with the client request
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            Generic400:
+              summary: Schema validation failed
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: "Client specified an invalid argument, request body or query param"
+            subscriptionIdRequired:
+              summary: subscription id is required
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: "Expected property is missing: subscriptionId"
+
+  examples:
+    SWAPPED:
+      value:
+        id: "123655"
+        source: supertelco.notificationSendServer12
+        type: org.camaraproject.sim-swap-subscriptions.v0.swapped
+        specversion: "1.0"
+        datacontenttype: application/json
+        data:
+          phoneNumber: "+123456788"
+          subscriptionId: 2ghy-55gg-7iup-yuo9
+        time: 2023-01-18T13:18:23.682Z
+
+    SUBSCRIPTION_ENDS:
+      value:
+        id: "123658"
+        source: supertelco.notificationSendServer12
+        type: org.camaraproject.sim-swap-subscriptions.v0.subscription-ends
+        specversion: "1.0"
+        datacontenttype: application/json
+        data:
+          phoneNumber: "+123456789"
+          terminationReason: SUBSCRIPTION_EXPIRED
+          subscriptionId: 2ghy-55gg-7iup-yuo9
+          terminationDescription: subscription expire time reached
+        time: 2023-01-19T13:18:23.682Z
+
+    SUBSCRIPTION_REQUEST:
+      value:
+        protocol: HTTP
+        sink: https://endpoint.example.com/sink
+        sinkCredential:
+          credentialType: ACCESSTOKEN
+          accessToken: "yJ2ZXIiOiIxLjAiLCJ0eXAiO..."
+          accessTokenExpiresUtc: "1717753038"
+          accessTokenType: "bearer"
+        types:
+          - org.camaraproject.sim-swap-subscriptions.v0.swapped
+        config:
+          subscriptionDetail:
+            phoneNumber: "+123456789"
+          subscriptionExpireTime: '2025-01-17T13:18:23.682Z'
+    SUBSCRIPTION_RESPONSE:
+      value:
+        protocol: HTTP
+        sink: https://endpoint.example.com/sink
+        sinkCredential:
+          credentialType: ACCESSTOKEN
+          accessToken: "yJ2ZXIiOiIxLjAiLCJ0eXAiO..."
+          accessTokenExpiresUtc: "1717753038"
+          accessTokenType: "bearer"
+        types:
+          - org.camaraproject.sim-swap-subscriptions.v0.swapped
+        config:
+          subscriptionDetail:
+            phoneNumber: "+123456789"
+          subscriptionExpireTime: '2025-01-17T13:18:23.682Z'
+        id: '1119920371'
+        startsAt: '2024-06-07T16:10:15.302Z'
+        expiresAt: '2024-06-07T16:10:15.302Z'
+        status: ACTIVATION_REQUESTED
+
+    SUBSCRIPTIONS:
+      value:
+        - protocol: HTTP
+          sink: https://endpoint.example.com/sink
+          sinkCredential:
+            credentialType: ACCESSTOKEN
+            accessToken: "yJ2ZXIiOiIxLjAiLCJ0eXAiO..."
+            accessTokenExpiresUtc: "1717753038"
+            accessTokenType: "bearer"
+          types:
+            - org.camaraproject.sim-swap-subscriptions.v0.swapped
+          config:
+            subscriptionDetail:
+              phoneNumber: "+123456789"
+            subscriptionExpireTime: '2025-01-17T13:18:23.682Z'
+          id: '1119920371'
+          startsAt: '2024-06-07T16:10:15.302Z'
+          expiresAt: '2024-06-07T16:10:15.302Z'
+          status: ACTIVATION_REQUESTED

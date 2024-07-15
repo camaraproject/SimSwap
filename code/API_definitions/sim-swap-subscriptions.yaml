@@ -90,7 +90,8 @@ paths:
         - $ref: "#/components/parameters/x-correlator"
       security:
         - openId:
-            - sim-swap-subscriptions:org.camaraproject.sim-swap-subscriptions.v0.swapped:read
+            - sim-swap-subscriptions:org.camaraproject.sim-swap-subscriptions.v0.swapped:create
+
       requestBody:
         content:
           application/json:

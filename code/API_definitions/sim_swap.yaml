@@ -102,6 +102,8 @@ paths:
           $ref: "#/components/responses/Generic403"
         "404":
           $ref: "#/components/responses/Generic404"
+        "422":
+          $ref: "#/components/responses/Generic422"
         "500":
           $ref: "#/components/responses/Generic500"
         "503":
@@ -147,6 +149,8 @@ paths:
           $ref: "#/components/responses/Generic403"
         "404":
           $ref: "#/components/responses/Generic404"
+        "422":
+          $ref: "#/components/responses/Generic422"
         "500":
           $ref: "#/components/responses/Generic500"
         "503":
@@ -285,7 +289,7 @@ components:
               value:
                 status: 403
                 code: INVALID_TOKEN_CONTEXT
-                message: "{{field}} is not consistent with access token."
+                message: phoneNumber is not consistent with access token
     Generic404:
       description: Not found
       headers:
@@ -302,6 +306,22 @@ components:
                 status: 404
                 code: NOT_FOUND
                 message: The specified resource is not found.
+    Generic422:
+      description: Unprocessable Content
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            GENERIC_422_NOT_SUPPORTED:
+              description: Not Supported
+              value:
+                status: 422
+                code: NOT_SUPPORTED
+                message: Service not supported for this phoneNumber
     Generic500:
       description: Internal Server Error
       headers:

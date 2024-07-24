@@ -60,13 +60,13 @@ Feature: CAMARA SIM Swap API, 0.5.0 - Operation retrieveSimSwapDate
 
   # Specific errors
 
-  @retrieve_sim_swap_date_6_unknown_phone_number
-  Scenario: Check that the response shows an error when the phone number does not belong to the Operator
-    Given the request body property "$.phoneNumber" is set to a phone number that does not belong to the Operator
+  @retrieve_sim_swap_date_6_phone_number_not_supported
+  Scenario: Error when the service is not supported for the provided phone number
+    Given the request body property "$.phoneNumber" is set to a phone number for which the service is not available
     When the request "retrieveSimSwapDate" is sent
-    Then the response status code is 404
-    And the response property "$.status" is 404
-    And the response property "$.code" is "SIM_SWAP.UNKNOWN_PHONE_NUMBER"
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "NOT_SUPPORTED"
     And the response property "$.message" contains a user friendly text
 
   @retrieve_sim_swap_date_7_phone_number_provided_does_not_belong_to_the_user
@@ -106,17 +106,6 @@ Feature: CAMARA SIM Swap API, 0.5.0 - Operation retrieveSimSwapDate
     Then the response status code is 403
     And the response property "$.status" is 403
     And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
-    And the response property "$.message" contains a user friendly text
-
-  @retrieve_sim_swap_date_11_phone_number_conflict
-  Scenario: Check that the response shows an error when another request is created for the same phoneNumber
-    Given the request body property "$.phoneNumber" is set to a valid testing phone number
-    And the header "Authorization" is set to a valid access token emitted
-    And another request is created for the same phoneNumber
-    When the request "retrieveSimSwapDate" is sent
-    Then the response status code is "409"
-    And the response property "$.status" is 409
-    And the response property "$.code" is "CONFLICT"
     And the response property "$.message" contains a user friendly text
 
   # Generic 401 errors

@@ -73,13 +73,13 @@ Feature: CAMARA SIM Swap API, 0.5.0 - Operation checkSimSwap
 
   # Specific errors
 
-  @check_sim_swap_7_unknown_phone_number
-  Scenario: Error when the phone number does not belong to the Operator
-    Given the request body property "$.phoneNumber" is set to a phone number that does not belong to the Operator
+  @check_sim_swap_7_phone_number_not_supported
+  Scenario: Error when the service is not supported for the provided phone number
+    Given the request body property "$.phoneNumber" is set to a phone number for which the service is not available
     When the request "checkSimSwap" is sent
-    Then the response status code is 404
-    And the response property "$.status" is 404
-    And the response property "$.code" is "SIM_SWAP.UNKNOWN_PHONE_NUMBER"
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "NOT_SUPPORTED"
     And the response property "$.message" contains a user friendly text
 
   @check_sim_swap_8_phone_number_provided_does_not_belong_to_the_user
@@ -121,17 +121,6 @@ Feature: CAMARA SIM Swap API, 0.5.0 - Operation checkSimSwap
     And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
     And the response property "$.message" contains a user friendly text
 
-  @check_sim_swap_12_phone_number_conflict
-  Scenario: Error when another request is created for the same phoneNumber
-    Given the request body property "$.phoneNumber" is set to a valid testing phoneNumber
-    And the header "Authorization" is set to a valid access token emitted
-    And another request is created for the same phoneNumber
-    When the request "checkSimSwap" is sent
-    Then the response status code is 409
-    And the response property "$.status" is 409
-    And the response property "$.code" is "CONFLICT"
-    And the response property "$.message" contains a user friendly text
-
   # Generic 401 errors
 
   @check_sim_swap_401.1_no_authorization_header
@@ -169,6 +158,15 @@ Feature: CAMARA SIM Swap API, 0.5.0 - Operation checkSimSwap
   @check_sim_swap_400.1_invalid_phone_number
   Scenario: Check that the response shows an error when the phone number is invalid
     Given the request body property "$.phoneNumber" does not comply with the OAS schema at "/components/schemas/PhoneNumber"
+    When the request "checkSimSwap" is sent
+    Then the response status code is 400
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
+  @check_sim_swap_400.2_invalid_max_age
+  Scenario: Check that the response shows an error when the max age is invalid
+    Given the request body property "$.maxAge" does not comply with the OAS schema at "/components/schemas/CreateCheckSimSwap"
     When the request "checkSimSwap" is sent
     Then the response status code is 400
     And the response property "$.status" is 400

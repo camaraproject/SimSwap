@@ -15,5 +15,6 @@ Checklist for sim-swap-subscriptions 0.1.0-alpha.1 in FALL24
 |  8 | Enhanced API test cases & documentation      |   O   |         O         |    O    |    M   |  N   | NR    |
 |  9 | Test result statement                        |   O   |         O         |    O    |    M   |  N   | NR   |
 | 10 | API release numbering convention applied     |   M   |         M         |    M    |    M   |  Y   |  Y    |
-| 11 | Change log updated                           |   M   |         M         |    M    |    M   |  N   | to be provided |
+| 11 | Change log updated                           |   M   |         M         |    M    |    M   |  N   | [link](/CHANGELOG.md) |
+
 | 12 | Previous public release was certified        |   O   |         O         |    O    |    M   |  N   | NR    | 

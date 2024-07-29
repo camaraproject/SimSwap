@@ -1,6 +1,7 @@
 # API Readiness Checklist
 
-Checklist for sim-swap-subscriptions 0.1.0-alpha1 in FALL24
+Checklist for sim-swap-subscriptions 0.1.0-alpha.1 in FALL24
+
 
 | Nr | API release assets  | alpha | release-candidate |  initial<br>public | stable<br> public | Status | Comments |
 |----|----------------------------------------------|:-----:|:-----------------:|:-------:|:------:|:----:|:----:|

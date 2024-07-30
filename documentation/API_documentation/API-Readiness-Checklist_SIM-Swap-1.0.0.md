@@ -4,18 +4,18 @@ Checklist for SIM Swap 1.0.0 in FALL24
 
 | Nr | API release assets  | alpha | release-candidate |  initial<br>public | stable<br> public | Status | Comments |
 |----|----------------------------------------------|:-----:|:-----------------:|:-------:|:------:|:----:|:----:|
-|  1 | API definition                               |   M   |         M         |    M    |    M   |      | link |
-|  2 | Design guidelines from Commonalities applied |   O   |         M         |    M    |    M   |      |      |
-|  3 | Guidelines from ICM applied                  |   O   |         M         |    M    |    M   |      |      |
-|  4 | API versioning convention applied            |   M   |         M         |    M    |    M   |      |      |
-|  5 | API documentation                            |   M   |         M         |    M    |    M   |      | link |
-|  6 | User stories                                 |   O   |         O         |    O    |    M   |      | link |
-|  7 | Basic API test cases & documentation         |   O   |         M         |    M    |    M   |      | link |
-|  8 | Enhanced API test cases & documentation      |   O   |         O         |    O    |    M   |      | link |
-|  9 | Test result statement                        |   O   |         O         |    O    |    M   |      | link |
-| 10 | API release numbering convention applied     |   M   |         M         |    M    |    M   |      |      |
-| 11 | Change log updated                           |   M   |         M         |    M    |    M   |      | link |
-| 12 | Previous public release was certified        |   O   |         O         |    O    |    M   |      |      |
+|  1 | API definition                               |   M   |         M         |    M    |    M   |  Y   | [link](code/API_definitions/sim_swap.yaml) |
+|  2 | Design guidelines from Commonalities applied |   O   |         M         |    M    |    M   |   Y  |      |
+|  3 | Guidelines from ICM applied                  |   O   |         M         |    M    |    M   |   Y  |      |
+|  4 | API versioning convention applied            |   M   |         M         |    M    |    M   |   Y  |      |
+|  5 | API documentation                            |   M   |         M         |    M    |    M   |   Y  | Embed documentation into API spec - [link](/code/API_definitions/sim_swap.yaml) |
+|  6 | User stories                                 |   O   |         O         |    O    |    M   |   Y  | [check](documentation/API_documentation/SIM-Swap_check_User_Story.md) [retrieve] |
+|  7 | Basic API test cases & documentation         |   O   |         M         |    M    |    M   |   Y  | [PR#70](https://github.com/camaraproject/SimSwap/pull/70) |
+|  8 | Enhanced API test cases & documentation      |   O   |         O         |    O    |    M   |   Y  | [PR#70](https://github.com/camaraproject/SimSwap/pull/70) |
+|  9 | Test result statement                        |   O   |         O         |    O    |    M   |   N  |      |
+| 10 | API release numbering convention applied     |   M   |         M         |    M    |    M   |   Y  |      |
+| 11 | Change log updated                           |   M   |         M         |    M    |    M   |   Y  | [link](/CHANGELOG.md) |
+| 12 | Previous public release was certified        |   O   |         O         |    O    |    M   |   N  |      |
 
 To fill the checklist:
 - in the line above the table, replace the api-name, api-version and the rx.y by their actual values for the current API version and release.

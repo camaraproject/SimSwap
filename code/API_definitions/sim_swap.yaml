@@ -322,6 +322,12 @@ components:
                 status: 422
                 code: NOT_SUPPORTED
                 message: Service not supported for this phoneNumber
+            UNIDENTIFIABLE_PHONE_NUMBER:
+              description: The phone number is not included in the request and the phone number information cannot be derived from the 3-legged access token
+              value:
+                status: 422
+                code: UNIDENTIFIABLE_PHONE_NUMBER
+                message: The phone number cannot be identified
     Generic500:
       description: Internal Server Error
       headers:

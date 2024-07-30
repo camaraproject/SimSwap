@@ -40,6 +40,30 @@ info:
 
     It is important to remark that in cases where personal user data is processed by the API, and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of 3-legged access tokens becomes mandatory. This measure ensures that the API remains in strict compliance with user privacy preferences and regulatory obligations, upholding the principles of transparency and user-centric data control.
 
+    # Identifying a phone number from the access token
+
+    This specification defines the `phoneNumber` field as optional in API requests, specifically in cases where the API is accessed using a 3-legged access token, and the phone number can be uniquely identified by the token. This approach simplifies API usage for API consumers by relying on the information associated with the access token used to invoke the API.
+
+    ## Handling of phone number information:
+
+    ### Optional `phoneNumber` field for 3-legged tokens:
+
+    - When using a 3-legged access token, the phone number associated with the access token must be considered as the phone number for the API request. This means that the `phoneNumber` field is not required in the request, and if included it must identify the same phone number, therefore **it is recommended NOT to include it in these scenarios** to simplify the API usage and avoid additional validations.
+
+    ### Validation mechanism:
+
+    - The server will extract the phone number identification from the access token, if available.
+    - If the API request additionally includes a `phoneNumber` field when using a 3-legged access token, the API will validate that the phone number provided matches the one associated with the access token.
+    - If there is a mismatch, the API will respond with a 403 - INVALID_TOKEN_CONTEXT error, indicating that the phone number information in the request does not match the token.
+
+    ### Error handling for unidentifiable phone number:
+
+    - If the `phoneNumber` field is not included in the request and the phone number information cannot be derived from the 3-legged access token, the server will return a 422 `UNIDENTIFIABLE_PHONE_NUMBER` error.
+
+    ### Restrictions for tokens without an associated authenticated phone number:
+
+    - For scenarios which do not have a phone number associated to the token during the authentication flow, e.g. 2-legged access tokens, the `phoneNumber` field MUST be provided in the API request. This ensures that the phone number is explicit and valid for each API call made with these tokens.
+
     # Further info and support
 
     [GSMA Mobile Connect Account Takeover Protection specification](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.24-Mobile-Connect-Account-Takeover-Protection-Definition-and-Technical-Requirements-v2.0.pdf) was used as source of input for this API. For more about Mobile Connect, please see [Mobile Connect website](https://mobileconnect.io/).

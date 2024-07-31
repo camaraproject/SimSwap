@@ -19,7 +19,7 @@ The below sections record the changes for each API version in each release as fo
 
 This release contains the definition and documentation of
 * Sim Swap API 1.0.0-rc.1
-* Sim Swap Subscriptions v0.1.0-alpha1
+* Sim Swap Subscriptions v0.1.0-alpha.1
 
 The API definition(s) are based on
 * Commonalities v0.4.0
@@ -52,9 +52,9 @@ This version contains significant changes compared to v0.4.0, and it is not back
 
 * n/a
 
-## Sim Swap Subscriptions v0.1.0-alpha1
+## Sim Swap Subscriptions v0.1.0-alpha.1
 
-**sim-swap-subscriptions v0.1.0-alpha1 is the first alpha version for CAMARA Sim Swap subscription API**
+**sim-swap-subscriptions v0.1.0-alpha.1 is the first alpha version for CAMARA Sim Swap subscription API**
 
 - API definition **with inline documentation**:
     - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/r1.1/code/API_definitions/sim-swap-subscriptions.yaml)

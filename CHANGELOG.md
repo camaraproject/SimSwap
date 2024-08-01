@@ -44,7 +44,6 @@ This version contains significant changes compared to v0.4.0, and it is not back
 ### Changed
 * Make response properties "latestSimChange" and "swapped" required since they will always be returned [Issue 96](https://github.com/camaraproject/SimSwap/issues/96)
 * Update SIM Swap & SIM Swap notification subscription yaml to make the '+' mandatory for phoneNumber by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/100
-* Add README file to indicate shift to Confluence page by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/101
 * phone number instead of MSISDN to follow communalities guidelines by @gregory1g in https://github.com/camaraproject/SimSwap/pull/116
 * Remove unused errors and align with commonalities errors by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/126
 

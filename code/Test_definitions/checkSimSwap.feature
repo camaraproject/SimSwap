@@ -30,14 +30,17 @@ Feature: CAMARA SIM Swap API, 1.0.0 - Operation checkSimSwap
 
   @check_sim_swap_2_valid_sim_swap_no_max_age
   Scenario: Check that the response shows that the SIM has been swapped
-    Given the request header "Authorization" is set to a valid access token from which a phone number connected to the Operator's network that has been swapped in the last 240 hours can be deducted
+    Given the request header "Authorization" is set to a valid access token from which a phone number connected to the Operator's network can be deducted
+    And the SIM for this phone number has been swapped in the last 240 hours
     When the request "checkSimSwap" is sent
     Then the response status code is 200
     And the value of response property "$.swapped" == true
 
   @check_sim_swap_3_valid_sim_swap_max_age
   Scenario Outline: Check that the response shows that the SIM has been swapped
-    Given the request header "Authorization" is set to a valid access token from which a phone number connected to the Operator's network that has been swapped in the last "<hours>" hours, where "<hours>" is equal or less than provided "maxAge" request body parameter can be deducted
+    Given the request header "Authorization" is set to a valid access token from which a phone number connected to the Operator's network can be deducted
+    And the SIM for this phone number has been swapped in the last "<hours>"
+    And the "maxAge" request body property is set to a value equal or greater than "<hours>" within the allowed range
     When the request "checkSimSwap" is sent
     Then the response status code is 200
     And the value of response property "$.swapped" == true
@@ -51,22 +54,25 @@ Feature: CAMARA SIM Swap API, 1.0.0 - Operation checkSimSwap
 
   @check_sim_swap_4_more_than_240_hours
   Scenario: Check that the response shows that the SIM has not been swapped when the last swap was more than 240 hours ago
-    Given the request header "Authorization" is set to a valid access token from which a phone number connected to the Operator's network that has been swapped more than 240 hours ago can be deducted
+    Given the request header "Authorization" is set to a valid access token from which a phone number connected to the Operator's network can be deducted
+    And the SIM for this phone number has been swapped more than 240 hours ago
     When the request "checkSimSwap" is sent
     Then the response status code is 200
     And the value of response property "$.swapped" == false
 
   @check_sim_swap_5_out_of_max_age
   Scenario: Check that the response shows that the SIM has not been swapped when the last swap was before the maxAge field
-    Given the request header "Authorization" is set to a valid access token from which a phone number connected to the network whose last SIM swap was more than "$.maxAge" hours ago can be deducted
-    And the request body property "$.maxAge" is set to the number of hours since the last SIM swap minus 1
+    Given the request header "Authorization" is set to a valid access token from which a phone number connected to the Operator's network can be deducted
+    And the request body property "maxAge" is set to the number of hours since the last SIM swap minus 1
+    And the last swap for this phone number's SIM was more than "maxAge" hours ago 
     When the request "checkSimSwap" is sent
     Then the response status code is 200
     And the value of response property "$.swapped" == false
 
   @check_sim_swap_6_no_sim_swap
   Scenario: Check that the response shows that the SIM has not been swapped
-    Given the request header "Authorization" is set to a valid access token from which a phone number with a SIM that has never been swapped can be deducted
+    Given the request header "Authorization" is set to a valid access token from which a phone number connected to the Operator's network can be deducted
+    And the SIM for this phone number has never been swapped
     When the request "checkSimSwap" is sent
     Then the response status code is 200
     And the value of response property "$.swapped" == false
@@ -84,7 +90,7 @@ Feature: CAMARA SIM Swap API, 1.0.0 - Operation checkSimSwap
 
   @check_sim_swap_8_phone_number_provided_does_not_match_the_token
   Scenario: Error when the phone number provided in the request body does not match the phone number asssociated with the access token
-    Given the request body property "$.phoneNumber" is set to a valid testing phoneNumber does not match the one associated with the token
+    Given the request body property "$.phoneNumber" is set to a valid testing phoneNumber that does not match the one associated with the token
     And the header "Authorization" is set to a valid access token
     When the request "checkSimSwap" is sent
     Then the response status code is 403

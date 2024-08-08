@@ -2,7 +2,94 @@
 
 ## Table of Contents
 
+- [r1.1](#r11)
 - [v0.4.0](#v040)
+
+**Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until it has been released. For example, changes may be reverted before a release is published. For the best results, use the latest published release.**
+
+The below sections record the changes for each API version in each release as follows:
+
+* for each first alpha or release-candidate API version, all changes since the release of the previous public API version
+* for subsequent alpha or release-candidate API versions, the delta with respect to the previous pre-release
+* for a public API version, the consolidated changes since the release of the previous public API version
+
+# r1.1 - rc
+
+## Release Notes
+
+This release contains the definition and documentation of
+* Sim Swap API 1.0.0-rc.1
+* Sim Swap Subscriptions v0.1.0-alpha.1
+
+The API definition(s) are based on
+* Commonalities v0.4.0
+* Identity and Consent Management v0.2.0
+
+## Sim Swap v1.0.0-rc.1
+
+**sim-swap 1.0.0-rc.1 is the first release-candidate version for the v1.0.0 of the Sim Swap API**
+This version contains significant changes compared to v0.4.0, and it is not backward compatible.
+
+- API definition **with inline documentation**:
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/r1.1/code/API_definitions/sim_swap.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/blob/r1.1/code/API_definitions/sim_swap.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/blob/r1.1/code/API_definitions/sim_swap.yaml)
+
+### Added
+
+* User Story in documentation/API_documentation directory by @jgarciahospital [PR125](https://github.com/camaraproject/SimSwap/pull/125)
+* Test Definition in Test_Definitions directory by @fernandopradocabrillo [PR70](https://github.com/camaraproject/SimSwap/pull/70)
+* add API-Name aka wild-card scope by @AxelNennker in https://github.com/camaraproject/SimSwap/pull/103
+
+### Changed
+* Make response properties "latestSimChange" and "swapped" required since they will always be returned [Issue 96](https://github.com/camaraproject/SimSwap/issues/96)
+* Update SIM Swap & SIM Swap notification subscription yaml to make the '+' mandatory for phoneNumber by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/100
+* phone number instead of MSISDN to follow communalities guidelines by @gregory1g in https://github.com/camaraproject/SimSwap/pull/116
+* Remove unused errors and align with commonalities errors by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/126
+
+### Removed
+
+* n/a
+
+## Sim Swap Subscriptions v0.1.0-alpha.1
+
+**sim-swap-subscriptions v0.1.0-alpha.1 is the first alpha version for CAMARA Sim Swap subscription API**
+
+- API definition **with inline documentation**:
+    - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/r1.1/code/API_definitions/sim-swap-subscriptions.yaml)
+    - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/blob/r1.1/code/API_definitions/sim-swap-subscriptions&nocors)
+    - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/blob/r1.1/code/API_definitions/sim-swap-subscriptions)
+
+## Please note:
+
+- This is an **alpha version**, it should be considered as a **draft**
+- There are bug fixes to be expected and incompatible changes in upcoming versions 
+- The API version is suitable for test implementations and has the purpose to collect feedback for its further development. It should not be used with customers in productive environments.
+
+### Added
+
+* Add a new API to manage sim swap notification subscription & notification. by @bigludo7 [PR60](https://github.com/camaraproject/SimSwap/pull/60)
+* Add subscriptionMaxEvents for maximum number of SIMSwap notifications by  @bigludo7 [PR91](https://github.com/camaraproject/SimSwap/pull/91)
+* Update SIM Swap notification subscription yaml to make the '+' mandatory for phoneNumber by @bigludo7 in [PR100](https://github.com/camaraproject/SimSwap/pull/100)
+* align subscription model accordingly to the new format defined in Commonalities. This format is aligned with CloudEvents. Fixes examples for phoneNumber by @bigludo7 in [PR111](https://github.com/camaraproject/SimSwap/pull/111)
+
+### Changed
+
+* n/a
+
+### Removed
+
+* n/a
+
+## New Contributors
+
+* @trehman-gsma made their first contribution in https://github.com/camaraproject/SimSwap/pull/62
+* @gregory1g made their first contribution in https://github.com/camaraproject/SimSwap/pull/82
+* @rartych made their first contribution in https://github.com/camaraproject/SimSwap/pull/110
+* @AxelNennker made their first contribution in https://github.com/camaraproject/SimSwap/pull/103
+
+
+**Full Changelog**: https://github.com/camaraproject/SimSwap/compare/v0.4.0...r1.1
 
 # v0.4.0
 

@@ -57,8 +57,8 @@ This version contains significant changes compared to v0.4.0, and it is not back
 
 - API definition **with inline documentation**:
     - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/r1.1/code/API_definitions/sim-swap-subscriptions.yaml)
-    - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/blob/r1.1/code/API_definitions/sim-swap-subscriptions&nocors)
-    - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/blob/r1.1/code/API_definitions/sim-swap-subscriptions)
+    - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.1/code/API_definitions/sim-swap-subscriptions&nocors)
+    - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.1/code/API_definitions/sim-swap-subscriptions)
 
 ## Please note:
 

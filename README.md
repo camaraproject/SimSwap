@@ -25,9 +25,9 @@ Repository to describe, develop, document and test the SimSwap API family
   * **sim-swap v1.0.0-rc.1**
     * **This is the release candidate of the first stable version of the Sim Swap API**. It is suitable for implementors.
     * API definitions (with inline documentation):
-      * OpenAPI [YAML](https://github.com/camaraproject/SimSwap/blob/r1.1/code/API_definitions/sim_swap.yaml)
-      * [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.1/code/API_definitions/sim_swap.yaml&nocors) 
-      * [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.1/code/API_definitions/sim_swap.yaml)
+      * OpenAPI [YAML](https://github.com/camaraproject/SimSwap/blob/r1.1/code/API_definitions/sim-swap.yaml)
+      * [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.1/code/API_definitions/sim-swap.yaml&nocors) 
+      * [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.1/code/API_definitions/sim-swap.yaml)
   * sim-swap-swap-subscriptions v0.1.0-alpha.1
      * This is the first alpha version for CAMARA Sim Swap subscription API. It should considered as a draft.
      * API definitions (with inline documentation):

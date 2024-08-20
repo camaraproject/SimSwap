@@ -21,7 +21,7 @@ Repository to describe, develop, document and test the SimSwap API family
 ## Status and released versions
 
 * Note: Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. **For best results, use the latest available release**.
-* The latest pre-release is [r1.1](https://github.com/camaraproject/SimSwap/releases/tag/r1.1). It contains:
+* The latest pre-release is [r1.2](https://github.com/camaraproject/SimSwap/releases/tag/r1.2). It contains:
   * **sim-swap v1.0.0-rc.1**
     * **This is the release candidate of the first stable version of the Sim Swap API**. It is suitable for implementors.
     * API definitions (with inline documentation):

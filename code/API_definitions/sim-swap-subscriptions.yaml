@@ -58,13 +58,10 @@ info:
 
     (FAQs will be added in a later version of the documentation)
 
-  termsOfService: http://swagger.io/terms/
-  contact:
-    email: project-email@sample.com
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.1.0-alpha.1
+  version: wip
   x-camara-commonalities: 0.4.0
 
 externalDocs:

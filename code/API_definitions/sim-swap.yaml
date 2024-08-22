@@ -17,8 +17,6 @@ info:
     * When did the last SIM swap occur?
     * Has a SIM swap occurred during last n hours?
 
-    Depending on the network provider implementation, legal enforcement, etc... either one or both endpoints could be implemented.
-
     # Relevant terms and definitions
 
     **SIM swap**:

@@ -36,30 +36,25 @@ The API definition(s) are based on
   - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/r1.2/code/API_definitions/sim-swap.yaml)
 
 **Main Changes**
-
 * API and test definitions updated to conform to the Commonalities v0.4.0 and Identity and Consent Management v0.2.0 guidelines included in the CAMARA Fall24 meta-release
 * Additional documentation & test cases added.
 
 
 ### Added
-
 * User Story in documentation/API_documentation directory by @jgarciahospital [PR125](https://github.com/camaraproject/SimSwap/pull/125)
 * Test Definition in Test_Definitions directory by @fernandopradocabrillo [PR70](https://github.com/camaraproject/SimSwap/pull/70)
 * add API-Name aka wild-card scope by @AxelNennker in https://github.com/camaraproject/SimSwap/pull/103
 
 ### Changed
-
 * Make response properties "latestSimChange" and "swapped" required since they will always be returned [Issue 96](https://github.com/camaraproject/SimSwap/issues/96)
-* Update SIM Swap subscription yaml to make the '+' mandatory for phoneNumber by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/100
+* Update SIM Swap  yaml to make the '+' mandatory for phoneNumber by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/100
 * phone number instead of MSISDN to follow communalities guidelines by @gregory1g in https://github.com/camaraproject/SimSwap/pull/116
 * Remove unused errors and align with commonalities errors by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/126
 
 ### Fixed
-
 * N/A
 
 ### Removed
-
 * N/A
 
 ## New Contributors
@@ -75,31 +70,27 @@ The API definition(s) are based on
     - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.2/code/API_definitions/sim-swap-subscriptions.yaml)
  
 **Main Changes**
-
 * Initial contribution of the API definition for sim swap subscription allowing API consumer to subscribe to get notified when a sim swap occurs on a device.
 * API and test definitions updated to conform to the Commonalities v0.4.0 and Identity and Consent Management v0.2.0 guidelines included in the CAMARA Fall24 meta-release
 * Test cases added.
 
-
 ### Added
-
 * Initial yaml contribution by @bigludo7 [PR60](https://github.com/camaraproject/SimSwap/pull/60)
 * Test Definition in Test_Definitions directory by @bigludo7 [PR147](https://github.com/camaraproject/SimSwap/pull/147)
 
 ### Changed
-
 * N/A
 
 ### Fixed
-
 * N/A
 
 ### Removed
-
 * N/A
 
 ## New Contributors
 * N/A
+
+**Full Changelog**: https://github.com/camaraproject/SimSwap/compare/v0.4.0...r1.2
 
 # r1.1
 

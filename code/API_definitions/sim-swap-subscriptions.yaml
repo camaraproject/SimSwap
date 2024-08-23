@@ -68,7 +68,8 @@ externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
 servers:
-  - url: '{apiRoot}/sim-swap-subscriptions/v0'
+  - url: '{apiRoot}/sim-swap-subscriptions/v0.1'
+
     variables:
       apiRoot:
         default: http://localhost:9091

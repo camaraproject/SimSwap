@@ -43,7 +43,7 @@ The API definition(s) are based on
 ### Added
 * User Story in documentation/API_documentation directory by @jgarciahospital [PR125](https://github.com/camaraproject/SimSwap/pull/125)
 * Test Definition in Test_Definitions directory by @fernandopradocabrillo [PR70](https://github.com/camaraproject/SimSwap/pull/70)
-* add API-Name aka wild-card scope by @AxelNennker in https://github.com/camaraproject/SimSwap/pull/103
+* Added the API name `sim-swap` as a scope to request access to both available endpoints by @AxelNennker in https://github.com/camaraproject/SimSwap/pull/103
 
 ### Changed
 * Make response properties "latestSimChange" and "swapped" required since they will always be returned [Issue 96](https://github.com/camaraproject/SimSwap/issues/96)

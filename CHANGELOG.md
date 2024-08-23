@@ -62,7 +62,7 @@ The API definition(s) are based on
 
 ## Sim Swap Subscriptions v0.1.0
 
-**sim-swap-subscriptions v0.1.0 is the first initial version for CAMARA Sim Swap subscription API**
+**sim-swap-subscriptions v0.1.0 is the first initial version for the CAMARA Sim Swap Subscriptions API**
 
 - API definition **with inline documentation**:
     - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/r1.2/code/API_definitions/sim-swap-subscriptions.yaml)

@@ -49,7 +49,7 @@ The API definition(s) are based on
 * Made response properties `latestSimChange` and `swapped` required since they will always be returned by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/97
 * Updated pattern to make the '+' mandatory for phoneNumber by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/100
 * Replaced "MSISDN" with "phone number" in descriptions to follow Commonalities guidelines by @gregory1g in https://github.com/camaraproject/SimSwap/pull/116
-* Remove unused errors and align with commonalities errors by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/126
+* Removed unused errors and align with Commonalities error definitions by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/126
 
 ### Fixed
 * N/A

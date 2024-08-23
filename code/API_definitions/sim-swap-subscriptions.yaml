@@ -1040,6 +1040,13 @@ components:
                 status: 422
                 code: "MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED"
                 message: "Multi event types subscription not managed"
+            PhoneNumberNotApplicable:
+              description: Service is not available for the provided phone number
+              value:
+                status: 422
+                code: PHONE_NUMBER_NOT_APPLICABLE
+                message: The service is not available for the provided phone number.
+
     Generic429:
       description: Too Many Requests
       headers:

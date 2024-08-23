@@ -15,7 +15,7 @@ Checklist for sim-swap 1.0.0 in r1.2
 |  9 | Test result statement                        |   O   |         O         |    O    |    M   |   N  |      |
 | 10 | API release numbering convention applied     |   M   |         M         |    M    |    M   |   Y  |      |
 | 11 | Change log updated                           |   M   |         M         |    M    |    M   |   Y  | [link](/CHANGELOG.md) |
-| 12 | Previous public release was certified        |   O   |         O         |    O    |    M   |   N  |      |
+| 12 | Previous public release was certified        |   O   |         O         |    O    |    M   |   Y  | [link](https://www.open-gateway.com/operators-map)    |
 
 To fill the checklist:
 - in the line above the table, replace the api-name, api-version and the rx.y by their actual values for the current API version and release.

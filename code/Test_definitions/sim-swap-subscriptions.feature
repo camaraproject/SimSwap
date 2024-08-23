@@ -327,9 +327,9 @@ Feature: CAMARA sim swap subscriptions  API, v0.1.0
     And the response property "$.message" contains a user friendly text
 
 
-  @sim_swap_subscription_retrieve_61_device_token_mismatch
-  Scenario: Inconsistent access token context for the device
-    # To test this, a token have to be obtained for a different device
+  @sim_swap_subscription_retrieve_61_phone_number_token_mismatch
+  Scenario: Inconsistent access token context for the phone number
+    # To test this, a token have to be obtained for a different phone number
     Given an existing subscription for a phone number
     And the header "Authorization" is set to a valid access token emitted for a different phone number
     And use BaseUrL
@@ -337,6 +337,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.1.0
     Then the response property "$.status" is 403
     And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
     And the response property "$.message" contains a user friendly text
+
 
   @sim_swap_subscription_delete_61_device_token_mismatch
   Scenario: Inconsistent access token context for the device

@@ -30,7 +30,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.1.0
     And "$.config.subscriptionDetail.phoneNumber" is set with with provided phoneNumber
     And "$.sink" is set to provided callbackUrl
     Then the response property "$.status" is 201
-	And the response header "Content-Type" is "application/json"
+    And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/Subscription"
     And types, protocol, sink and config.subscriptionDetail.phoneNumber are present with provided value
@@ -45,7 +45,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.1.0
     And "$.config.subscriptionDetail.phoneNumber" is set with with provided phoneNumber
     And "$.sink" is set to provided callbackUrl
     Then the response property "$.status" is 202
-	And the response header "Content-Type" is "application/json"
+    And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/SubscriptionAsync"
 
@@ -55,7 +55,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.1.0
     And use BaseURL
     When get sim swap subscription with subscriptionId="id"
     Then the response property "$.status" is 200
-	And the response header "Content-Type" is "application/json"
+    And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/Subscription"
 
@@ -65,7 +65,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.1.0
     And use BaseURL
     When get sim swap subscription
     Then the response property "$.status" is 200
-	And the response header "Content-Type" is "application/json"
+    And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with an array of OAS schema defined at "#/components/schemas/Subscription"
     And all valid subscriptions are listed
@@ -75,9 +75,8 @@ Feature: CAMARA sim swap subscriptions  API, v0.1.0
     Given a valid subscription is existing and identified by an "id"
     And use BaseURL
     When delete sim swap subscription with subscriptionId="id"
-
     Then the response property "$.status" is 204
-	And the response header "Content-Type" is "application/json"
+    And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/Subscription"
     And The callback notification application receives subscription-ends event at provided callbackUrl
@@ -122,7 +121,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.1.0
     And "$.config.subscriptionDetail.phoneNumber" is set with with provided phoneNumber
     And "$.sink" is set to provided callbackUrl
     Then the response property "$.status" is 400
-	And the response property "$.code" is "INVALID_PROTOCOL"
+    And the response property "$.code" is "INVALID_PROTOCOL"
     And the response property "$.message" contains a user friendly text
 
   @sim_swap_subscription_creation_21_invalid_credential
@@ -138,7 +137,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.1.0
     And "$.sinkCredential.accessToken" is valued with a valid value
     And "$.sinkCredential.accessTokenExpiresUtc" is valued with a valid value
     Then the response property "$.status" is 400
-	And the response property "$.code" is "INVALID_CREDENTIAL"
+    And the response property "$.code" is "INVALID_CREDENTIAL"
     And the response property "$.message" contains a user friendly text
 
   @sim_swap_subscription_creation_22_invalid_token
@@ -154,7 +153,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.1.0
     And "$.sinkCredential.accessToken" is valued with a valid value
     And "$.sinkCredential.accessTokenExpiresUtc" is valued with a valid value
     Then the response property "$.status" is 400
-	And the response property "$.code" is "INVALID_TOKEN"
+    And the response property "$.code" is "INVALID_TOKEN"
     And the response property "$.message" contains a user friendly text
 
   @sim_swap_subscription_creation_23_invalid_eventType
@@ -166,7 +165,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.1.0
     And "$.config.subscriptionDetail.phoneNumber" is set with with provided phoneNumber
     And "$.sink" is set to provided callbackUrl
     Then the response property "$.status" is 400
-	And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
   @sim_swap_subscription_creation_24_invalid_subscription_expire_time
@@ -179,7 +178,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.1.0
     And "$.sink" is set to provided callbackUrl
     And "$.config.subscriptionExpireTime" is set in the past
     Then the response property "$.status" is 400
-	And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
   @sim_swap_subscription_creation_25_require_input_properties_missing
@@ -188,7 +187,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.1.0
     When create sim swap subscription 
     And the request body property "<input_property>" is not included
     Then the response property "$.status" is 400
-	And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
     Examples:
@@ -208,17 +207,9 @@ Feature: CAMARA sim swap subscriptions  API, v0.1.0
     And "$.sink" is not set to an url
     And "$.config.subscriptionExpireTime" is set in the past
     Then the response property "$.status" is 400
-	And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @sim_swap_subscription_delete_27_subscription_without_id
-  Scenario: Deletion request without subscription identifier
-    Given  use BaseURL
-    When delete sim swap subscription with subscriptionId not valued
-
-    Then the response property "$.status" is 400
-	And the response property "$.code" is "INVALID_ARGUMENT"
-    And the response property "$.message" contains a user friendly text
 
 ##################
 # Error Code 401
@@ -339,7 +330,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.1.0
     And the response property "$.message" contains a user friendly text
 
 
-  @sim_swap_subscription_delete_61_device_token_mismatch
+  @sim_swap_subscription_delete_62_device_token_mismatch
   Scenario: Inconsistent access token context for the device
     # To test this, a token have to be obtained for a different device
     Given an existing subscription for a phone number

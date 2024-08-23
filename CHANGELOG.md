@@ -70,7 +70,7 @@ The API definition(s) are based on
     - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.2/code/API_definitions/sim-swap-subscriptions.yaml)
  
 **Main Changes**
-* Initial contribution of the API definition for sim swap subscription allowing API consumer to subscribe to get notified when a sim swap occurs on a device.
+* Initial contribution of the API definition for Sim Swap Subscriptions allowing API consumers to subscribe to get notified when a sim swap occurs on a device.
 * API and test definitions updated to conform to the Commonalities v0.4.0 and Identity and Consent Management v0.2.0 guidelines included in the CAMARA Fall24 meta-release
 * Test cases added.
 

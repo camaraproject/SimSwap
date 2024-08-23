@@ -74,7 +74,8 @@ Feature: CAMARA sim swap subscriptions  API, v0.1.0
   Scenario: Check deletion of existing subscription & triggering of subscription-ends event
     Given a valid subscription is existing and identified by an "id"
     And use BaseURL
-    When delete device status subscription with subscriptionId="id"
+    When delete sim swap subscription with subscriptionId="id"
+
     Then the response property "$.status" is 204
 	And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"

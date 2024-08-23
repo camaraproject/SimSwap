@@ -214,7 +214,8 @@ Feature: CAMARA sim swap subscriptions  API, v0.1.0
   @sim_swap_subscription_delete_27_subscription_without_id
   Scenario: Deletion request without subscription identifier
     Given  use BaseURL
-    When delete device status subscription with subscriptionId not valued
+    When delete sim swap subscription with subscriptionId not valued
+
     Then the response property "$.status" is 400
 	And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text

@@ -5,8 +5,8 @@ Feature: CAMARA SIM Swap API, 1.0.0 - Operation checkSimSwap
   # Testing assets:
   #
   # References to OAS spec schemas refer to schemas specifies in sim_swap.yaml, version 1.0.0
-
-  check if SIM swap has been performed during a past period
+  #
+  # check if SIM swap has been performed during a past period
 
   Background: Common checkSimSwap setup
     Given the resource "sim-swap/v0/check"
@@ -14,7 +14,6 @@ Feature: CAMARA SIM Swap API, 1.0.0 - Operation checkSimSwap
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
     And the request body is set by default to a request body compliant with the schema
-
 
   # This first scenario serves as a minimum, not testing any specific verificationResult
   @check_sim_swap_1_generic_success_scenario
@@ -29,7 +28,7 @@ Feature: CAMARA SIM Swap API, 1.0.0 - Operation checkSimSwap
   # Scenarios testing specific situations
 
   @check_sim_swap_2_valid_sim_swap_no_max_age
-  Scenario: Check that the response shows that the SIM has been swapped
+  Scenario: Check that the response shows that the SIM has been swapped using default value for maxAge
     Given the request header "Authorization" is set to a valid access token from which a phone number connected to the Operator's network can be deducted
     And the SIM for this phone number has been swapped in the last 240 hours
     When the request "checkSimSwap" is sent
@@ -37,7 +36,7 @@ Feature: CAMARA SIM Swap API, 1.0.0 - Operation checkSimSwap
     And the value of response property "$.swapped" == true
 
   @check_sim_swap_3_valid_sim_swap_max_age
-  Scenario Outline: Check that the response shows that the SIM has been swapped
+  Scenario Outline: Check that the response shows that the SIM has been swapped - maxAge is provided in the request
     Given the request header "Authorization" is set to a valid access token from which a phone number connected to the Operator's network can be deducted
     And the SIM for this phone number has been swapped in the last "<hours>"
     And the "maxAge" request body property is set to a value equal or greater than "<hours>" within the allowed range
@@ -64,7 +63,7 @@ Feature: CAMARA SIM Swap API, 1.0.0 - Operation checkSimSwap
   Scenario: Check that the response shows that the SIM has not been swapped when the last swap was before the maxAge field
     Given the request header "Authorization" is set to a valid access token from which a phone number connected to the Operator's network can be deducted
     And the request body property "maxAge" is set to the number of hours since the last SIM swap minus 1
-    And the last swap for this phone number's SIM was more than "maxAge" hours ago 
+    And the last swap for this phone number's SIM was more than "maxAge" hours ago
     When the request "checkSimSwap" is sent
     Then the response status code is 200
     And the value of response property "$.swapped" == false

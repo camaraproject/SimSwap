@@ -24,9 +24,9 @@ Repository to describe, develop, document and test the SimSwap API family
 * `NEW`: Release r1.2 features following APIs:
   * version 1.0.0 of the **API sim-swap** - available [here](https://github.com/camaraproject/SimSwap/tree/r1.2)
     * API definitions **with inline documentation**):
-      * OpenAPI [YAML](https://github.com/camaraproject/SimSwap/blob/r1.2/code/API_definitions/sim_swap.yaml)
-      * [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.2/code/API_definitions/sim_swap.yaml&nocors) 
-      * [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.2/code/API_definitions/sim_swap.yaml)
+      * OpenAPI [YAML](https://github.com/camaraproject/SimSwap/blob/r1.2/code/API_definitions/sim-swap.yaml)
+      * [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.2/code/API_definitions/sim-swap.yaml&nocors) 
+      * [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.2/code/API_definitions/sim-swap.yaml)
   * version 0.1.0 of the **API sim-swap-subscriptions** - available [here](https://github.com/camaraproject/SimSwap/tree/r1.2)
      * API definitions **with inline documentation**:
        * OpenAPI [YAML](https://github.com/camaraproject/SimSwap/blob/r1.2/code/API_definitions/sim-swap-subscriptions.yaml)

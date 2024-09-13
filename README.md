@@ -4,6 +4,7 @@
 <a href="https://github.com/camaraproject/SimSwap/graphs/contributors" title="Contributors"><img src="https://img.shields.io/github/contributors/camaraproject/SimSwap?style=plastic"></a>
 <a href="https://github.com/camaraproject/SimSwap" title="Repo Size"><img src="https://img.shields.io/github/repo-size/camaraproject/SimSwap?style=plastic"></a>
 <a href="https://github.com/camaraproject/SimSwap/blob/main/LICENSE" title="License"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg?style=plastic"></a>
+<a href="https://github.com/camaraproject/SimSwap/releases/latest" title="Latest Release"><img src="https://img.shields.io/github/release/camaraproject/SimSwapSimSwap?style=plastic"></a>
 
 # SimSwap
 

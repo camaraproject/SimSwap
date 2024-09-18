@@ -28,7 +28,11 @@ info:
 
     The API provides 2 operations:
 
-    - POST retrieve-date : Provides timestamp of latest SIM swap, if any, for a given phone number. If no swap has been performed, the API will return the SIM activation date (the timestamp of the first time that the sim connected to the network) by default, unless this is not possible due to local regulations preventing the safekeeping of the information for longer than the stated period of time. If this is the case, a `null` value will be returned.
+    - POST retrieve-date : Provides timestamp of latest SIM swap, if any, for a given phone number.
+
+      - If no swap has been performed, the API will return the SIM activation date (the timestamp of the first time that the SIM connected to the network). 
+      
+      - If the latest SIM swap date (or the activation date if no SIM swap) cannot be communicated due to local regulations preventing the safekeeping of the information for longer than the stated period, a `null` value will be returned. Optionally, a `monitoredPeriod` could be provided to indicate that no SIM swap has occurred during this timeframe (in days).
 
     - POST check: Checks if SIM swap has been performed during a past period (defined in the request with 'maxAge' attribute) for a given phone number.
 
@@ -73,13 +77,13 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.0
+  version: wip
   x-camara-commonalities: 0.4.0
 externalDocs:
   description: Product documentation at Camara
   url: https://github.com/camaraproject/SimSwap
 servers:
-  - url: "{apiRoot}/sim-swap/v1"
+  - url: "{apiRoot}/sim-swap/wip"
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -116,6 +120,13 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SimSwapInfo"
+              examples:
+                RETRIEVE_DATE:
+                  $ref: "#/components/examples/RETRIEVE_DATE"
+                RETRIEVE_MONITORED_PERIOD:
+                  $ref: "#/components/examples/RETRIEVE_MONITORED_PERIOD"
+                RETRIEVE_MONITORED_NULL:
+                  $ref: "#/components/examples/RETRIEVE_MONITORED_NULL" 
         "400":
           $ref: "#/components/responses/Generic400"
         "401":
@@ -208,6 +219,10 @@ components:
           description: Timestamp of latest SIM swap performed. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone. Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
           nullable: true
           example: "2023-07-03T14:27:08.312+02:00"
+        monitoredPeriod:
+          type: integer
+          description: Timeframe in days for SIM card change supervision for the phone number. It could be valued in the response if the latest SIM swap occurred before this monitored period.
+          example: 120
     CheckSimSwapInfo:
       type: object
       required:
@@ -398,3 +413,17 @@ components:
                 status: 504
                 code: TIMEOUT
                 message: Request timeout exceeded.
+  examples:
+    RETRIEVE_DATE:
+      summary: Lastest SIM swap date is send back
+      value:
+        latestSimChange: 2024-09-18T07:37:53.471829447Z
+    RETRIEVE_MONITORED_NULL:
+      summary: Only null value is retrieved
+      value:
+        latestSimChange: null
+    RETRIEVE_MONITORED_PERIOD:
+      summary: null is send back for the date but a monitoredPeriod is provided
+      value:
+        latestSimChange: null
+        monitoredPeriod: 120

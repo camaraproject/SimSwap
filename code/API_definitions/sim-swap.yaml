@@ -31,7 +31,7 @@ info:
     - POST retrieve-date : Provides timestamp of latest SIM swap, if any, for a given phone number.
 
       - If no swap has been performed, the API will return the SIM activation date (the timestamp of the first time that the SIM connected to the network).
-    
+
       - If the latest SIM swap date (or the activation date if no SIM swap) cannot be communicated due to local regulations preventing the safekeeping of the information for longer than the stated period, a `null` value will be returned. Optionally, a `monitoredPeriod` could be provided to indicate that no SIM swap has occurred during this timeframe (in days).
 
     - POST check: Checks if SIM swap has been performed during a past period (defined in the request with 'maxAge' attribute) for a given phone number.

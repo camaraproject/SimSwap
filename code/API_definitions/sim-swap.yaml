@@ -83,7 +83,7 @@ externalDocs:
   description: Product documentation at Camara
   url: https://github.com/camaraproject/SimSwap
 servers:
-  - url: "{apiRoot}/sim-swap/wip"
+  - url: "{apiRoot}/sim-swap/vwip"
     variables:
       apiRoot:
         default: http://localhost:9091

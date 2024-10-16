@@ -693,6 +693,15 @@ components:
             data:
               $ref: "#/components/schemas/SubscriptionEnds"
 
+    EventSimSwap:
+      description: event structure for event sim swapped
+      allOf:
+        - $ref: "#/components/schemas/CloudEvent"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/Swapped"
+
     Swapped:
       description: Event detail structure for ROAMING_ON & ROAMING_OFF event
       type: object

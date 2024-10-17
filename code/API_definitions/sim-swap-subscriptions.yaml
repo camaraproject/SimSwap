@@ -677,7 +677,7 @@ components:
       format: date-time
       description: Timestamp of when the occurrence happened. Must adhere to RFC 3339.
       example: "2018-04-05T17:31:00Z"
-     
+
     EventSimSwap:
       description: event structure for event sim swapped
       allOf:

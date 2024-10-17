@@ -26,7 +26,7 @@ info:
 
     It is mandatory in the subscription to provide the event `types` subscribed are several are managed in this API.
 
-    Only one  ``types`` is managed for this API:
+    Only one event ``types`` is managed for this API:
       - ``org.camaraproject.sim-swap-subscriptions.v0.swapped`` - Event triggered when a sim swap occurs on the associated phoneNumber
 
 

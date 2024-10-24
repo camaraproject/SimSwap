@@ -2,6 +2,7 @@
 
 ## Table of contents
 
+- **[r1.3](#r13)**
 - **[r1.2](#r12)**
 - **[r1.1](#r11)**
 - **[v0.4.0](#v040)**
@@ -13,6 +14,51 @@ The below sections record the changes for each API version in each release as fo
 * for each first alpha or release-candidate API version, all changes since the release of the previous public API version
 * for subsequent alpha or release-candidate API versions, the delta with respect to the previous pre-release
 * for a public API version, the consolidated changes since the release of the previous public API version
+
+# r1.3
+
+## Release Notes
+
+This release contains the definition and documentation of
+* sim-swap 1.0.0
+* sim-swap-subscriptions 0.1.1
+
+The API definition(s) are based on
+* Commonalities v0.4.0
+* Identity and Consent Management v0.2.0
+
+## sim-swap 1.0.0
+
+**sim-swap 1.0.0 is the public release for v1.0.0 of the Sim Swap API.**
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.3/code/API_definitions/sim-swap.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.3/code/API_definitions/sim-swap.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/r1.3/code/API_definitions/sim-swap.yaml)
+
+**Main Changes**
+* This release only contains and update for the test plan to cover scenarios where no sim swap occurred
+
+### Fixed
+* Update test plan by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/159
+
+## Sim Swap Subscriptions v0.1.1
+
+- API definition **with inline documentation**:
+    - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/r1.3/code/API_definitions/sim-swap-subscriptions.yaml)
+    - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.3/code/API_definitions/sim-swap-subscriptions.yaml&nocors)
+    - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.3/code/API_definitions/sim-swap-subscriptions.yaml)
+
+**Main Changes**
+* Fixed an schema reference that prevented the `createSimSwapSubscription` operation callback request body to render properly
+
+### Fixed
+* Add EventSimSwap to Sim Swap Subscriptions by @daniel-dierich in https://github.com/camaraproject/SimSwap/pull/157
+
+## New Contributors
+* @daniel-dierich made their first contribution in https://github.com/camaraproject/SimSwap/pull/157
+
+**Full Changelog**: https://github.com/camaraproject/SimSwap/compare/r1.2...r1.3
 
 # r1.2
 

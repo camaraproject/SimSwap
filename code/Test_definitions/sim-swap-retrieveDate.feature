@@ -44,11 +44,11 @@ Feature: CAMARA SIM Swap API, 1.0.0 - Operation retrieveSimSwapDate
     Then the response status code is 200
     And the response property "$.latestSimChange" contains the sim's activation timestamp
 
-  # This test applies if the operator allows to do the request for a sim that has never been connected to the network
-  @retrieve_sim_swap_date_4_sim_never_connected
-  Scenario: Retrieves SIM swap date for a sim that has never been connected to the network
+  # This test applies if the operator allows to do the request for a phone number that hasn't been associated with a sim card yet
+  @retrieve_sim_swap_date_4_sim_never_associated
+  Scenario: Retrieves SIM swap date for a phone number that has never been associated with a sim card
     Given a valid phone number identified by the token or provided in the request body
-    And the sim for that phone number has never been connected to the Operator's network
+    And the phone number is not associated to any sim card
     When the request "retrieveSimSwapDate" is sent
     Then the response status code is 200
     And the response property "$.latestSimChange" is null

@@ -82,7 +82,7 @@ Feature: CAMARA SIM Swap API, 1.0.0 - Operation checkSimSwap
     Given a valid phone number identified by the token or provided in the request body
     And the SIM for this phone number has never been swapped
     And the activation of the SIM occurred more than "<hours>" hours ago
-    And the request body property "maxAge" is set to a value equal or greater than "<hours>" within the allowed range
+    And the request body property "maxAge" is set to a value less than "<hours>" within the allowed range
     When the request "checkSimSwap" is sent
     Then the response status code is 200
     And the value of response property "$.swapped" == false

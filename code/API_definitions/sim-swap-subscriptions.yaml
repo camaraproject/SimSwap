@@ -712,11 +712,11 @@ components:
       description: Event detail structure for SUBSCRIPTION_ENDS event
       type: object
       required:
-        - Reason
+        - terminationReason
         - subscriptionId
       properties:
-        Reason:
-          $ref: "#/components/schemas/Reason"
+        terminationReason:
+          $ref: "#/components/schemas/TerminationReason"
         subscriptionId:
           $ref: "#/components/schemas/SubscriptionId"
         terminationDescription:

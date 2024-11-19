@@ -712,11 +712,11 @@ components:
       description: Event detail structure for SUBSCRIPTION_ENDS event
       type: object
       required:
-        - terminationReason
+        - Reason
         - subscriptionId
       properties:
-        terminationReason:
-          $ref: "#/components/schemas/TerminationReason"
+        Reason:
+          $ref: "#/components/schemas/Reason"
         subscriptionId:
           $ref: "#/components/schemas/SubscriptionId"
         terminationDescription:
@@ -729,11 +729,13 @@ components:
         - SUBSCRIPTION_EXPIRED - Subscription expire time (optionally set by the requester) has been reached
         - MAX_EVENTS_REACHED - Maximum number of events (optionally set by the requester) has been reached
         - ACCESS_TOKEN_EXPIRED - Access Token sinkCredential (optionally set by the requester) expiration time has been reached
+        - SUBSCRIPTION_DELETED - Subscription was deleted by the requester
       enum:
         - MAX_EVENTS_REACHED
         - NETWORK_TERMINATED
         - SUBSCRIPTION_EXPIRED
         - ACCESS_TOKEN_EXPIRED
+        - SUBSCRIPTION_DELETED
 
     HTTPSubscriptionRequest:
       allOf:

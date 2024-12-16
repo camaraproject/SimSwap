@@ -68,7 +68,8 @@ externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
 servers:
-  - url: '{apiRoot}/sim-swap-subscriptions/wip'
+  - url: '{apiRoot}/sim-swap-subscriptions/vwip'
+
 
     variables:
       apiRoot:

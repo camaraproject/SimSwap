@@ -469,7 +469,7 @@ components:
     CHECK_2LEGS:
       summary: Check request without 3-legged access tokens
       value:
-        phoneNumber: +346661113334
+        phoneNumber: "+346661113334"
         maxAge: 120
     CHECK_3LEGS:
       summary: Check request with 3-legged access tokens
@@ -478,7 +478,7 @@ components:
     RETRIEVE_2LEGS:
       summary: Retrieve request without 3-legged access tokens
       value:
-        phoneNumber: +346661113334
+        phoneNumber: "+346661113334"
     RETRIEVE_3LEGS:
       summary: Retrieve request with 3-legged access tokens
       value:

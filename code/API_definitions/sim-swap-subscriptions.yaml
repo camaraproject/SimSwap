@@ -1307,7 +1307,7 @@ components:
         types:
           - org.camaraproject.sim-swap-subscriptions.v0.swapped
         config:
-          subscriptionDetail: null
+          subscriptionDetail: {}
           subscriptionExpireTime: '2025-01-17T13:18:23.682Z'
     SUBSCRIPTION_RESPONSE:
       value:

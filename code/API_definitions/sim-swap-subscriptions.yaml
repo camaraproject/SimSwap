@@ -1330,7 +1330,8 @@ components:
         types:
           - org.camaraproject.sim-swap-subscriptions.v0.swapped
         config:
-          subscriptionDetail: null
+          subscriptionDetail: {}
+
           subscriptionExpireTime: '2025-01-17T13:18:23.682Z'
         id: '1119920371'
         startsAt: '2024-06-07T16:10:15.302Z'

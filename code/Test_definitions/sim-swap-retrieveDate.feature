@@ -1,15 +1,15 @@
-Feature: CAMARA SIM Swap API, 1.0.0 - Operation retrieveSimSwapDate
+Feature: CAMARA SIM Swap API, 2.0.0 - Operation retrieveSimSwapDate
 
   # Input to be provided by the implementation to the tester
   #
   # Testing assets:
   #
-  # References to OAS spec schemas refer to schemas specifies in sim_swap.yaml, version 1.0.0
+  # References to OAS spec schemas refer to schemas specifies in sim_swap.yaml, version 2.0.0
   #
   # Get timestamp of last MSISDN <-> IMSI pairing change for the provided phone number.
 
   Background: Common retrieveSimSwapDate setup
-    Given the resource "sim-swap/v1/retrieve-date"
+    Given the resource "sim-swap/v2/retrieve-date"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
@@ -70,17 +70,17 @@ Feature: CAMARA SIM Swap API, 1.0.0 - Operation retrieveSimSwapDate
     When the request "retrieveSimSwapDate" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
-    And the response property "$.code" is "NOT_SUPPORTED"
+    And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
     And the response property "$.message" contains a user friendly text
 
-  @retrieve_sim_swap_date_7_phone_number_provided_does_not_match_the_token
-  Scenario: Error when the phone number provided in the request body does not match the phone number asssociated with the access token
-    Given the request body property "$.phoneNumber" is set to a valid testing phoneNumber that does not match the one associated with the token
-    And the header "Authorization" is set to a valid access token emitted for a different phone number
+  @retrieve_sim_swap_date_7_phone_number_provided_both_in_the_body_and_via_the_token
+  Scenario: Error when the phone number is provided in the request body while a phone number is asssociated with the access token
+    Given the request body property "$.phoneNumber" is set to a valid testing phoneNumber
+    And the header "Authorization" is set to a valid access token identifying a phoneNumber
     When the request "retrieveSimSwapDate" is sent
-    Then the response status code is 403
-    And the response property "$.status" is 403
-    And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
     And the response property "$.message" contains a user friendly text
 
   @retrieve_sim_swap_date_8_phone_number_not_provided_and_cannot_be_deducted_from_access_token
@@ -89,7 +89,7 @@ Feature: CAMARA SIM Swap API, 1.0.0 - Operation retrieveSimSwapDate
     When the request "retrieveSimSwapDate" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
-    And the response property "$.code" is "UNIDENTIFIABLE_PHONE_NUMBER"
+    And the response property "$.code" is "MISSING_IDENTIFIER"
     And the response property "$.message" contains a user friendly text
 
   # Generic 401 errors
@@ -106,12 +106,24 @@ Feature: CAMARA SIM Swap API, 1.0.0 - Operation retrieveSimSwapDate
 
   @retrieve_sim_swap_date_401.2_expired_access_token
   Scenario: Expired access token
+  # alternative to scenario @retrieve_sim_swap_date_401.4_expired_access_token
     Given the header "Authorization" is set to an expired access token
     And the request body is set to a valid request body
     When the request "retrieveSimSwapDate" is sent
     Then the response status code is 401
     And the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
+
+  @retrieve_sim_swap_date_401.4_expired_access_token
+  Scenario: Expired access token
+   # alternative to scenario @retrieve_sim_swap_date_401.2_expired_access_token
+    Given the header "Authorization" is set to an expired access token
+    And the request body is set to a valid request body
+    When the request "retrieveSimSwapDate" is sent
+    Then the response status code is 401
+    And the response property "$.status" is 401
+    And the response property "$.code" is "AUTHENTICATION_REQUIRED"
     And the response property "$.message" contains a user friendly text
 
   @retrieve_sim_swap_date_401.3_invalid_access_token

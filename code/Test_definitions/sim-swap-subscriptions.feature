@@ -27,7 +27,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.2.0
     When the HTTP "POST" request is sent
     And "$.types"="org.camaraproject.sim-swap-subscriptions.v0.swapped"
     And "$.protocol"="HTTP"
-    And "$.config.subscriptionDetail.phoneNumber" is set with with provided phoneNumber
+    And a valid phone number identified by the token or provided in the request body
     And "$.sink" is set to provided callbackUrl
     Then the response property "$.status" is 201
     And the response header "Content-Type" is "application/json"
@@ -42,7 +42,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.2.0
     When the HTTP "POST" request is sent 
     And "$.types"="org.camaraproject.sim-swap-subscriptions.v0.swapped"
     And "$.protocol"="HTTP"
-    And "$.config.subscriptionDetail.phoneNumber" is set with with provided phoneNumber
+    And a valid phone number identified by the token or provided in the request body
     And "$.sink" is set to provided callbackUrl
     Then the response property "$.status" is 202
     And the response header "Content-Type" is "application/json"
@@ -59,8 +59,8 @@ Feature: CAMARA sim swap subscriptions  API, v0.2.0
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/Subscription"
 
-  @sim_swap_subscription_retrieve_04_retrieve_list
-  Scenario: Check existing subscription is retreived in list
+  @sim_swap_subscription_retrieve_04_retrieve_list_2legs
+  Scenario: Check existing subscriptions are retreived in list
     Given valid subscriptions are existing
     And use BaseURL
     When the HTTP "GET" request is sent
@@ -69,6 +69,29 @@ Feature: CAMARA sim swap subscriptions  API, v0.2.0
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with an array of OAS schema defined at "#/components/schemas/Subscription"
     And all valid subscriptions are listed
+
+  @sim_swap_subscription_retrieve_07_retrieve_list_3legs
+  Scenario: Check existing subscriptions are retrieved in list
+    Given valid subscription is existing for a phoneNumber
+    And this phone number is identified by the token
+    And use BaseURL
+    When the HTTP "GET" request is sent
+    Then the response property "$.status" is 200
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response body complies with an array of OAS schema defined at "#/components/schemas/Subscription"
+    And the subscriptions for this phoneNumber are listed
+
+  @sim_swap_subscription_retrieve_08_retrieve_empty_list_3legs
+  Scenario: Check no existing subscription is retrieved in list
+    Given no valid subscription is existing for a phoneNumber
+    And this phone number is identified by the token
+    And use BaseURL
+    When the HTTP "GET" request is sent
+    Then the response property "$.status" is 200
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response body is an empty list
 
   @sim_swap_subscription_delete_05_delete_subscription
   Scenario: Check deletion of existing subscription & triggering of subscription-ends event

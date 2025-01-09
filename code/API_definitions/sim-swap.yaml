@@ -44,7 +44,7 @@ info:
 
     It is important to remark that in cases where personal user data is processed by the API, and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of 3-legged access tokens becomes mandatory. This measure ensures that the API remains in strict compliance with user privacy preferences and regulatory obligations, upholding the principles of transparency and user-centric data control.
 
-    # Identifying the device from the access token
+    # Identifying the phone number from the access token
 
     This API requires the API consumer to identify a device (via its phone number) as the subject of the API as follows:
     - When the API is invoked using a two-legged access token, the subject will be identified from the optional `phoneNumber` identifier, which therefore MUST be provided.

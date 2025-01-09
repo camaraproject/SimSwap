@@ -331,18 +331,6 @@ Feature: CAMARA sim swap subscriptions  API, v0.2.0
 # Error Code 403
 ##################
 
-  @sim_swap_subscription_creation_60_phone_number_token_mismatch
-  Scenario: Inconsistent access token context for the phone number
-    # To test this, a token have to be obtained for a different phone number
-    # Alternatively scenario @sim_swap_subscription_creation_101_phone_number_token_mismatch could be considered.
-    Given the request body property "$.config.subscriptionDetail.phoneNumber" is set to a valid testing phone number
-    And the header "Authorization" is set to a valid access token emitted for a different phone number
-    And use BaseUrL
-    When the HTTP "POST" request is sent
-    Then the response property "$.status" is 403
-    And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
-    And the response property "$.message" contains a user friendly text
-
   @sim_swap_subscription_retrieval_61_phone_number_token_mismatch
   Scenario: Inconsistent access token context for the phone number
     # To test this, a token have to be obtained for a different phone number than the one related to the subscription identifier 
@@ -390,9 +378,8 @@ Feature: CAMARA sim swap subscriptions  API, v0.2.0
   @sim_swap_subscription_creation_101_phone_number_token_mismatch
   Scenario: Inconsistent access token context for the phone number
     # To test this, a token have to be obtained for a different phone number
-    # Alternatively scenario @sim_swap_subscription_creation_60_phone_number_token_mismatch could be considered.
     Given the request body property "$.config.subscriptionDetail.phoneNumber" is set to a valid testing phone number
-    And the header "Authorization" is set to a valid access token emitted for a different phone number
+    And the header "Authorization" is set to a valid access token identifying a phone number
     And use BaseUrL
     When the HTTP "POST" request is sent
     Then the response property "$.status" is 422

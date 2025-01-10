@@ -83,9 +83,19 @@ Feature: CAMARA SIM Swap API, 2.0.0 - Operation retrieveSimSwapDate
     And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
     And the response property "$.message" contains a user friendly text
 
-  @retrieve_sim_swap_date_8_phone_number_not_provided_and_cannot_be_deducted_from_access_token
-  Scenario: Error when phone number can not be deducted from access token and it is not provided in the request body
-    Given the header "Authorization" is set to a valid access token from which the phone number cannot be deducted
+  @retrieve_sim_swap_date_8_phone_number_not_provided
+  Scenario: Error when phone number is not provided in the request body with 2-legged access token
+    Given the header "Authorization" is set to a valid 2-legged access token
+    When the request "retrieveSimSwapDate" is sent
+    And the request body property "$.phoneNumber" is not present
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "MISSING_IDENTIFIER"
+    And the response property "$.message" contains a user friendly text
+
+  @retrieve_sim_swap_date_9_phone_number_cannot_be_deducted_from_access_token
+  Scenario: Error when phone number can not be deducted from access token with 3-legged access token
+    Given the header "Authorization" is set to a valid 3-legged access token from which the phone number cannot be deducted
     When the request "retrieveSimSwapDate" is sent
     Then the response status code is 422
     And the response property "$.status" is 422

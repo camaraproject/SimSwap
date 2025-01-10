@@ -438,13 +438,13 @@ components:
               value:
                 status: 429
                 code: QUOTA_EXCEEDED
-                message: Either out of resource quota or reaching rate limiting.
+                message: Rejected due to exceeding a business quota limit.
             GENERIC_429_TOO_MANY_REQUESTS:
               description: API Server request limit is overpassed
               value:
                 status: 429
                 code: TOO_MANY_REQUESTS
-                message: Either out of resource quota or reaching rate limiting.
+                message: Rejected due to request rate limit overpassed.
   examples:
     RETRIEVE_DATE:
       summary: Lastest SIM swap date is send back

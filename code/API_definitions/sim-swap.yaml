@@ -402,7 +402,7 @@ components:
                 code: SERVICE_NOT_APPLICABLE
                 message: The service is not available for the provided identifier.
             GENERIC_422_MISSING_IDENTIFIER:
-              description: An identifier is not included in the request and the device or phone number identification cannot be derived from the 3-legged access token
+              description: phone number is not included in the request (in case of 2-legged) or the phone number identification cannot be derived from access token (in 3-legged)
               value:
                 status: 422
                 code: MISSING_IDENTIFIER

@@ -333,7 +333,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.2.0
 
   @sim_swap_subscription_retrieval_61_phone_number_token_mismatch
   Scenario: Inconsistent access token context for the phone number
-    # To test this, a token have to be obtained for a different phone number than the one related to the subscription identifier 
+    # To test this, a token have to be obtained for a different phone number than the phone number related to the subscription retrieved
     Given use BaseURL
     And the header "Authorization" is set to a valid access token emitted for a different phone number
     When the HTTP "GET" request is sent with subscriptionId related to a different phone number
@@ -343,7 +343,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.2.0
 
   @sim_swap_subscription_delete_66_phone_number_token_mismatch
   Scenario: Inconsistent access token context for the phone number
-    # To test this, a token have to be obtained for a different phone number than the one related to the subscription identifier 
+    # To test this, a token have to be obtained for a different phone number than the phone number related to the subscription deleted
     Given use BaseURL
     And the header "Authorization" is set to a valid access token emitted for a different phone number
     When the HTTP "DELETE" request is sent with subscriptionId related to a different phone number

@@ -46,9 +46,9 @@ info:
 
     # Identifying the phone number from the access token
 
-    This API requires the API consumer to identify a device (via its phone number) as the subject of the API as follows:
-    - When the API is invoked using a two-legged access token, the subject will be identified from the optional `phoneNumber` identifier, which therefore MUST be provided.
-    - When a three-legged access token is used however, this optional `phoneNumber` identifier MUST NOT be provided, as the subject will be uniquely identified from the access token.
+    This API requires the API consumer to identify a phone number as the subject of the API. There is 2 ways to retrieve it depending on the authorization flow used:
+    - When the API is invoked using a two-legged access token, the phone number will be identified from the optional `phoneNumber` identifier, which therefore MUST be provided.
+    - When a three-legged access token is used however, this optional `phoneNumber` identifier MUST NOT be provided, as the phone number will be uniquely identified from the access token.
 
     This approach simplifies API usage for API consumers using a three-legged access token to invoke the API by relying on the information that is associated with the access token and was identified during the authentication process.
 

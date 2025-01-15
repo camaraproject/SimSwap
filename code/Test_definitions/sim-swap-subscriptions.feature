@@ -51,7 +51,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.2.0
 
   @sim_swap_subscription_retrieve_03_retrieve_by_id
   Scenario: Check existing subscription is retrieved by id
-    Given a valid subscription is existing and identified by an "id"
+    Given a subscription is existing and identified by an "id"
     And use BaseURL
     When the HTTP "GET" request is sent with subscriptionId="id"
     Then the response property "$.status" is 200
@@ -60,19 +60,19 @@ Feature: CAMARA sim swap subscriptions  API, v0.2.0
     And the response body complies with the OAS schema at "#/components/schemas/Subscription"
 
   @sim_swap_subscription_retrieve_04_retrieve_list_2legs
-  Scenario: Check existing subscriptions are retreived in list
-    Given valid subscriptions are existing
+  Scenario: Check existing subscription(s) is/are retreived in list
+    Given at least one subscription is existing for the API client making this request
     And use BaseURL
     When the HTTP "GET" request is sent
     Then the response property "$.status" is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with an array of OAS schema defined at "#/components/schemas/Subscription"
-    And all valid subscriptions are listed
+    And subscription(s) is/are listed
 
   @sim_swap_subscription_retrieve_07_retrieve_list_3legs
-  Scenario: Check existing subscriptions are retrieved in list
-    Given valid subscription is existing for a phoneNumber
+  Scenario: Check existing subscription(s) is/are retrieved in list
+    Given a subscription is existing for a phoneNumber
     And this phone number is identified by the token
     And use BaseURL
     When the HTTP "GET" request is sent
@@ -84,7 +84,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.2.0
 
   @sim_swap_subscription_retrieve_08_retrieve_empty_list_3legs
   Scenario: Check no existing subscription is retrieved in list
-    Given no valid subscription is existing for a phoneNumber
+    Given no subscription is existing for a phoneNumber
     And this phone number is identified by the token
     And use BaseURL
     When the HTTP "GET" request is sent
@@ -95,7 +95,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.2.0
 
   @sim_swap_subscription_delete_05_delete_subscription
   Scenario: Check deletion of existing subscription & triggering of subscription-ends event
-    Given a valid subscription is existing and identified by an "id"
+    Given a subscription is existing and identified by an "id"
     And use BaseURL
     When the HTTP "DELETE" request is sent with subscriptionId="id"
     Then the response property "$.status" is 204

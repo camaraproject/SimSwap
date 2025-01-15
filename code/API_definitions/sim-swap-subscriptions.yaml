@@ -51,8 +51,8 @@ info:
       #### phoneNumber presence:
       These rules apply for subscription:
 
-      - If 3-legged access token is used, the POST and GET{id} requests & responses must not provide any device identifier (``phoneNumber``). For GET (list) only subscription(s) for this exactly phone number is/are retrieved (implicit filtering).
-      - If 2-legged access token is used, for POST and GET{id}, the presence of a device identifier (``phoneNumber``) in the request & response is mandatory. For GET (list) the device identifier (``phoneNumber``) could be used as filtering criteria.
+      - If 3-legged access token is used, the POST and GET{id} requests & responses must NOT provide thev``phoneNumber``. For GET (list) only subscription(s) for this exactly phone number is/are retrieved (implicit filtering).
+      - If 2-legged access token is used, for POST and GET{id}, the presence of ``phoneNumber`` in the request & response is mandatory. For GET (list) the device identifier (``phoneNumber``) could be used as filtering criteria.
 
       #### sinkCredential presence:
 
@@ -1238,13 +1238,13 @@ components:
               value:
                 status: 429
                 code: QUOTA_EXCEEDED
-                message: Either out of resource quota or reaching rate limiting.
+                message: Rejected due to exceeding a business quota limit.
             GENERIC_429_TOO_MANY_REQUESTS:
               description: API Server request limit is overpassed
               value:
                 status: 429
                 code: TOO_MANY_REQUESTS
-                message: Either out of resource quota or reaching rate limiting.
+                message: Rejected due to request rate limit overpassed.
   examples:
     SWAPPED:
       value:

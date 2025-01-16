@@ -40,33 +40,23 @@ info:
 
     The "Camara Security and Interoperability Profile" provides details on how a client requests an access token. Please refer to Identify and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the Profile.
 
-    Which specific authorization flows are to be used will be determined during onboarding process, happening between the API Client and the Telco Operator exposing the API, taking into account the declared purpose for accessing the API, while also being subject to the prevailing legal framework dictated by local legislation.
+    Which specific authorization flows are to be used will be determined during onboarding process, happening between the API Client and the API Provider, taking into account the declared purpose for accessing the API, while also being subject to the prevailing legal framework dictated by local legislation.
 
     It is important to remark that in cases where personal user data is processed by the API, and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of 3-legged access tokens becomes mandatory. This measure ensures that the API remains in strict compliance with user privacy preferences and regulatory obligations, upholding the principles of transparency and user-centric data control.
 
-    # Identifying a phone number from the access token
+    # Identifying the phone number from the access token
 
-    This specification defines the `phoneNumber` field as optional in API requests, specifically in cases where the API is accessed using a 3-legged access token, and the phone number can be uniquely identified by the token. This approach simplifies API usage for API consumers by relying on the information associated with the access token used to invoke the API.
+    This API requires the API consumer to identify a phone number as the subject of the API. There is 2 ways to retrieve it depending on the authorization flow used:
+    - When the API is invoked using a two-legged access token, the phone number will be identified from the optional `phoneNumber` identifier, which therefore MUST be provided.
+    - When a three-legged access token is used however, this optional `phoneNumber` identifier MUST NOT be provided, as the phone number will be uniquely identified from the access token.
 
-    ## Handling of phone number information:
+    This approach simplifies API usage for API consumers using a three-legged access token to invoke the API by relying on the information that is associated with the access token and was identified during the authentication process.
 
-    ### Optional `phoneNumber` field for 3-legged tokens:
+    ## Error handling:
 
-    - When using a 3-legged access token, the phone number associated with the access token must be considered as the phone number for the API request. This means that the `phoneNumber` field is not required in the request, and if included it must identify the same phone number, therefore **it is recommended NOT to include it in these scenarios** to simplify the API usage and avoid additional validations.
+    - If the phoneNumber cannot be identified from the access token and the optional `phoneNumber` identifier is not included in the request, then the server will return an error with the `422 MISSING_IDENTIFIER` error code.
 
-    ### Validation mechanism:
-
-    - The server will extract the phone number identification from the access token, if available.
-    - If the API request additionally includes a `phoneNumber` field when using a 3-legged access token, the API will validate that the phone number provided matches the one associated with the access token.
-    - If there is a mismatch, the API will respond with a 403 - INVALID_TOKEN_CONTEXT error, indicating that the phone number information in the request does not match the token.
-
-    ### Error handling for unidentifiable phone number:
-
-    - If the `phoneNumber` field is not included in the request and the phone number information cannot be derived from the 3-legged access token, the server will return a 422 `UNIDENTIFIABLE_PHONE_NUMBER` error.
-
-    ### Restrictions for tokens without an associated authenticated phone number:
-
-    - For scenarios which do not have a phone number associated to the token during the authentication flow, e.g. 2-legged access tokens, the `phoneNumber` field MUST be provided in the API request. This ensures that the phone number is explicit and valid for each API call made with these tokens.
+    - If the phoneNumber can be identified from the access token and the optional `phoneNumber` identifier is also included in the request, then the server will return an error with the `422 UNNECESSARY_IDENTIFIER` error code. This will be the case even if the same device is identified by these two methods, as the server is unable to make this comparison.
 
     # Further info and support
 
@@ -78,7 +68,7 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: wip
-  x-camara-commonalities: 0.4.0
+  x-camara-commonalities: 0.5.0
 externalDocs:
   description: Product documentation at Camara
   url: https://github.com/camaraproject/SimSwap
@@ -109,6 +99,12 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CreateSimSwapDate"
+            examples:
+              RETRIEVE_3LEGS:
+                $ref: "#/components/examples/RETRIEVE_3LEGS"
+              RETRIEVE_2LEGS:
+                $ref: "#/components/examples/RETRIEVE_2LEGS"
+
         required: true
       responses:
         "200":
@@ -137,12 +133,8 @@ paths:
           $ref: "#/components/responses/Generic404"
         "422":
           $ref: "#/components/responses/Generic422"
-        "500":
-          $ref: "#/components/responses/Generic500"
-        "503":
-          $ref: "#/components/responses/Generic503"
-        "504":
-          $ref: "#/components/responses/Generic504"
+        "429":
+          $ref: "#/components/responses/Generic429"
   /check:
     post:
       security:
@@ -163,6 +155,11 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CreateCheckSimSwap"
+            examples:
+              CHECK_3LEGS:
+                $ref: "#/components/examples/CHECK_3LEGS"
+              CHECK_2LEGS:
+                $ref: "#/components/examples/CHECK_2LEGS"
         required: true
       responses:
         "200":
@@ -184,12 +181,8 @@ paths:
           $ref: "#/components/responses/Generic404"
         "422":
           $ref: "#/components/responses/Generic422"
-        "500":
-          $ref: "#/components/responses/Generic500"
-        "503":
-          $ref: "#/components/responses/Generic503"
-        "504":
-          $ref: "#/components/responses/Generic504"
+        "429":
+          $ref: "#/components/responses/Generic429"
 components:
   securitySchemes:
     openId:
@@ -281,7 +274,16 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 400
+                  code:
+                    enum:
+                      - INVALID_ARGUMENT
           examples:
             GENERIC_400_INVALID_ARGUMENT:
               description: Invalid Argument. Generic Syntax Exception
@@ -297,7 +299,17 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 401
+                  code:
+                    enum:
+                      - UNAUTHENTICATED
+                      - AUTHENTICATION_REQUIRED
           examples:
             GENERIC_401_UNAUTHENTICATED:
               description: Request cannot be authenticated
@@ -305,15 +317,30 @@ components:
                 status: 401
                 code: UNAUTHENTICATED
                 message: Request not authenticated due to missing, invalid, or expired credentials.
+            GENERIC_401_AUTHENTICATION_REQUIRED:
+              description: New authentication is needed, authentication is no longer valid
+              value:
+                status: 401
+                code: AUTHENTICATION_REQUIRED
+                message: New authentication is required.
     Generic403:
       description: Forbidden
       headers:
         x-correlator:
-          $ref: '#/components/headers/x-correlator'
+          $ref: "#/components/headers/x-correlator"
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorInfo'
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 403
+                  code:
+                    enum:
+                      - PERMISSION_DENIED
           examples:
             GENERIC_403_PERMISSION_DENIED:
               description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
@@ -321,12 +348,6 @@ components:
                 status: 403
                 code: PERMISSION_DENIED
                 message: Client does not have sufficient permissions to perform this action.
-            GENERIC_403_INVALID_TOKEN_CONTEXT:
-              description: Reflect some inconsistency between information in some field of the API and the related OAuth2 Token
-              value:
-                status: 403
-                code: INVALID_TOKEN_CONTEXT
-                message: phoneNumber is not consistent with access token
     Generic404:
       description: Not found
       headers:
@@ -335,7 +356,17 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 404
+                  code:
+                    enum:
+                      - NOT_FOUND
+                      - IDENTIFIER_NOT_FOUND
           examples:
             GENERIC_404_NOT_FOUND:
               description: Resource is not found
@@ -351,68 +382,69 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 422
+                  code:
+                    enum:
+                      - SERVICE_NOT_APPLICABLE
+                      - MISSING_IDENTIFIER
+                      - UNNECESSARY_IDENTIFIER
           examples:
-            GENERIC_422_NOT_SUPPORTED:
-              description: Not Supported
+            GENERIC_422_SERVICE_NOT_APPLICABLE:
+              description: Service not applicable for the provided identifier
               value:
                 status: 422
-                code: NOT_SUPPORTED
-                message: Service not supported for this phoneNumber
-            UNIDENTIFIABLE_PHONE_NUMBER:
-              description: The phone number is not included in the request and the phone number information cannot be derived from the 3-legged access token
+                code: SERVICE_NOT_APPLICABLE
+                message: The service is not available for the provided identifier.
+            GENERIC_422_MISSING_IDENTIFIER:
+              description: phone number is not included in the request (in case of 2-legged) or the phone number identification cannot be derived from access token (in 3-legged)
               value:
                 status: 422
-                code: UNIDENTIFIABLE_PHONE_NUMBER
-                message: The phone number cannot be identified
-    Generic500:
-      description: Internal Server Error
+                code: MISSING_IDENTIFIER
+                message: The device cannot be identified.
+            GENERIC_422_UNNECESSARY_IDENTIFIER:
+              description: An explicit identifier is provided when a device or phone number has already been identified from the access token
+              value:
+                status: 422
+                code: UNNECESSARY_IDENTIFIER
+                message: The device is already identified by the access token.
+    Generic429:
+      description: Too Many Requests
       headers:
         x-correlator:
           $ref: "#/components/headers/x-correlator"
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 429
+                  code:
+                    enum:
+                      - QUOTA_EXCEEDED
+                      - TOO_MANY_REQUESTS
           examples:
-            GENERIC_500_INTERNAL:
-              description: Problem in Server side. Regular Server Exception
+            GENERIC_429_QUOTA_EXCEEDED:
+              description: Request is rejected due to exceeding a business quota limit
               value:
-                status: 500
-                code: INTERNAL
-                message: Unknown server error. Typically a server bug.
-    Generic503:
-      description: Service Unavailable
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          examples:
-            GENERIC_503_UNAVAILABLE:
-              description: Service is not available. Temporary situation usually related to maintenance process in the server side
+                status: 429
+                code: QUOTA_EXCEEDED
+                message: Rejected due to exceeding a business quota limit.
+            GENERIC_429_TOO_MANY_REQUESTS:
+              description: API Server request limit is overpassed
               value:
-                status: 503
-                code: UNAVAILABLE
-                message: Service Unavailable.
-    Generic504:
-      description: Gateway Timeout
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          examples:
-            GENERIC_504_TIMEOUT:
-              description: API Server Timeout
-              value:
-                status: 504
-                code: TIMEOUT
-                message: Request timeout exceeded.
+                status: 429
+                code: TOO_MANY_REQUESTS
+                message: Rejected due to request rate limit overpassed.
   examples:
     RETRIEVE_DATE:
       summary: Lastest SIM swap date is send back
@@ -427,3 +459,20 @@ components:
       value:
         latestSimChange: null
         monitoredPeriod: 120
+    CHECK_2LEGS:
+      summary: Check request without 3-legged access tokens
+      value:
+        phoneNumber: "+346661113334"
+        maxAge: 120
+    CHECK_3LEGS:
+      summary: Check request with 3-legged access tokens
+      value:
+        maxAge: 120
+    RETRIEVE_2LEGS:
+      summary: Retrieve request without 3-legged access tokens
+      value:
+        phoneNumber: "+346661113334"
+    RETRIEVE_3LEGS:
+      summary: Retrieve request with 3-legged access tokens
+      value:
+        {}

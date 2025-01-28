@@ -195,6 +195,7 @@ components:
       description: Correlation id for the different services
       schema:
         type: string
+        pattern: ^[a-zA-Z0-9-]{0,55}$
   headers:
     x-correlator:
       description: Correlation id for the different services

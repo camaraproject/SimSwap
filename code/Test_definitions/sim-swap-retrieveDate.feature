@@ -1,15 +1,15 @@
-Feature: CAMARA SIM Swap API, 2.0.0 - Operation retrieveSimSwapDate
+Feature: CAMARA SIM Swap API, 2.0.0-rc.1 - Operation retrieveSimSwapDate
 
   # Input to be provided by the implementation to the tester
   #
   # Testing assets:
   #
-  # References to OAS spec schemas refer to schemas specifies in sim_swap.yaml, version 2.0.0
+  # References to OAS spec schemas refer to schemas specifies in sim_swap.yaml, version 2.0.0-rc.1
   #
   # Get timestamp of last MSISDN <-> IMSI pairing change for the provided phone number.
 
   Background: Common retrieveSimSwapDate setup
-    Given the resource "sim-swap/v2/retrieve-date"
+    Given the resource "sim-swap/v2rc1/retrieve-date"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
@@ -17,7 +17,7 @@ Feature: CAMARA SIM Swap API, 2.0.0 - Operation retrieveSimSwapDate
 
   # This first scenario serves as a minimum, not testing any specific verificationResult
   @retrieve_sim_swap_date_1_generic_success_scenario
-  Scenario: Common validations for any sucess scenario
+  Scenario: Common validations for any success scenario
     Given a valid phone number identified by the token or provided in the request body
     When the request "retrieveSimSwapDate" is sent
     Then the response status code is 200
@@ -127,7 +127,7 @@ Feature: CAMARA SIM Swap API, 2.0.0 - Operation retrieveSimSwapDate
 
   @retrieve_sim_swap_date_401.4_expired_access_token
   Scenario: Expired access token
-   # alternative to scenario @retrieve_sim_swap_date_401.2_expired_access_token
+    # alternative to scenario @retrieve_sim_swap_date_401.2_expired_access_token
     Given the header "Authorization" is set to an expired access token
     And the request body is set to a valid request body
     When the request "retrieveSimSwapDate" is sent

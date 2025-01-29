@@ -1,15 +1,15 @@
-Feature: CAMARA SIM Swap API, 2.0.0 - Operation checkSimSwap
+Feature: CAMARA SIM Swap API, 2.0.0-rc.1 - Operation checkSimSwap
 
   # Input to be provided by the implementation to the tester
   #
   # Testing assets:
   #
-  # References to OAS spec schemas refer to schemas specifies in sim_swap.yaml, version 2.0.0
+  # References to OAS spec schemas refer to schemas specifies in sim_swap.yaml, version 2.0.0-rc.1
   #
   # check if SIM swap has been performed during a past period
 
   Background: Common checkSimSwap setup
-    Given the resource "sim-swap/v2/check"
+    Given the resource "sim-swap/v2rc1/check"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value

@@ -41,6 +41,7 @@ The API definition(s) are based on
 
 ### Added
 * Add management of monitoredPeriod in sim swap for retrieve-date operation by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/153
+* Include pattern for x-correlator header
 
 ### Changed
 * Update sim-swap-check.feature by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/168
@@ -56,6 +57,7 @@ The API definition(s) are based on
 
 ### Added
 * [Sim-Swap-Subscription]: Add TerminationReason SUBSCRIPTION_DELETED by @daniel-dierich in https://github.com/camaraproject/SimSwap/pull/177
+* Include pattern for x-correlator header
 
 ### Changed
 * Sim swap subscriptions alignement with commonalities 0.5 by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/179

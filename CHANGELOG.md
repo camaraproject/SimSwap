@@ -26,8 +26,8 @@ This release contains the definition and documentation of
 * sim-swap-subscriptions 0.2-rc.1
 
 The API definition(s) are based on
-* Commonalities v0.5.0-alpha.1
-* Identity and Consent Management v0.3.0-alpha.1
+* Commonalities v0.5.0-rc.1
+* Identity and Consent Management v0.3.0-rc.1
 
 
 ## sim-swap 2.0.0-rc.1
@@ -41,7 +41,7 @@ The API definition(s) are based on
 
 ### Added
 * Add management of monitoredPeriod in sim swap for retrieve-date operation by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/153
-* Include pattern for x-correlator header
+* Include pattern for x-correlator header by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/183
 
 ### Changed
 * Update sim-swap-check.feature by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/168
@@ -57,7 +57,7 @@ The API definition(s) are based on
 
 ### Added
 * [Sim-Swap-Subscription]: Add TerminationReason SUBSCRIPTION_DELETED by @daniel-dierich in https://github.com/camaraproject/SimSwap/pull/177
-* Include pattern for x-correlator header
+* Include pattern for x-correlator header by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/183
 
 ### Changed
 * Sim swap subscriptions alignement with commonalities 0.5 by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/179

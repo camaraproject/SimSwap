@@ -51,7 +51,7 @@ info:
       #### phoneNumber presence:
       These rules apply for subscription:
 
-      - If 3-legged access token is used, the POST and GET{id} requests & responses must NOT provide thev``phoneNumber``. For GET (list) only subscription(s) for this exactly phone number is/are retrieved (implicit filtering).
+      - If 3-legged access token is used, the POST and GET{id} requests & responses must NOT provide the ``phoneNumber``. For GET (list) only subscription(s) for this exactly phone number is/are retrieved (implicit filtering).
       - If 2-legged access token is used, for POST and GET{id}, the presence of ``phoneNumber`` in the request & response is mandatory. For GET (list) the device identifier (``phoneNumber``) could be used as filtering criteria.
 
       #### sinkCredential presence:
@@ -60,11 +60,11 @@ info:
 
     # Authorization and authentication
 
-    The "Camara Security and Interoperability Profile" provides details on how a client requests an access token. Please refer to Identify and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the Profile.
+    The "Camara Security and Interoperability Profile" provides details of how an API consumer requests an access token. Please refer to Identity and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the profile.
 
-    Which specific authorization flows are to be used will be determined during onboarding process, happening between the API Client and the API Provider, taking into account the declared purpose for accessing the API, while also being subject to the prevailing legal framework dictated by local legislation.
+    The specific authorization flows to be used will be agreed upon during the onboarding process, happening between the provider of the application consuming the API and the operator's API exposure platform, taking into account the declared purpose for accessing the API, whilst also being subject to the prevailing legal framework dictated by local legislation.
 
-    It is important to remark that in cases where personal user data is processed by the API, and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of 3-legged access tokens becomes mandatory. This measure ensures that the API remains in strict compliance with user privacy preferences and regulatory obligations, upholding the principles of transparency and user-centric data control.
+    In cases where personal data is processed by the API and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of three-legged access tokens is mandatory. This ensures that the API remains in compliance with privacy regulations, upholding the principles of transparency and user-centric privacy-by-design.
 
     # Identifying the device from the access token
 
@@ -87,14 +87,14 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: wip
-  x-camara-commonalities: 0.5.0
+  version: 0.2.0-rc.1
+  x-camara-commonalities: 0.5
 
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
 servers:
-  - url: '{apiRoot}/sim-swap-subscriptions/vwip'
+  - url: '{apiRoot}/sim-swap-subscriptions/v0.2rc1'
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -331,11 +331,15 @@ components:
       description: Correlation id for the different services
       schema:
         type: string
+        pattern: ^[a-zA-Z0-9-]{0,55}$
+        example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
   headers:
     x-correlator:
       description: Correlation id for the different services
       schema:
         type: string
+        pattern: ^[a-zA-Z0-9-]{0,55}$
+        example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
   schemas:
     PhoneNumber:
       type: string

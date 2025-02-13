@@ -2,6 +2,7 @@
 
 ## Table of contents
 
+- **[r2.1](#r21)**
 - **[r1.3](#r13)**
 - **[r1.2](#r12)**
 - **[r1.1](#r11)**
@@ -11,9 +12,63 @@
 
 The below sections record the changes for each API version in each release as follows:
 
-* for each first alpha or release-candidate API version, all changes since the release of the previous public API version
-* for subsequent alpha or release-candidate API versions, the delta with respect to the previous pre-release
-* for a public API version, the consolidated changes since the release of the previous public API version
+* for an alpha release, the delta with respect to the previous release
+* for the first release-candidate, all changes since the last public release
+* for subsequent release-candidate(s), only the delta to the previous release-candidate
+* for a public release, the consolidated changes since the previous public release
+
+# r2.1
+
+## Release Notes
+
+This release contains the definition and documentation of
+* sim-swap 2.0.0-rc.1
+* sim-swap-subscriptions 0.2-rc.1
+
+The API definition(s) are based on
+* Commonalities v0.5.0-rc.1
+* Identity and Consent Management v0.3.0-rc.1
+
+
+## sim-swap 2.0.0-rc.1
+
+**sim-swap 2.0.0-rc.1 is the pre-release for v2.0.0 of the Sim Swap API.**
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r2.1/code/API_definitions/sim-swap.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r2.1/code/API_definitions/sim-swap.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/r2.1/code/API_definitions/sim-swap.yaml)
+
+### Added
+* Add management of monitoredPeriod in sim swap for retrieve-date operation by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/153
+* Include pattern for x-correlator header by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/183
+
+### Changed
+* Update sim-swap-check.feature by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/168
+* Update test wording to avoid confusion with "activation" terminology by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/170
+* Sim swap alignement with  commonalities 0.5 by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/180
+
+## Sim Swap Subscriptions v0.2.0-rc.1
+
+- API definition **with inline documentation**:
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/r2.1/code/API_definitions/sim-swap-subscriptions.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r2.1/code/API_definitions/sim-swap-subscriptions.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r2.1/code/API_definitions/sim-swap-subscriptions.yaml)
+
+### Added
+* [Sim-Swap-Subscription]: Add TerminationReason SUBSCRIPTION_DELETED by @daniel-dierich in https://github.com/camaraproject/SimSwap/pull/177
+* Include pattern for x-correlator header by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/183
+
+### Changed
+* Sim swap subscriptions alignement with commonalities 0.5 by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/179
+
+### Removed
+* [sim-swap-subscriptions]: remove `allof` in `sinkcredential` by @dfischer-tech in https://github.com/camaraproject/SimSwap/pull/175
+
+## New Contributors
+* @dfischer-tech made their first contribution in https://github.com/camaraproject/SimSwap/pull/175
+
+**Full Changelog**: https://github.com/camaraproject/SimSwap/compare/r1.3...r2.1
 
 # r1.3
 

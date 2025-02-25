@@ -188,3 +188,12 @@ Feature: CAMARA SIM Swap API, 2.0.0-rc.1 - Operation checkSimSwap
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
+
+  @check_sim_swap_400.3_invalid_max_age_value
+  Scenario: Check that the response shows an error when the max age is above the limit
+    Given the request body property "$.maxAge" is set to 100000
+    When the request "checkSimSwap" is sent
+    Then the response status code is 400
+    And the response property "$.status" is 400
+    And the response property "$.code" is "OUT_OF_RANGE"
+    And the response property "$.message" contains a user friendly text

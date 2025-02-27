@@ -376,7 +376,7 @@ components:
           $ref: "#/components/schemas/Protocol"
         sink:
           type: string
-          format: url
+          format: uri
           description: The address to which events shall be delivered using the selected protocol.
           example: "https://endpoint.example.com/sink"
         sinkCredential:
@@ -479,7 +479,7 @@ components:
             accessTokenExpiresUtc:
               type: string
               format: date-time
-              description: REQUIRED. An absolute UTC instant at which the token shall be considered expired.
+              description: REQUIRED. An absolute (UTC) timestamp at which the token shall be considered expired. In the case of an ACCESS_TOKEN_EXPIRED termination reason, implementation should notify the client before the expiration date.
             accessTokenType:
               description: REQUIRED. Type of the access token (See [OAuth 2.0](https://tools.ietf.org/html/rfc6749#section-7.1)).
               type: string
@@ -557,13 +557,12 @@ components:
         - config
         - types
         - id
-        - startsAt
       properties:
         protocol:
           $ref: "#/components/schemas/Protocol"
         sink:
           type: string
-          format: url
+          format: uri
           description: The address to which events shall be delivered using the selected protocol.
           example: "https://endpoint.example.com/sink"
         types:
@@ -571,7 +570,7 @@ components:
             Camara Event types eligible for subscription:
             - org.camaraproject.sim-swap-subscriptions.v0.swapped: receive a notification when a sim swap is performed on the line.
             Note: for the Commonalities meta-release v0.4 we enforce to have only event type per subscription then for following meta-release use of array MUST be decided
-             at API project level.
+            at API project level.
           type: array
           minItems: 1
           maxItems: 1
@@ -580,17 +579,21 @@ components:
         config:
           $ref: '#/components/schemas/Config'
         id:
-          type: string
-          description: The unique identifier of the subscription in the scope of the subscription manager. When this information is contained within an event notification, this concept SHALL be referred as `subscriptionId` as per [Commonalities Event Notification Model](https://github.com/camaraproject/Commonalities/blob/main/documentation/API-design-guidelines.md#122-event-notification).
-          example: "1119920371"
+          $ref: "#/components/schemas/SubscriptionId"
         startsAt:
-          type: string
-          format: date-time
-          description: Date when the event subscription will begin/began
+          description: |
+            Date when the event subscription will begin/began
+            It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone. 
+            Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
+          example: "2023-07-03T12:27:08.312Z"
         expiresAt:
           type: string
           format: date-time
-          description: Date when the event subscription will expire. Only provided when `subscriptionExpireTime` is indicated by API client or Telco Operator has specific policy about that.
+          description: |
+            Date when the event subscription will expire. Only provided when `subscriptionExpireTime` is indicated by API client or Telco Operator has specific policy about that.
+            It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone. 
+            Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
+          example: "2023-07-03T12:27:08.312Z"
         status:
           type: string
           description: |-
@@ -1242,13 +1245,13 @@ components:
               value:
                 status: 429
                 code: QUOTA_EXCEEDED
-                message: Rejected due to exceeding a business quota limit.
+                message: Out of resource quota.
             GENERIC_429_TOO_MANY_REQUESTS:
-              description: API Server request limit is overpassed
+              description: Access to the API has been temporarily blocked due to rate or spike arrest limits being reached
               value:
                 status: 429
                 code: TOO_MANY_REQUESTS
-                message: Rejected due to request rate limit overpassed.
+                message: Rate limit reached.
   examples:
     SWAPPED:
       value:

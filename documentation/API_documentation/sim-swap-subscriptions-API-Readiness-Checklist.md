@@ -1,12 +1,12 @@
 # API Readiness Checklist
 
-Checklist for sim-swap-subscriptions 0.2.0-rc.1 in r2.1
+Checklist for sim-swap-subscriptions 0.2.0 in r2.2
 
 | Nr | API release assets  | alpha | release-candidate |  initial<br>public | stable<br> public | Status | Reference information |
 |----|----------------------------------------------|:-----:|:-----------------:|:-------:|:------:|:----:|:----:|
 |  1 | API definition                               |   M   |         M         |    M    |    M   |  Y   | [relative link](code/API_definitions/sim-swap-subscriptions.yaml) |
-|  2 | Design guidelines from Commonalities applied |   O   |         M         |    M    |    M   |  Y   | [r2.2](https://github.com/camaraproject/Commonalities/releases/tag/r2.2) |
-|  3 | Guidelines from ICM applied                  |   O   |         M         |    M    |    M   |  Y   | [r2.2](https://github.com/camaraproject/IdentityAndConsentManagement/releases/tag/r2.2) |
+|  2 | Design guidelines from Commonalities applied |   O   |         M         |    M    |    M   |  Y   | [r2.3](https://github.com/camaraproject/Commonalities/releases/tag/r2.3) |
+|  3 | Guidelines from ICM applied                  |   O   |         M         |    M    |    M   |  Y   | [r2.3](https://github.com/camaraproject/IdentityAndConsentManagement/releases/tag/r2.3) |
 |  4 | API versioning convention applied            |   M   |         M         |    M    |    M   |  Y   |      |
 |  5 | API documentation                            |   M   |         M         |    M    |    M   |  Y   | Embedded documentation into API spec - [link](/code/API_definitions/sim-swap.yaml) |
 |  6 | User stories                                 |   O   |         O         |    O    |    M   |  N   |      |

@@ -22,17 +22,17 @@ Repository to describe, develop, document and test the SimSwap API family
 ## Status and released versions
 
 * Note: Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. **For best results, use the latest available release**.
-* `NEW`: Release r2.1 features following APIs:
-  * version 2.0.0-rc.1 of the **API sim-swap** - available [here](https://github.com/camaraproject/SimSwap/tree/r2.1)
+* `NEW`: Release r2.2 features following APIs:
+  * version 2.0.0 of the **API sim-swap** - available [here](https://github.com/camaraproject/SimSwap/tree/r2.2)
     * API definitions **with inline documentation**:
-      * OpenAPI [YAML](https://github.com/camaraproject/SimSwap/blob/r2.1/code/API_definitions/sim-swap.yaml)
-      * [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r2.1/code/API_definitions/sim-swap.yaml&nocors) 
-      * [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r2.1/code/API_definitions/sim-swap.yaml)
-  * version 0.2.0-rc.1 of the **API sim-swap-subscriptions** - available [here](https://github.com/camaraproject/SimSwap/tree/r2.1)
+      * OpenAPI [YAML](https://github.com/camaraproject/SimSwap/blob/r2.2/code/API_definitions/sim-swap.yaml)
+      * [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r2.2/code/API_definitions/sim-swap.yaml&nocors) 
+      * [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r2.2/code/API_definitions/sim-swap.yaml)
+  * version 0.2.0 of the **API sim-swap-subscriptions** - available [here](https://github.com/camaraproject/SimSwap/tree/r2.2)
     * API definitions **with inline documentation**:
-      * OpenAPI [YAML](https://github.com/camaraproject/SimSwap/blob/r2.1/code/API_definitions/sim-swap-subscriptions.yaml)
-      * [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r2.1/code/API_definitions/sim-swap-subscriptions.yaml&nocors) 
-      * [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r2.1/code/API_definitions/sim-swap-subscriptions.yaml)
+      * OpenAPI [YAML](https://github.com/camaraproject/SimSwap/blob/r2.2/code/API_definitions/sim-swap-subscriptions.yaml)
+      * [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r2.2/code/API_definitions/sim-swap-subscriptions.yaml&nocors) 
+      * [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r2.2/code/API_definitions/sim-swap-subscriptions.yaml)
 
 * The latest public release is available here: https://github.com/camaraproject/SimSwap/releases/latest
 * Other releases of this sub project are available in https://github.com/camaraproject/SimSwap/releases

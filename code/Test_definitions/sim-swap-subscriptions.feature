@@ -1,4 +1,4 @@
-Feature: CAMARA sim swap subscriptions  API, v0.2.0-rc.1
+Feature: CAMARA sim swap subscriptions  API, v0.2.0
   # Input to be provided by the implementation to the tester
   #
   # Testing assets:
@@ -6,10 +6,10 @@ Feature: CAMARA sim swap subscriptions  API, v0.2.0-rc.1
   # * Be able to perform a sim swap for this mobile line shifting from sim card 1 to sim card 2
   # * a callback url identified as "callbackUrl" allows to receive notification
   #
-  # References to OAS spec schemas refer to schemas specifies in sim-swap-subscriptions.yaml, version v0.2.0-rc.1
+  # References to OAS spec schemas refer to schemas specifies in sim-swap-subscriptions.yaml, version v0.2.0
 
   Background: Common subscriptions setup
-    Given the resource "/sim-swap-subscriptions/v0.2rc1/subscriptions" as BaseURL                                                            |
+    Given the resource "/sim-swap-subscriptions/v0.2/subscriptions" as BaseURL
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
@@ -103,7 +103,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.2.0-rc.1
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/Subscription"
     And The callback notification application receives subscription-ends event at provided callbackUrl
-    And notification body complies with the OAS schema at "##/components/schemas/Subscription/CloudEvent"
+    And notification body complies with the OAS schema at "#/components/schemas/Subscription/CloudEvent"
     And type="org.camaraproject.sim-swap-subscriptions.v0.subscription-ends"
     And data.phoneNumber="$.phoneNumber"
     And data.subscriptionId is valued with the subcriptionId
@@ -121,7 +121,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.2.0-rc.1
     And subcriptionId is provided 
     When sims swap is performed on this mobile line
     Then The callback notification application receives swapped event at provided callbackUrl
-    And notification body complies with the OAS schema at "##/components/schemas/Subscription/CloudEvent"
+    And notification body complies with the OAS schema at "#/components/schemas/Subscription/CloudEvent"
     And type="org.camaraproject.sim-swap-subscriptions.v0.swapped"
     And data.phoneNumber="$.phoneNumber"
     And data.subscriptionId is valued with the subcriptionId

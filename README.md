@@ -5,24 +5,26 @@
 <a href="https://github.com/camaraproject/SimSwap" title="Repo Size"><img src="https://img.shields.io/github/repo-size/camaraproject/SimSwap?style=plastic"></a>
 <a href="https://github.com/camaraproject/SimSwap/blob/main/LICENSE" title="License"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg?style=plastic"></a>
 <a href="https://github.com/camaraproject/SimSwap/releases/latest" title="Latest Release"><img src="https://img.shields.io/github/release/camaraproject/SimSwap?style=plastic"></a>
+<a href="https://github.com/camaraproject/Governance/blob/main/ProjectStructureAndRoles.md" title="Incubating API Repository"><img src="https://img.shields.io/badge/Incubating%20API%20Repository-green?style=plastic"></a>
+
 
 # SimSwap
 
-Repository to describe, develop, document and test the SimSwap API family
+Repository to describe, develop, document and test the SimSwap APIs
 
 ## Scope
 
 * Service APIs for “SimSwap” (see APIBacklog.md)  
-* It provides the customer with the ability to:  
+* The APIs provide the API Consumer with the ability to:  
   * obtain information on any recent SIM pairing change related to the User’s mobile account.
 * Describe, develop, document and test the APIs (with 1-2 Telcos)  
 * Started: October 2022
-* Location: virtually  
+* Incubating stage since: February 2025
 
 ## Status and released versions
 
 * Note: Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. **For best results, use the latest available release**.
-* `NEW`: Release r2.2 features following APIs:
+* `NEW`: Public release r2.2 features the following APIs:
   * version 2.0.0 of the **API sim-swap** - available [here](https://github.com/camaraproject/SimSwap/tree/r2.2)
     * API definitions **with inline documentation**:
       * OpenAPI [YAML](https://github.com/camaraproject/SimSwap/blob/r2.2/code/API_definitions/sim-swap.yaml)
@@ -40,8 +42,10 @@ Repository to describe, develop, document and test the SimSwap API family
 
 ## Contributing
 
-* Meetings:
-  * Current schedule, registration, & meeting links are available on the confluence page: [Meetings information](https://wiki.camaraproject.org/display/CAM/NumberVerification)
+* Meetings are held virtually
+  * Schedule: Every 4 weeks, Thursday Tuesday, 7:30 AM UTC (8:30 CET/9:30 CEST)
+  * [Registration / Join](https://lf-camaraproject.atlassian.net/wiki/spaces/CAM/pages/14562399/NumberVerification)
+  * Minutes: Access [meeting minutes](https://lf-camaraproject.atlassian.net/wiki/spaces/CAM/pages/14564484/Number+Verification+Meeting+Minutes)
 * Mailing List:
   * To subscribe / unsubscribe to the mailing list of this Sub Project and thus be / resign as Contributor please visit <https://lists.camaraproject.org/g/sp-ssw>.
   * A message to all Contributors of this Sub Project can be sent using <sp-ssw@lists.camaraproject.org>.

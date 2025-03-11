@@ -36,7 +36,7 @@ info:
       - the subscription expire time (optionally set by the requester) has been reached
       - the maximum number of subscription events (optionally set by the requester) has been reached
       - the API server has to stop sending notification prematurely
-      - the Access Token sinkCredential (optionally set by the requester) expiration time has been reached
+      - the Access Token sinkCredential expiration time (set by the requester) has been reached
 
     ### Notification callback
 
@@ -441,7 +441,7 @@ components:
             - PLAIN
             - ACCESSTOKEN
             - REFRESHTOKEN
-          description: "The type of the credential."
+          description: "The type of the credential. With the current API version the type MUST be set to ACCESSTOKEN."
       discriminator:
         propertyName: credentialType
         mapping:

@@ -48,7 +48,7 @@ The API definition(s) are based on
 ### Changed
 * Update sim-swap-check.feature by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/168
 * Update test wording to avoid confusion with "activation" terminology by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/170
-* Sim swap alignement with  commonalities 0.5 by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/180
+* Sim swap alignment with Commonalities 0.5 by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/180
 
 ## Sim Swap Subscriptions v0.2.0
 
@@ -102,7 +102,7 @@ The API definition(s) are based on
 ### Changed
 * Update sim-swap-check.feature by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/168
 * Update test wording to avoid confusion with "activation" terminology by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/170
-* Sim swap alignement with  commonalities 0.5 by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/180
+* Sim swap alignment with Commonalities 0.5 by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/180
 
 ## Sim Swap Subscriptions v0.2.0-rc.1
 

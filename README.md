@@ -10,12 +10,15 @@
 
 # SimSwap
 
-Repository to describe, develop, document and test the SimSwap APIs
+Incubating API Repository to evolve and maintain the definitions and documentation of SimSwap Service APIs within the Sub Project [Number Verification](https://lf-camaraproject.atlassian.net/wiki/x/BYEpBQ)
+
+* API Repository wiki page: https://lf-camaraproject.atlassian.net/wiki/x/AgDe
+* Sub Project home page: https://lf-camaraproject.atlassian.net/wiki/x/0jXe
 
 ## Scope
 
 * Service APIs for “SimSwap” (see APIBacklog.md)  
-* The APIs provide the API Consumer with the ability to:  
+* The APIs provide the API consumer with the ability to:  
   * obtain information on any recent SIM pairing change related to the User’s mobile account.
 * Describe, develop, document and test the APIs (with 1-2 Telcos)  
 * Started: October 2022

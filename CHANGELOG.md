@@ -62,7 +62,7 @@ The API definition(s) are based on
 * Include pattern for x-correlator header by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/183
 
 ### Changed
-* Sim swap subscriptions alignement with commonalities 0.5 by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/179
+* Sim swap subscriptions alignment with Commonalities 0.5 by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/179
 * Align sim swap subscriptions with latest Commonalities by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/192
 
 ### Removed

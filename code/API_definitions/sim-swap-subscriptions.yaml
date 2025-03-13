@@ -33,10 +33,10 @@ info:
     Note: Additionally to these list, ``org.camaraproject.sim-swap-subscriptions.v0.subscription-ends`` notification `types` is sent when the subscription ends.
     This notification does not require dedicated subscription.
     It is used when:
-      - the subscription expire time (optionally set by the requester) has been reached
+      - the subscription expiration time (optionally set by the requester) has been reached
       - the maximum number of subscription events (optionally set by the requester) has been reached
       - the API server has to stop sending notification prematurely
-      - the Access Token sinkCredential (optionally set by the requester) expiration time has been reached
+      - the Access Token sinkCredential expiration time (set by the requester) has been reached
 
     ### Notification callback
 
@@ -87,14 +87,14 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.2.0-rc.1
+  version: 0.2.0
   x-camara-commonalities: 0.5
 
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
 servers:
-  - url: '{apiRoot}/sim-swap-subscriptions/v0.2rc1'
+  - url: '{apiRoot}/sim-swap-subscriptions/v0.2'
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -441,7 +441,7 @@ components:
             - PLAIN
             - ACCESSTOKEN
             - REFRESHTOKEN
-          description: "The type of the credential."
+          description: "The type of the credential. With the current API version the type MUST be set to ACCESSTOKEN."
       discriminator:
         propertyName: credentialType
         mapping:

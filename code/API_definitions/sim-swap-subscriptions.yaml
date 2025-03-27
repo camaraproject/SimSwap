@@ -35,6 +35,7 @@ info:
     It is used when:
       - the subscription expire time (optionally set by the requester) has been reached
       - the maximum number of subscription events (optionally set by the requester) has been reached
+      - the subscription was deleted by the requester
       - the API server has to stop sending notification prematurely
       - the Access Token sinkCredential (optionally set by the requester) expiration time has been reached
 
@@ -61,14 +62,14 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.1.1
+  version: wip
   x-camara-commonalities: 0.4.0
 
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
 servers:
-  - url: '{apiRoot}/sim-swap-subscriptions/v0.1'
+  - url: '{apiRoot}/sim-swap-subscriptions/vwip'
 
     variables:
       apiRoot:
@@ -721,6 +722,7 @@ components:
           $ref: "#/components/schemas/SubscriptionId"
         terminationDescription:
           type: string
+          description: Additional information and termination details
 
     TerminationReason:
       type: string
@@ -729,11 +731,13 @@ components:
         - SUBSCRIPTION_EXPIRED - Subscription expire time (optionally set by the requester) has been reached
         - MAX_EVENTS_REACHED - Maximum number of events (optionally set by the requester) has been reached
         - ACCESS_TOKEN_EXPIRED - Access Token sinkCredential (optionally set by the requester) expiration time has been reached
+        - SUBSCRIPTION_DELETED - Subscription was deleted by the requester
       enum:
         - MAX_EVENTS_REACHED
         - NETWORK_TERMINATED
         - SUBSCRIPTION_EXPIRED
         - ACCESS_TOKEN_EXPIRED
+        - SUBSCRIPTION_DELETED
 
     HTTPSubscriptionRequest:
       allOf:
@@ -973,10 +977,19 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 403
-            code: "PERMISSION_DENIED"
-            message: "Client does not have sufficient permissions to perform this action"
+          examples:
+            GENERIC_403_PERMISSION_DENIED:
+              description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
+              value:
+                status: 403
+                code: PERMISSION_DENIED
+                message: Client does not have sufficient permissions to perform this action.
+            GENERIC_403_INVALID_TOKEN_CONTEXT:
+              description: Reflect some inconsistency between information in some field of the API and the related OAuth2 Token
+              value:
+                status: 403
+                code: INVALID_TOKEN_CONTEXT
+                message: "config.subscriptionDetail.phoneNumber is not consistent with access token."
     Generic404:
       description: Resource Not Found
       headers:

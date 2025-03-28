@@ -62,14 +62,14 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: wip
+  version: 0.1.2
   x-camara-commonalities: 0.4.0
 
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
 servers:
-  - url: '{apiRoot}/sim-swap-subscriptions/vwip'
+  - url: '{apiRoot}/sim-swap-subscriptions/v0.1'
 
     variables:
       apiRoot:
@@ -958,11 +958,17 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           examples:
-            PermissionDenied:
+            GENERIC_403_PERMISSION_DENIED:
               value:
                 status: 403
                 code: "PERMISSION_DENIED"
                 message: "Client does not have sufficient permissions to perform this action"
+            GENERIC_403_INVALID_TOKEN_CONTEXT:
+              description: Reflect some inconsistency between information in some field of the API and the related OAuth2 Token
+              value:
+                status: 403
+                code: INVALID_TOKEN_CONTEXT
+                message: "config.subscriptionDetail.phoneNumber is not consistent with access token."
             TokenMismatch:
               value:
                 status: 403
@@ -984,12 +990,6 @@ components:
                 status: 403
                 code: PERMISSION_DENIED
                 message: Client does not have sufficient permissions to perform this action.
-            GENERIC_403_INVALID_TOKEN_CONTEXT:
-              description: Reflect some inconsistency between information in some field of the API and the related OAuth2 Token
-              value:
-                status: 403
-                code: INVALID_TOKEN_CONTEXT
-                message: "config.subscriptionDetail.phoneNumber is not consistent with access token."
     Generic404:
       description: Resource Not Found
       headers:

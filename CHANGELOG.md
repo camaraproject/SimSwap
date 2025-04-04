@@ -2,6 +2,7 @@
 
 ## Table of contents
 
+- **[r1.4](#r14)**
 - **[r1.3](#r13)**
 - **[r1.2](#r12)**
 - **[r1.1](#r11)**
@@ -14,6 +15,47 @@ The below sections record the changes for each API version in each release as fo
 * for each first alpha or release-candidate API version, all changes since the release of the previous public API version
 * for subsequent alpha or release-candidate API versions, the delta with respect to the previous pre-release
 * for a public API version, the consolidated changes since the release of the previous public API version
+
+# r1.4
+
+## Release Notes
+
+This release contains the definition and documentation of
+* sim-swap 1.0.0
+* sim-swap-subscriptions 0.1.2
+
+The API definition(s) are based on
+* Commonalities v0.4.0
+* Identity and Consent Management v0.2.0
+
+## sim-swap 1.0.0
+
+**sim-swap 1.0.0 is the public release for v1.0.0 of the Sim Swap API.**
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.4/code/API_definitions/sim-swap.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.4/code/API_definitions/sim-swap.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/r1.4/code/API_definitions/sim-swap.yaml)
+
+**Main Changes**
+* SIM Swap API remains untouched in this release as only SIM Swap Subscriptions has been updated
+
+## Sim Swap Subscriptions v0.1.2
+
+**sim-swap-subscriptions 0.1.2 is the public release for v0.1.2 of the Sim Swap Subscriptions API.**
+
+- API definition **with inline documentation**:
+    - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/r1.4/code/API_definitions/sim-swap-subscriptions.yaml)
+    - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.4/code/API_definitions/sim-swap-subscriptions.yaml&nocors)
+    - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.4/code/API_definitions/sim-swap-subscriptions.yaml)
+
+**Main Changes**
+* Include `HTTP error 403 INVALID_TOKEN_CONTEXT` in the subscription POST creation endpoint and also add the missing `SUBSCRIPTION_DELETED` terminationReason.
+
+### Added
+* Include 403 INVALID_TOKEN_CONTEXT and SUBSCRIPTION_DELETED terminationReason by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/200
+
+**Full Changelog**: https://github.com/camaraproject/SimSwap/compare/r1.3...r1.4
 
 # r1.3
 

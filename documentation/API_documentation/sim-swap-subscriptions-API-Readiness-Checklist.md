@@ -1,6 +1,6 @@
 # API Readiness Checklist
 
-Checklist for sim-swap-subscriptions 0.1.1 in r1.3
+Checklist for sim-swap-subscriptions 0.1.2 in r1.4
 
 | Nr | API release assets  | alpha | release-candidate |  initial<br>public | stable<br> public | Status | Comments |
 |----|----------------------------------------------|:-----:|:-----------------:|:-------:|:------:|:----:|------|
@@ -8,7 +8,7 @@ Checklist for sim-swap-subscriptions 0.1.1 in r1.3
 |  2 | Design guidelines from Commonalities applied |   O   |         M         |    M    |    M   |  Y   |       |
 |  3 | Guidelines from ICM applied                  |   O   |         M         |    M    |    M   |  Y   |     |
 |  4 | API versioning convention applied            |   M   |         M         |    M    |    M   |  Y   |     |
-|  5 | API documentation                            |   M   |         M         |    M    |    M   |  Y   | Embedded documentation into API spec - [link](/code/API_definitions/sim-swap.yaml) |
+|  5 | API documentation                            |   M   |         M         |    M    |    M   |  Y   | Embedded documentation into API spec - [link](/code/API_definitions/sim-swap-subscriptions.yaml) |
 |  6 | User stories                                 |   O   |         O         |    O    |    M   |  N   |    |
 |  7 | Basic API test cases & documentation         |   O   |         M         |    M    |    M   |  Y   | [link](/code/Test_definitions/sim-swap-subscriptions.feature) |
 |  8 | Enhanced API test cases & documentation      |   O   |         O         |    O    |    M   |  N   |      |

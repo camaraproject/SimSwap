@@ -8,16 +8,15 @@
 
 # SimSwap
 
-Repository to describe, develop, document and test the SimSwap API family
+Repository to describe, develop, document and test the SimSwap APIs
 
 ## Scope
 
 * Service APIs for “SimSwap” (see APIBacklog.md)  
-* It provides the customer with the ability to:  
+* It provides the API Consumer with the ability to:  
   * obtain information on any recent SIM pairing change related to the User’s mobile account.
 * Describe, develop, document and test the APIs (with 1-2 Telcos)  
 * Started: October 2022
-* Location: virtually  
 
 ## Status and released versions
 

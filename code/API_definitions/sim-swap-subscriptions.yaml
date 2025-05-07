@@ -712,7 +712,6 @@ components:
       description: Event detail structure for ROAMING_ON & ROAMING_OFF event
       type: object
       required:
-        - phoneNumber
         - subscriptionId
       properties:
         phoneNumber:
@@ -732,6 +731,7 @@ components:
         subscriptionId:
           $ref: "#/components/schemas/SubscriptionId"
         terminationDescription:
+          description: Explanation why a subscription ended or had to end.
           type: string
 
     TerminationReason:

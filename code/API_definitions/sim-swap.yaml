@@ -67,13 +67,13 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 2.0.0
+  version: wip
   x-camara-commonalities: 0.5
 externalDocs:
   description: Product documentation at Camara
   url: https://github.com/camaraproject/SimSwap
 servers:
-  - url: "{apiRoot}/sim-swap/v2"
+  - url: "{apiRoot}/sim-swap/vwip"
     variables:
       apiRoot:
         default: http://localhost:9091

@@ -1,4 +1,4 @@
-Feature: CAMARA sim swap subscriptions  API, v0.2.0
+Feature: CAMARA sim swap subscriptions  API, vwip
   # Input to be provided by the implementation to the tester
   #
   # Testing assets:
@@ -6,10 +6,10 @@ Feature: CAMARA sim swap subscriptions  API, v0.2.0
   # * Be able to perform a sim swap for this mobile line shifting from sim card 1 to sim card 2
   # * a callback url identified as "callbackUrl" allows to receive notification
   #
-  # References to OAS spec schemas refer to schemas specifies in sim-swap-subscriptions.yaml, version v0.2.0
+  # References to OAS spec schemas refer to schemas specifies in sim-swap-subscriptions.yaml, version vwip
 
   Background: Common subscriptions setup
-    Given the resource "/sim-swap-subscriptions/v0.2/subscriptions" as BaseURL
+    Given the resource "/sim-swap-subscriptions/vwip/subscriptions" as BaseURL
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
@@ -207,7 +207,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.2.0
     And the response property "$.message" contains a user friendly text
 
   @sim_swap_subscription_creation_25_require_input_properties_missing
-  Scenario: subscription creation with required properties missing
+  Scenario Outline: subscription creation with required properties missing
     Given use BaseURL
     When the HTTP "POST" request is sent
     And the request body property "<input_property>" is not included

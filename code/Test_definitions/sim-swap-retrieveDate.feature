@@ -1,15 +1,15 @@
-Feature: CAMARA SIM Swap API, 2.0.0 - Operation retrieveSimSwapDate
+Feature: CAMARA SIM Swap API, vwip - Operation retrieveSimSwapDate
 
   # Input to be provided by the implementation to the tester
   #
   # Testing assets:
   #
-  # References to OAS spec schemas refer to schemas specifies in sim_swap.yaml, version 2.0.0
+  # References to OAS spec schemas refer to schemas specifies in sim_swap.yaml, version vwip
   #
   # Get timestamp of last MSISDN <-> IMSI pairing change for the provided phone number.
 
   Background: Common retrieveSimSwapDate setup
-    Given the resource "sim-swap/v2/retrieve-date"
+    Given the resource "sim-swap/vwip/retrieve-date"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value

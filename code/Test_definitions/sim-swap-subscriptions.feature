@@ -127,6 +127,19 @@ Feature: CAMARA sim swap subscriptions  API, vwip
     And data.subscriptionId is valued with the subcriptionId
     And time is valued by the date time of the sim swap
 
+  @sim_swap_subscription_creation_07_subscription_ends_on_max_events
+  Scenario: Receive notification for subscription-ends event on max events reached
+    Given a valid subscription request body
+    And the request body property "$config.subscriptionMaxEvents" is set to 1
+    When the request "createSubscription" is sent
+    Then the response code is 201
+    Then the sim of the device was swapped
+    Then event notification "swapped" is received on callback-url
+    Then event notification "subscription-ends" is received on callback-url
+    And notification body complies with the OAS schema at "##/components/schemas/EventSubscriptionEnds"
+    And type="org.camaraproject.sim-swap-subscriptions.v0.subscription-ends"
+    And the response property "$.terminationReason" is "MAX_EVENTS_REACHED"
+
 #########################
 # Rainy Day scenario
 #########################

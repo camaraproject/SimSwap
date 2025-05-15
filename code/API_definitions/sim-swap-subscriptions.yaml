@@ -419,7 +419,7 @@ components:
     Config:
       description: |
         Implementation-specific configuration parameters needed by the subscription manager for acquiring events.
-        In CAMARA we have predefined attributes like `subscriptionExpireTime` to limit subscription lifetime.
+        In CAMARA we have predefined attributes like `subscriptionExpireTime` or `subscriptionMaxEvents` to limit subscription lifetime.
         Event type attributes must be defined in `subscriptionDetail`
       type: object
       required:
@@ -432,6 +432,12 @@ components:
           format: date-time
           example: 2025-01-17T13:18:23.682Z
           description: The subscription expiration time (in date-time format) requested by the API consumer. Up to API project decision to keep it.
+        subscriptionMaxEvents:
+          type: integer
+          description: |
+            Identifies the maximum number of event reports to be generated (>=1) requested by the API consumer - Once this number is reached, the subscription ends.
+          minimum: 1
+          example: 5
     SinkCredential:
       description: A sink credential provides authentication or authorization information necessary to enable delivery of events to a target.
       type: object
@@ -1296,6 +1302,7 @@ components:
         config:
           subscriptionDetail:
             phoneNumber: "+123456789"
+          subscriptionMaxEvents: 10
           subscriptionExpireTime: '2025-01-17T13:18:23.682Z'
     SUBSCRIPTION_REQUEST_3LEGS:
       value:

@@ -35,6 +35,7 @@ info:
     It is used when:
       - the subscription expiration time (optionally set by the requester) has been reached
       - the maximum number of subscription events (optionally set by the requester) has been reached
+      - the subscription was deleted by the requester
       - the API server has to stop sending notification prematurely
       - the Access Token sinkCredential expiration time (set by the requester) has been reached
 

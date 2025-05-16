@@ -36,6 +36,9 @@ info:
 
     - POST check: Checks if SIM swap has been performed during a past period (defined in the request with 'maxAge' attribute) for a given phone number.
 
+    Note: In the specification of the API the 'maxAge' could be between 1 hour to 2400 hours.
+    If this delay is not managed due to the operator's own privacy threshold (which in theory would likely be linked to local regulations in the country) and a request is performed with a delay inferior to 2400 but superior to operator policy a error '400 OUT_OF_RANGE' is expected with an explicit message to explain the limitation like 'Check monitor period could not exceed local regulation (30 days)'.
+
     # Authorization and authentication
 
     The "Camara Security and Interoperability Profile" provides details of how an API consumer requests an access token. Please refer to Identity and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the profile.

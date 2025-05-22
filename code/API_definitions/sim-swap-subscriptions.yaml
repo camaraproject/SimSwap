@@ -1094,7 +1094,6 @@ components:
                   code:
                     enum:
                       - PERMISSION_DENIED
-                      - SUBSCRIPTION_MISMATCH
           examples:
             GENERIC_403_PERMISSION_DENIED:
               description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
@@ -1102,12 +1101,6 @@ components:
                 status: 403
                 code: PERMISSION_DENIED
                 message: Client does not have sufficient permissions to perform this action.
-            GENERIC_403_SUBSCRIPTION_MISMATCH:
-              description: Inconsistent access token for requested subscription
-              value:
-                status: 403
-                code: "SUBSCRIPTION_MISMATCH"
-                message: "Inconsistent access token for requested events subscription"
     Generic404:
       description: Resource Not Found
       headers:

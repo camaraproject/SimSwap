@@ -46,8 +46,8 @@ Incubating API Repository to evolve and maintain the definitions and documentati
 
 * Meetings are held virtually
   * Schedule: Every 4 weeks, Thursday Tuesday, 7:30 AM UTC (8:30 CET/9:30 CEST)
-  * [Registration / Join](https://lf-camaraproject.atlassian.net/wiki/spaces/CAM/pages/14562399/NumberVerification)
-  * Minutes: Access [meeting minutes](https://zoom-lfx.platform.linuxfoundation.org/meeting/94893248838?password=05b2197d-309e-41ef-aadf-639f71ef7f38)
+  * [Registration / Join](https://zoom-lfx.platform.linuxfoundation.org/meeting/94893248838?password=05b2197d-309e-41ef-aadf-639f71ef7f38)
+  * Minutes: Access [meeting minutes](https://lf-camaraproject.atlassian.net/wiki/spaces/CAM/pages/14564484/Minutes+-+Number+Insights)
 * Mailing List:
   * To subscribe / unsubscribe to the mailing list of this Sub Project and thus be / resign as Contributor please visit <https://lists.camaraproject.org/g/sp-ssw>.
   * A message to all Contributors of this Sub Project can be sent using <sp-ssw@lists.camaraproject.org>.

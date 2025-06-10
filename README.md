@@ -12,7 +12,7 @@
 
 Incubating API Repository to evolve and maintain the definitions and documentation of SimSwap Service APIs within the Sub Project [Number Insights](https://lf-camaraproject.atlassian.net/wiki/x/BYEpBQ)
 
-* API Repository wiki page: https://lf-camaraproject.atlassian.net/wiki/x/0jXe
+* API Repository [wiki page](https://lf-camaraproject.atlassian.net/wiki/x/0jXe)
 
 ## Scope
 

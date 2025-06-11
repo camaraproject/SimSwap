@@ -125,17 +125,6 @@ Feature: CAMARA SIM Swap API, vwip - Operation retrieveSimSwapDate
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @retrieve_sim_swap_date_401.4_expired_access_token
-  Scenario: Expired access token
-    # alternative to scenario @retrieve_sim_swap_date_401.2_expired_access_token
-    Given the header "Authorization" is set to an expired access token
-    And the request body is set to a valid request body
-    When the request "retrieveSimSwapDate" is sent
-    Then the response status code is 401
-    And the response property "$.status" is 401
-    And the response property "$.code" is "AUTHENTICATION_REQUIRED"
-    And the response property "$.message" contains a user friendly text
-
   @retrieve_sim_swap_date_401.3_invalid_access_token
   Scenario: Invalid access token
     Given the header "Authorization" is set to an invalid access token

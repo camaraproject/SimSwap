@@ -7,12 +7,11 @@
 <a href="https://github.com/camaraproject/SimSwap/releases/latest" title="Latest Release"><img src="https://img.shields.io/github/release/camaraproject/SimSwap?style=plastic"></a>
 <a href="https://github.com/camaraproject/Governance/blob/main/ProjectStructureAndRoles.md" title="Incubating API Repository"><img src="https://img.shields.io/badge/Incubating%20API%20Repository-green?style=plastic"></a>
 
-
 # SimSwap
 
-Incubating API Repository to evolve and maintain the definitions and documentation of SimSwap Service APIs within the Sub Project [Number Verification](https://lf-camaraproject.atlassian.net/wiki/x/BYEpBQ)
+Incubating API Repository to evolve and maintain the definitions and documentation of SimSwap Service APIs within the Sub Project [Number Insights](https://lf-camaraproject.atlassian.net/wiki/x/BYEpBQ)
 
-* API Repository wiki page: https://lf-camaraproject.atlassian.net/wiki/x/AgDe
+* API Repository [wiki page](https://lf-camaraproject.atlassian.net/wiki/x/0jXe)
 
 ## Scope
 
@@ -47,7 +46,7 @@ Incubating API Repository to evolve and maintain the definitions and documentati
 * Meetings are held virtually
   * Schedule: Every 4 weeks, Thursday Tuesday, 7:30 AM UTC (8:30 CET/9:30 CEST)
   * [Registration / Join](https://lf-camaraproject.atlassian.net/wiki/spaces/CAM/pages/14562399/NumberVerification)
-  * Minutes: Access [meeting minutes](https://lf-camaraproject.atlassian.net/wiki/spaces/CAM/pages/14564484/Number+Verification+Meeting+Minutes)
+  * Minutes: Access [meeting minutes](https://lf-camaraproject.atlassian.net/wiki/x/hDze)
 * Mailing List:
-  * To subscribe / unsubscribe to the mailing list of this Sub Project and thus be / resign as Contributor please visit <https://lists.camaraproject.org/g/sp-ssw>.
-  * A message to all Contributors of this Sub Project can be sent using <sp-ssw@lists.camaraproject.org>.
+  * Subscribe / Unsubscribe to the mailing list <https://lists.camaraproject.org/g/sp-number-insights>.
+  * A message to the community of this Sub Project can be sent using <sp-number-insights@lists.camaraproject.org>.

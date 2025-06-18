@@ -7,7 +7,6 @@
 <a href="https://github.com/camaraproject/SimSwap/releases/latest" title="Latest Release"><img src="https://img.shields.io/github/release/camaraproject/SimSwap?style=plastic"></a>
 <a href="https://github.com/camaraproject/Governance/blob/main/ProjectStructureAndRoles.md" title="Incubating API Repository"><img src="https://img.shields.io/badge/Incubating%20API%20Repository-green?style=plastic"></a>
 
-
 # SimSwap
 
 Incubating API Repository to evolve and maintain the definitions and documentation of SimSwap Service APIs within the Sub Project [Number Insights](https://lf-camaraproject.atlassian.net/wiki/x/BYEpBQ)
@@ -31,12 +30,12 @@ Incubating API Repository to evolve and maintain the definitions and documentati
     * API definitions **with inline documentation**:
       * OpenAPI [YAML](https://github.com/camaraproject/SimSwap/blob/r2.2/code/API_definitions/sim-swap.yaml)
       * [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r2.2/code/API_definitions/sim-swap.yaml&nocors) 
-      * [View it on Swagger Editor](https://editor-next.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r2.2/code/API_definitions/sim-swap.yaml)
+      * [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r2.2/code/API_definitions/sim-swap.yaml)
   * version 0.2.0 of the **API sim-swap-subscriptions** - available [here](https://github.com/camaraproject/SimSwap/tree/r2.2)
     * API definitions **with inline documentation**:
       * OpenAPI [YAML](https://github.com/camaraproject/SimSwap/blob/r2.2/code/API_definitions/sim-swap-subscriptions.yaml)
       * [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r2.2/code/API_definitions/sim-swap-subscriptions.yaml&nocors) 
-      * [View it on Swagger Editor](https://editor-next.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r2.2/code/API_definitions/sim-swap-subscriptions.yaml)
+      * [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r2.2/code/API_definitions/sim-swap-subscriptions.yaml)
 
 * The latest public release is available here: https://github.com/camaraproject/SimSwap/releases/latest
 * Other releases of this sub project are available in https://github.com/camaraproject/SimSwap/releases
@@ -47,7 +46,7 @@ Incubating API Repository to evolve and maintain the definitions and documentati
 * Meetings are held virtually
   * Schedule: Every 4 weeks, Thursday, 7:30 AM UTC (8:30 CET/9:30 CEST)
   * [Registration / Join](https://zoom-lfx.platform.linuxfoundation.org/meeting/94893248838?password=05b2197d-309e-41ef-aadf-639f71ef7f38)
-  * Minutes: Access [meeting minutes](https://lf-camaraproject.atlassian.net/wiki/spaces/CAM/pages/14564484/Minutes+-+Number+Insights)
+  * Minutes: Access [meeting minutes](https://lf-camaraproject.atlassian.net/wiki/x/hDze)
 * Mailing List:
-  * To subscribe / unsubscribe to the mailing list of this Sub Project and thus be / resign as Contributor please visit <https://lists.camaraproject.org/g/sp-ssw>.
-  * A message to all Contributors of this Sub Project can be sent using <sp-ssw@lists.camaraproject.org>.
+  * Subscribe / Unsubscribe to the mailing list <https://lists.camaraproject.org/g/sp-number-insights>.
+  * A message to the community of this Sub Project can be sent using <sp-number-insights@lists.camaraproject.org>.

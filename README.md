@@ -44,8 +44,8 @@ Incubating API Repository to evolve and maintain the definitions and documentati
 ## Contributing
 
 * Meetings are held virtually
-  * Schedule: Every 4 weeks, Thursday Tuesday, 7:30 AM UTC (8:30 CET/9:30 CEST)
-  * [Registration / Join](https://lf-camaraproject.atlassian.net/wiki/spaces/CAM/pages/14562399/NumberVerification)
+  * Schedule: Every 4 weeks, Thursday, 7:30 AM UTC (8:30 CET/9:30 CEST)
+  * [Registration / Join](https://zoom-lfx.platform.linuxfoundation.org/meeting/94893248838?password=05b2197d-309e-41ef-aadf-639f71ef7f38)
   * Minutes: Access [meeting minutes](https://lf-camaraproject.atlassian.net/wiki/x/hDze)
 * Mailing List:
   * Subscribe / Unsubscribe to the mailing list <https://lists.camaraproject.org/g/sp-number-insights>.

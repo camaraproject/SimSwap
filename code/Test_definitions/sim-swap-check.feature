@@ -1,15 +1,15 @@
-Feature: CAMARA SIM Swap API, vwip - Operation checkSimSwap
+Feature: CAMARA SIM Swap API, v2.1.0-rc.2 - Operation checkSimSwap
 
   # Input to be provided by the implementation to the tester
   #
   # Testing assets:
   #
-  # References to OAS spec schemas refer to schemas specifies in sim_swap.yaml, version vwip
+  # References to OAS spec schemas refer to schemas specifies in sim_swap.yaml, version v2.1.0-rc.2
   #
   # check if SIM swap has been performed during a past period
 
   Background: Common checkSimSwap setup
-    Given the resource "sim-swap/vwip/check"
+    Given the resource "sim-swap/v2rc2/check"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
@@ -106,7 +106,7 @@ Feature: CAMARA SIM Swap API, vwip - Operation checkSimSwap
     And the response property "$.message" contains a user friendly text
 
   @check_sim_swap_9_phone_number_provided_both_in_the_body_and_via_the_token
-  Scenario: Error when the phone number is provided in the request body while a phone number is asssociated with the access token
+  Scenario: Error when the phone number is provided in the request body while a phone number is associated with the access token
     Given the request body property "$.phoneNumber" is set to a valid testing phoneNumber
     And the header "Authorization" is set to a valid access token identifying a phoneNumber
     When the request "checkSimSwap" is sent

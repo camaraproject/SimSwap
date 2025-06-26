@@ -23,7 +23,7 @@ The below sections record the changes for each API version in each release as fo
 
 This release contains the definition and documentation of
 * sim-swap 2.1.0-rc.2
-* sim-swap-subscriptions 0.3-rc.1
+* sim-swap-subscriptions 0.3.0-rc.1
 
 The API definition(s) are based on
 * Commonalities v0.6.0-rc.1

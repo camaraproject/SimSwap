@@ -30,7 +30,7 @@ info:
       - ``org.camaraproject.sim-swap-subscriptions.v0.swapped`` - Event triggered when a sim swap occurs on the associated phoneNumber
 
 
-    Note: Additionally to these list, ``org.camaraproject.sim-swap-subscriptions.v0.subscription-ends`` notification `types` is sent when the subscription ends.
+    Note: Additionally to these list, ``org.camaraproject.sim-swap-subscriptions.v0.subscription-ended`` notification `types` is sent when the subscription ends.
     This notification does not require dedicated subscription.
     It is used when:
       - the subscription expiration time (optionally set by the requester) has been reached
@@ -326,6 +326,10 @@ components:
     openId:
       type: openIdConnect
       openIdConnectUrl: https://example.com/.well-known/openid-configuration
+    notificationsBearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: "{$request.body#/sinkCredential.credentialType}"
   parameters:
     SubscriptionId:
       name: subscriptionId
@@ -561,7 +565,7 @@ components:
         subscription-ends: Event triggered when the subscription ends
       enum:
         - org.camaraproject.sim-swap-subscriptions.v0.swapped
-        - org.camaraproject.sim-swap-subscriptions.v0.subscription-ends
+        - org.camaraproject.sim-swap-subscriptions.v0.subscription-ended
 
     Subscription:
       description: Represents a event-type subscription.
@@ -683,7 +687,7 @@ components:
         propertyName: "type"
         mapping:
           org.camaraproject.sim-swap-subscriptions.v0.swapped: '#/components/schemas/EventSimSwap'
-          org.camaraproject.sim-swap-subscriptions.v0.subscription-ends: '#/components/schemas/EventSubscriptionEnds'
+          org.camaraproject.sim-swap-subscriptions.v0.subscription-ended: '#/components/schemas/EventSubscriptionEnded'
 
     Source:
       type: string
@@ -716,7 +720,7 @@ components:
             data:
               $ref: "#/components/schemas/Swapped"
 
-    EventSubscriptionEnds:
+    EventSubscriptionEnded:
       description: event structure for event subscription ends
       allOf:
         - $ref: "#/components/schemas/CloudEvent"
@@ -1272,7 +1276,7 @@ components:
       value:
         id: "123658"
         source: supertelco.notificationSendServer12
-        type: org.camaraproject.sim-swap-subscriptions.v0.subscription-ends
+        type: org.camaraproject.sim-swap-subscriptions.v0.subscription-ended
         specversion: "1.0"
         datacontenttype: application/json
         data:

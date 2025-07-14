@@ -98,6 +98,7 @@ paths:
             - sim-swap
       tags:
         - Retrieve SIM swap date
+      summary: Retrieve SIM swap date
       description: Get timestamp of last SIM swap event for a mobile user account provided with phone number.
       operationId: retrieveSimSwapDate
       parameters:
@@ -154,6 +155,7 @@ paths:
             - sim-swap
       tags:
         - Check SIM swap
+      summary: Check SIM swap
       description: Check if SIM swap has been performed during a past period
       operationId: checkSimSwap
       parameters:

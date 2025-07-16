@@ -390,6 +390,7 @@ components:
         sink:
           type: string
           format: uri
+          pattern: ^https:\/\/.+$
           description: The address to which events shall be delivered using the selected protocol.
           example: "https://endpoint.example.com/sink"
         sinkCredential:
@@ -562,9 +563,13 @@ components:
       description: |
         swapped - Event triggered when a sim swap was performed for this phone number
 
-        subscription-ends: Event triggered when the subscription ends
+        - subscription-started: Event triggered when the subscription starts
+        - subscription-updated: Event triggered when the subscription is updated
+        - subscription-ended: Event triggered when the subscription ends
       enum:
         - org.camaraproject.sim-swap-subscriptions.v0.swapped
+        - org.camaraproject.api-name.v0.subscription-started
+        - org.camaraproject.api-name.v0.subscription-updated
         - org.camaraproject.sim-swap-subscriptions.v0.subscription-ended
 
     Subscription:
@@ -582,6 +587,7 @@ components:
         sink:
           type: string
           format: uri
+          pattern: ^https:\/\/.+$
           description: The address to which events shall be delivered using the selected protocol.
           example: "https://endpoint.example.com/sink"
         types:
@@ -687,6 +693,8 @@ components:
         propertyName: "type"
         mapping:
           org.camaraproject.sim-swap-subscriptions.v0.swapped: '#/components/schemas/EventSimSwap'
+          org.camaraproject.sim-swap-subscriptions.v0.subscription-started: "#/components/schemas/EventSubscriptionStarted"
+          org.camaraproject.sim-swap-subscriptions.v0.subscription-updated: "#/components/schemas/EventSubscriptionUpdated"
           org.camaraproject.sim-swap-subscriptions.v0.subscription-ended: '#/components/schemas/EventSubscriptionEnded'
 
     Source:
@@ -720,14 +728,76 @@ components:
             data:
               $ref: "#/components/schemas/Swapped"
 
-    EventSubscriptionEnded:
-      description: event structure for event subscription ends
+    EventSubscriptionStarted:
+      description: event structure for event subscription started
       allOf:
         - $ref: "#/components/schemas/CloudEvent"
         - type: object
           properties:
             data:
-              $ref: "#/components/schemas/SubscriptionEnds"
+              $ref: "#/components/schemas/SubscriptionStarted"
+
+    SubscriptionStarted:
+      description: Event detail structure for subscription started event
+      type: object
+      required:
+        - initiationReason
+        - subscriptionId
+      properties:
+        initiationReason:
+          $ref: "#/components/schemas/InitiationReason"
+        subscriptionId:
+          $ref: "#/components/schemas/SubscriptionId"
+        initiationDescription:
+          type: string
+
+    InitiationReason:
+      type: string
+      description: |
+        - SUBSCRIPTION_CREATED - Subscription created by API Server
+      enum:
+        - SUBSCRIPTION_CREATED
+
+    EventSubscriptionUpdated:
+      description: event structure for event subscription updated
+      allOf:
+        - $ref: "#/components/schemas/CloudEvent"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/SubscriptionUpdated"
+
+    SubscriptionUpdated:
+      description: Event detail structure for subscription updated event
+      type: object
+      required:
+        - updateReason
+        - subscriptionId
+      properties:
+        updateReason:
+          $ref: "#/components/schemas/UpdateReason"
+        subscriptionId:
+          $ref: "#/components/schemas/SubscriptionId"
+        updateDescription:
+          type: string
+
+    UpdateReason:
+      type: string
+      description: |
+        - SUBSCRIPTION_ACTIVE - API server transitioned susbcription status to `ACTIVE`
+        - SUBSCRIPTION_INACTIVE - API server transitioned susbcription status to `INACTIVE`
+      enum:
+        - SUBSCRIPTION_ACTIVE
+        - SUBSCRIPTION_INACTIVE
+
+    EventSubscriptionEnded:
+      description: event structure for event subscription ended
+      allOf:
+        - $ref: "#/components/schemas/CloudEvent"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/SubscriptionEnded"
 
     Swapped:
       description: Event detail structure for ROAMING_ON & ROAMING_OFF event
@@ -740,8 +810,8 @@ components:
         subscriptionId:
           $ref: "#/components/schemas/SubscriptionId"
 
-    SubscriptionEnds:
-      description: Event detail structure for SUBSCRIPTION_ENDS event
+    SubscriptionEnded:
+      description: Event detail structure for subscription ended event
       type: object
       required:
         - terminationReason
@@ -944,6 +1014,7 @@ components:
                       - INVALID_PROTOCOL
                       - INVALID_CREDENTIAL
                       - INVALID_TOKEN
+                      - INVALID_SINK
           examples:
             GENERIC_400_INVALID_ARGUMENT:
               description: Invalid Argument. Generic Syntax Exception
@@ -975,6 +1046,12 @@ components:
                 status: 400
                 code: INVALID_TOKEN
                 message: Only bearer token is supported
+            GENERIC_400_INVALID_SINK:
+              description: Invalid sink value
+              value:
+                status: 400
+                code: INVALID_SINK
+                message: sink not valid for the specified protocol
     Generic400:
       description: Problem with the client request
       headers:

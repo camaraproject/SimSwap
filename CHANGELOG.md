@@ -63,9 +63,11 @@ The API definition(s) are based on
 ### Added
 * [Sim-Swap-Subscriptions]: Add `type` and `format` for `startsAt` by @maxl2287 in https://github.com/camaraproject/SimSwap/pull/207
 * [Sim-Swap-Subscriptions]: Add `subscriptionMaxEvents` as a config-property by @maxl2287 in https://github.com/camaraproject/SimSwap/pull/204
+* Enhancements Subscription/Notification Architecture by @fernandopradocabrillo in https://github.com/camaraproject/NumberVerification/pull/226
 
 ### Changed
 * Update x-correlator format by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/222
+* Event name from `subscription-ends` to `subscription-ended` by @fernandopradocabrillo in https://github.com/camaraproject/NumberVerification/pull/226
 
 ### Removed
 * [Sim-Swap-Subscriptions]: Remove `phoneNumber` from the required properties in the Swap-Event by @maxl2287 in https://github.com/camaraproject/SimSwap/pull/206
@@ -73,7 +75,7 @@ The API definition(s) are based on
 * Remove AUTHENTICATION_REQUIRED error code by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/216
 
 ### Fixed
-* [Sim-Swap-Subscriptions]: Document that `subscription-ends` notification is also sent when deleted by requester by @maxl2287 in https://github.com/camaraproject/SimSwap/pull/205
+* [Sim-Swap-Subscriptions]: Document that `subscription-ended` notification is also sent when deleted by requester by @maxl2287 in https://github.com/camaraproject/SimSwap/pull/205
 
 ## New Contributors
 * @maxl2287 made their first contribution in https://github.com/camaraproject/SimSwap/pull/208

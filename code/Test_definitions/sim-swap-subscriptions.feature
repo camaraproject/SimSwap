@@ -1,4 +1,4 @@
-Feature: CAMARA sim swap subscriptions  API, vwip
+Feature: CAMARA sim swap subscriptions  API, v0.3.0-rc.1
   # Input to be provided by the implementation to the tester
   #
   # Testing assets:
@@ -6,10 +6,10 @@ Feature: CAMARA sim swap subscriptions  API, vwip
   # * Be able to perform a sim swap for this mobile line shifting from sim card 1 to sim card 2
   # * a callback url identified as "callbackUrl" allows to receive notification
   #
-  # References to OAS spec schemas refer to schemas specifies in sim-swap-subscriptions.yaml, version vwip
+  # References to OAS spec schemas refer to schemas specifies in sim-swap-subscriptions.yaml, version v0.3.0-rc.1
 
   Background: Common subscriptions setup
-    Given the resource "/sim-swap-subscriptions/vwip/subscriptions" as BaseURL
+    Given the resource "/sim-swap-subscriptions/v0.3rc1/subscriptions" as BaseURL
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
@@ -94,7 +94,7 @@ Feature: CAMARA sim swap subscriptions  API, vwip
     And the response body is an empty list
 
   @sim_swap_subscription_delete_05_delete_subscription
-  Scenario: Check deletion of existing subscription & triggering of subscription-ends event
+  Scenario: Check deletion of existing subscription & triggering of subscription-ended event
     Given a subscription is existing and identified by an "id"
     And use BaseURL
     When the HTTP "DELETE" request is sent with subscriptionId="id"
@@ -102,9 +102,9 @@ Feature: CAMARA sim swap subscriptions  API, vwip
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/Subscription"
-    And The callback notification application receives subscription-ends event at provided callbackUrl
+    And The callback notification application receives subscription-ended event at provided callbackUrl
     And notification body complies with the OAS schema at "#/components/schemas/Subscription/CloudEvent"
-    And type="org.camaraproject.sim-swap-subscriptions.v0.subscription-ends"
+    And type="org.camaraproject.sim-swap-subscriptions.v0.subscription-ended"
     And data.phoneNumber="$.phoneNumber"
     And data.subscriptionId is valued with the subcriptionId
     And time is valued by the date time of subscription termination
@@ -128,16 +128,16 @@ Feature: CAMARA sim swap subscriptions  API, vwip
     And time is valued by the date time of the sim swap
 
   @sim_swap_subscription_creation_07_subscription_ends_on_max_events
-  Scenario: Receive notification for subscription-ends event on max events reached
+  Scenario: Receive notification for subscription-ended event on max events reached
     Given a valid subscription request body
     And the request body property "$config.subscriptionMaxEvents" is set to 1
-    When the request "createSubscription" is sent
+    When the request "createSimSwapSubscription" is sent
     Then the response code is 201
     Then the sim of the device was swapped
     Then event notification "swapped" is received on callback-url
-    Then event notification "subscription-ends" is received on callback-url
-    And notification body complies with the OAS schema at "##/components/schemas/EventSubscriptionEnds"
-    And type="org.camaraproject.sim-swap-subscriptions.v0.subscription-ends"
+    Then event notification "subscription-ended" is received on callback-url
+    And notification body complies with the OAS schema at "##/components/schemas/EventSubscriptionEnded"
+    And type="org.camaraproject.sim-swap-subscriptions.v0.subscription-ended"
     And the response property "$.terminationReason" is "MAX_EVENTS_REACHED"
 
 #########################

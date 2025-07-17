@@ -77,13 +77,13 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: wip
-  x-camara-commonalities: 0.5
+  version: 2.1.0-rc.2
+  x-camara-commonalities: 0.6
 externalDocs:
   description: Product documentation at Camara
   url: https://github.com/camaraproject/SimSwap
 servers:
-  - url: "{apiRoot}/sim-swap/vwip"
+  - url: "{apiRoot}/sim-swap/v2rc2"
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -98,6 +98,7 @@ paths:
             - sim-swap
       tags:
         - Retrieve SIM swap date
+      summary: Retrieve SIM swap date
       description: Get timestamp of last SIM swap event for a mobile user account provided with phone number.
       operationId: retrieveSimSwapDate
       parameters:
@@ -154,6 +155,7 @@ paths:
             - sim-swap
       tags:
         - Check SIM swap
+      summary: Check SIM swap
       description: Check if SIM swap has been performed during a past period
       operationId: checkSimSwap
       parameters:

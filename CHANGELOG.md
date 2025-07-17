@@ -2,6 +2,7 @@
 
 ## Table of contents
 
+- **[r3.1](#r31)**
 - **[r2.2](#r22)**
 - **[r2.1](#r21)**
 - **[r1.3](#r13)**
@@ -17,6 +18,69 @@ The below sections record the changes for each API version in each release as fo
 * for the first release-candidate, all changes since the last public release
 * for subsequent release-candidate(s), only the delta to the previous release-candidate
 * for a public release, the consolidated changes since the previous public release
+
+# r3.1
+
+This release contains the definition and documentation of
+* sim-swap 2.1.0-rc.2
+* sim-swap-subscriptions 0.3.0-rc.1
+
+The API definition(s) are based on
+* Commonalities v0.6.0-rc.1
+* Identity and Consent Management v0.4.0-rc.1
+
+## sim-swap 2.1.0-rc.2
+
+**sim-swap v2.1.0-rc.2 is the first release candidate of the Sim Swap API v2.1.0**
+
+*Note: the release candidate version is -rc.2 to avoid version collisions in the url path with the previous release candidate of v2, since both v2.0.0-rc.1 and v2.1.0-rc.1 would have the same number (v2rc1)
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.1/code/API_definitions/sim-swap.yaml&nocors)
+  - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.1/code/API_definitions/sim-swap.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/r3.1/code/API_definitions/sim-swap.yaml)
+
+### Added
+* Add a documentation note when regulations prevent less than 100 days for check by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/213
+* Documented Error Responses info.description section by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/221
+
+### Changed
+* Update x-correlator format by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/222
+
+### Removed
+* Remove AUTHENTICATION_REQUIRED error code by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/216
+
+
+## Sim Swap Subscriptions v0.3.0-rc.1
+
+**sim-swap-subscriptions v0.3.0-rc.1 is the first release candidate of the Sim Swap Subscriptions API v0.3.0**
+
+- API definition **with inline documentation**:
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/r3.1/code/API_definitions/sim-swap-subscriptions.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.1/code/API_definitions/sim-swap-subscriptions.yaml&nocors)
+  - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.1/code/API_definitions/sim-swap-subscriptions.yaml)
+
+### Added
+* [Sim-Swap-Subscriptions]: Add `type` and `format` for `startsAt` by @maxl2287 in https://github.com/camaraproject/SimSwap/pull/207
+* [Sim-Swap-Subscriptions]: Add `subscriptionMaxEvents` as a config-property by @maxl2287 in https://github.com/camaraproject/SimSwap/pull/204
+* Enhancements Subscription/Notification Architecture by @fernandopradocabrillo in https://github.com/camaraproject/NumberVerification/pull/226
+
+### Changed
+* Update x-correlator format by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/222
+* Event name from `subscription-ends` to `subscription-ended` by @fernandopradocabrillo in https://github.com/camaraproject/NumberVerification/pull/226
+
+### Removed
+* [Sim-Swap-Subscriptions]: Remove `phoneNumber` from the required properties in the Swap-Event by @maxl2287 in https://github.com/camaraproject/SimSwap/pull/206
+* [Sim-Swap-Subscriptions]: remove `SUBSCRIPTION_MISMATCH` error-code by @maxl2287 in https://github.com/camaraproject/SimSwap/pull/209
+* Remove AUTHENTICATION_REQUIRED error code by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/216
+
+### Fixed
+* [Sim-Swap-Subscriptions]: Document that `subscription-ended` notification is also sent when deleted by requester by @maxl2287 in https://github.com/camaraproject/SimSwap/pull/205
+
+## New Contributors
+* @maxl2287 made their first contribution in https://github.com/camaraproject/SimSwap/pull/208
+
+**Full Changelog**: https://github.com/camaraproject/SimSwap/compare/r2.2...r3.2
 
 # r2.2
 

@@ -225,7 +225,7 @@ components:
         latestSimChange:
           type: string
           format: date-time
-          description: Timestamp of latest SIM swap performed. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone. Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
+          description: Timestamp of latest SIM swap performed. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
           nullable: true
           example: "2023-07-03T14:27:08.312+02:00"
         monitoredPeriod:
@@ -249,19 +249,19 @@ components:
     ErrorInfo:
       type: object
       required:
+        - message
         - status
         - code
-        - message
       properties:
+        message:
+          type: string
+          description: A human-readable description of what the event represents
         status:
           type: integer
           description: HTTP response status code
         code:
           type: string
-          description: Code given to this error
-        message:
-          type: string
-          description: Detailed error description
+          description: A human-readable code to describe the error
     CreateCheckSimSwap:
       type: object
       properties:

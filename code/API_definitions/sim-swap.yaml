@@ -249,19 +249,19 @@ components:
     ErrorInfo:
       type: object
       required:
-        - message
         - status
         - code
+        - message
       properties:
-        message:
-          type: string
-          description: A human-readable description of what the event represents
         status:
           type: integer
           description: HTTP response status code
         code:
           type: string
           description: A human-readable code to describe the error
+        message:
+          type: string
+          description: A human-readable description of what the event represents
     CreateCheckSimSwap:
       type: object
       properties:

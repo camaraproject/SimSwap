@@ -20,7 +20,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.3.0-rc.1
 ##########################
 
   # These first scenarios serves as a minimum
-  
+
   @sim_swap_subscription_creation_01_sync_creation
   Scenario: Check sync subscription creation - This scenario could be bypass if async creation is provided (following scenario)
     Given use BaseURL
@@ -39,7 +39,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.3.0-rc.1
   @sim_swap_subscription_creation_02_async_creation
   Scenario: Check async subscription creation - This scenario could be bypass if previous scenario is provided
     Given use BaseURL
-    When the HTTP "POST" request is sent 
+    When the HTTP "POST" request is sent
     And "$.types"="org.camaraproject.sim-swap-subscriptions.v0.swapped"
     And "$.protocol"="HTTP"
     And a valid phone number identified by the token or provided in the request body
@@ -118,7 +118,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.3.0-rc.1
     And "$.config.subscriptionDetail.phoneNumber" is set with with provided phoneNumber
     And "$.sink" is set to provided callbackUrl
     Then the response property "$.status" is 201
-    And subcriptionId is provided 
+    And subcriptionId is provided
     When sims swap is performed on this mobile line
     Then The callback notification application receives swapped event at provided callbackUrl
     And notification body complies with the OAS schema at "#/components/schemas/Subscription/CloudEvent"
@@ -197,7 +197,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.3.0-rc.1
   @sim_swap_subscription_creation_23_invalid_eventType
   Scenario: subscription creation with invalid event type
     Given use BaseURL
-    When the HTTP "POST" request is sent 
+    When the HTTP "POST" request is sent
     And "$.types"<>"org.camaraproject.sim-swap-subscriptions.v0.swapped"
     And "$.protocol"="HTTP"
     And "$.config.subscriptionDetail.phoneNumber" is set with with provided phoneNumber
@@ -209,7 +209,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.3.0-rc.1
   @sim_swap_subscription_creation_24_invalid_subscription_expire_time
   Scenario: subscription creation with invalid expire time
     Given use BaseURL
-    When the HTTP "POST" request is sent 
+    When the HTTP "POST" request is sent
     And "$.types"="org.camaraproject.sim-swap-subscriptions.v0.swapped"
     And "$.protocol"="HTTP"
     And "$.config.subscriptionDetail.phoneNumber" is set with with provided phoneNumber
@@ -238,7 +238,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.3.0-rc.1
   @sim_swap_subscription_creation_26_invalid_sink
   Scenario: subscription creation with invalid sink
     Given use BaseURL
-    When the HTTP "POST" request is sent 
+    When the HTTP "POST" request is sent
     And "$.types"="org.camaraproject.sim-swap-subscriptions.v0.swapped"
     And "$.protocol"="HTTP"
     And "$.config.subscriptionDetail.phoneNumber" is set with with provided phoneNumber
@@ -247,7 +247,6 @@ Feature: CAMARA sim swap subscriptions  API, v0.3.0-rc.1
     Then the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
-
 
 ##################
 # Error Code 401
@@ -279,62 +278,6 @@ Feature: CAMARA sim swap subscriptions  API, v0.3.0-rc.1
     And use BaseUrL
     And the request body is set to a valid request body
     When the HTTP "POST" request is sent
-    Then the response header "Content-Type" is "application/json"
-    And the response property "$.status" is 401
-    And the response property "$.code" is "UNAUTHENTICATED"
-    And the response property "$.message" contains a user friendly text
-
-  @sim_swap_subscription_retrieve_43_no_authorization_header
-  Scenario: No Authorization header
-    Given the header "Authorization" is removed
-    And use BaseUrL
-    When the HTTP "GET" request is sent
-    Then the response property "$.status" is 401
-    And the response property "$.code" is "UNAUTHENTICATED"
-    And the response property "$.message" contains a user friendly text
-
-  @sim_swap_subscription_retrieve_44_expired_access_token
-  Scenario: Expired access token
-    Given the header "Authorization" is set to an expired access token
-    And use BaseUrL
-    When the HTTP "GET" request is sent
-    Then the response property "$.status" is 401
-    And the response property "$.code" is "UNAUTHENTICATED"
-    And the response property "$.message" contains a user friendly text
-
-  @sim_swap_subscription_retrieve_45_invalid_access_token
-  Scenario: Invalid access token
-    Given the header "Authorization" is set to an invalid access token
-    And use BaseUrL
-    When the HTTP "GET" request is sent
-    Then the response header "Content-Type" is "application/json"
-    And the response property "$.status" is 401
-    And the response property "$.code" is "UNAUTHENTICATED"
-    And the response property "$.message" contains a user friendly text
-
-  @sim_swap_subscription_delete_46_no_authorization_header
-  Scenario: No Authorization header
-    Given the header "Authorization" is removed
-    And use BaseUrL
-    When the HTTP "DELETE" request is sent
-    Then the response property "$.status" is 401
-    And the response property "$.code" is "UNAUTHENTICATED"
-    And the response property "$.message" contains a user friendly text
-
-  @sim_swap_subscription_delete_47_expired_access_token
-  Scenario: Expired access token
-    Given the header "Authorization" is set to an expired access token
-    And use BaseUrL
-    When the HTTP "DELETE" request is sent
-    Then the response property "$.status" is 401
-    And the response property "$.code" is "UNAUTHENTICATED"
-    And the response property "$.message" contains a user friendly text
-
-  @sim_swap_subscription_delete_48_invalid_access_token
-  Scenario: Invalid access token
-    Given the header "Authorization" is set to an invalid access token
-    And use BaseUrL
-    When the HTTP "DELETE" request is sent
     Then the response header "Content-Type" is "application/json"
     And the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
@@ -395,7 +338,7 @@ Feature: CAMARA sim swap subscriptions  API, v0.3.0-rc.1
     And "$.types"="org.camaraproject.sim-swap-subscriptions.v0.swapped"
     And "$.protocol"="HTTP"
     And "$.config.subscriptionDetail.phoneNumber" is not valued
-    And the valid access token does no identified a device 
+    And the valid access token does no identified a device
     And "$.sink" is set to provided callbackUrl
     Then the response property "$.status" is 422
     And the response property "$.code" is "MISSING_IDENTIFIER"

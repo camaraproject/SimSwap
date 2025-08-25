@@ -343,4 +343,3 @@ Feature: CAMARA sim swap subscriptions  API, v0.3.0-rc.1
     Then the response property "$.status" is 422
     And the response property "$.code" is "MISSING_IDENTIFIER"
     And the response property "$.message" contains a user friendly text
-

@@ -119,8 +119,8 @@ Feature: CAMARA sim swap subscriptions  API, v0.3.0-rc.1
     And "$.sink" is set to provided callbackUrl
     Then the response property "$.status" is 201
     And subcriptionId is provided
-    When sims swap is performed on this mobile line
-    Then The callback notification application receives swapped event at provided callbackUrl
+    And sims swap is performed on this mobile line
+    And The callback notification application receives swapped event at provided callbackUrl
     And notification body complies with the OAS schema at "#/components/schemas/Subscription/CloudEvent"
     And type="org.camaraproject.sim-swap-subscriptions.v0.swapped"
     And data.phoneNumber="$.phoneNumber"
@@ -133,9 +133,9 @@ Feature: CAMARA sim swap subscriptions  API, v0.3.0-rc.1
     And the request body property "$config.subscriptionMaxEvents" is set to 1
     When the request "createSimSwapSubscription" is sent
     Then the response code is 201
-    Then the sim of the device was swapped
-    Then event notification "swapped" is received on callback-url
-    Then event notification "subscription-ended" is received on callback-url
+    And the sim of the device was swapped
+    And event notification "swapped" is received on callback-url
+    And event notification "subscription-ended" is received on callback-url
     And notification body complies with the OAS schema at "##/components/schemas/EventSubscriptionEnded"
     And type="org.camaraproject.sim-swap-subscriptions.v0.subscription-ended"
     And the response property "$.terminationReason" is "MAX_EVENTS_REACHED"
@@ -343,3 +343,4 @@ Feature: CAMARA sim swap subscriptions  API, v0.3.0-rc.1
     Then the response property "$.status" is 422
     And the response property "$.code" is "MISSING_IDENTIFIER"
     And the response property "$.message" contains a user friendly text
+

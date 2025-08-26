@@ -362,9 +362,9 @@ components:
     ErrorInfo:
       type: object
       required:
-        - message
         - status
         - code
+        - message
       properties:
         message:
           type: string
@@ -1454,3 +1454,4 @@ components:
           startsAt: '2024-06-07T16:10:15.302Z'
           expiresAt: '2024-06-07T16:10:15.302Z'
           status: ACTIVATION_REQUESTED
+

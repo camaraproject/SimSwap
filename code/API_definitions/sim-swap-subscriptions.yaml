@@ -443,7 +443,7 @@ components:
           type: string
           format: date-time
           example: 2025-01-17T13:18:23.682Z
-          description: The subscription expiration time (in date-time format) requested by the API consumer. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone. Up to API project decision to keep it.
+          description: The subscription expiration time (in date-time format) requested by the API consumer. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
         subscriptionMaxEvents:
           type: integer
           description: |
@@ -1454,3 +1454,4 @@ components:
           startsAt: '2024-06-07T16:10:15.302Z'
           expiresAt: '2024-06-07T16:10:15.302Z'
           status: ACTIVATION_REQUESTED
+

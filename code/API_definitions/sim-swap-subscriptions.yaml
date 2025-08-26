@@ -375,7 +375,6 @@ components:
         code:
           type: string
           description: A human-readable code to describe the error
-
     SubscriptionRequest:
       description: The request for creating a sim swap event subscription
       type: object

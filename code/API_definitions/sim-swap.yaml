@@ -249,9 +249,9 @@ components:
     ErrorInfo:
       type: object
       required:
-        - message
         - status
         - code
+        - message
       properties:
         message:
           type: string

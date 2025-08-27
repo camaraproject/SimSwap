@@ -77,13 +77,13 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: wip
+  version: 2.1.0
   x-camara-commonalities: 0.6
 externalDocs:
   description: Product documentation at Camara
   url: https://github.com/camaraproject/SimSwap
 servers:
-  - url: "{apiRoot}/sim-swap/vwip"
+  - url: "{apiRoot}/sim-swap/v2"
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -253,15 +253,15 @@ components:
         - code
         - message
       properties:
+        message:
+          type: string
+          description: A human-readable description of what the event represents
         status:
           type: integer
           description: HTTP response status code
         code:
           type: string
           description: A human-readable code to describe the error
-        message:
-          type: string
-          description: A human-readable description of what the event represents
     CreateCheckSimSwap:
       type: object
       properties:

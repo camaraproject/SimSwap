@@ -185,3 +185,13 @@ Feature: CAMARA SIM Swap API, v2.1.0 - Operation checkSimSwap
     And the response property "$.status" is 400
     And the response property "$.code" is "OUT_OF_RANGE"
     And the response property "$.message" contains a user friendly text
+
+  @check_sim_swap_400.4_max_age_out_of_monitored_period
+  Scenario: Check that the response shows an error when the max age is above the supported monitored period of the API Provider
+    # This test only applies if the API Provider has a restricted monitored period by local regulations
+    Given the request body property "$.maxAge" is set to a valid value above the supported monitored period of the API Provider
+    When the request "checkSimSwap" is sent
+    Then the response status code is 400
+    And the response property "$.status" is 400
+    And the response property "$.code" is "OUT_OF_RANGE"
+    And the response property "$.message" contains a user friendly text

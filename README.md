@@ -51,7 +51,7 @@ Incubating API Repository to evolve and maintain the definitions and documentati
 
 * The latest public release is available here: https://github.com/camaraproject/SimSwap/releases/latest
 * Other releases of this sub project are available in https://github.com/camaraproject/SimSwap/releases
-* For changes see [CHANGELOG.md](https://github.com/camaraproject/Simswap/blob/main/CHANGELOG.md)
+* For changes see [CHANGELOG.md](https://github.com/camaraproject/SimSwap/blob/main/CHANGELOG.md)
 
 ## Contributing
 

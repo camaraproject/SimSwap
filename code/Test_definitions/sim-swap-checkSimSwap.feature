@@ -4,12 +4,12 @@ Feature: CAMARA SIM Swap API, v2.1.0 - Operation checkSimSwap
   #
   # Testing assets:
   #
-  # References to OAS spec schemas refer to schemas specifies in sim_swap.yaml, version v2.1.0
+  # References to OAS spec schemas refer to schemas specifies in sim_swap.yaml
   #
   # check if SIM swap has been performed during a past period
 
   Background: Common checkSimSwap setup
-    Given the resource "sim-swap/v2/check"
+    Given the resource "/sim-swap/v2/check"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
@@ -180,16 +180,6 @@ Feature: CAMARA SIM Swap API, v2.1.0 - Operation checkSimSwap
   @check_sim_swap_400.3_invalid_max_age_value
   Scenario: Check that the response shows an error when the max age is above the limit
     Given the request body property "$.maxAge" is set to 100000
-    When the request "checkSimSwap" is sent
-    Then the response status code is 400
-    And the response property "$.status" is 400
-    And the response property "$.code" is "OUT_OF_RANGE"
-    And the response property "$.message" contains a user friendly text
-
-  @check_sim_swap_400.4_max_age_out_of_monitored_period
-  Scenario: Check that the response shows an error when the max age is above the supported monitored period of the API Provider
-    # This test only applies if the API Provider has a restricted monitored period by local regulations
-    Given the request body property "$.maxAge" is set to a valid value above the supported monitored period of the API Provider
     When the request "checkSimSwap" is sent
     Then the response status code is 400
     And the response property "$.status" is 400

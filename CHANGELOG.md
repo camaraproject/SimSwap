@@ -40,11 +40,16 @@ The API definition(s) are based on
   - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/r3.2/code/API_definitions/sim-swap.yaml)
 
 ### Added
+* Add a documentation note when regulations prevent less than 100 days for check by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/213
+* Documented Error Responses info.description section by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/221
 * Include new test scenario to check maxAge outside of monitored period by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/227
 
 ### Changed
+* Update x-correlator format by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/222
 * Align date-time definition with latest Commonalities by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/227
 
+### Removed
+* Remove AUTHENTICATION_REQUIRED error code by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/216
 
 ## Sim Swap Subscriptions v0.3.0
 
@@ -55,9 +60,28 @@ The API definition(s) are based on
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.2/code/API_definitions/sim-swap-subscriptions.yaml&nocors)
   - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.2/code/API_definitions/sim-swap-subscriptions.yaml)
 
+### Added
+* [Sim-Swap-Subscriptions]: Add `type` and `format` for `startsAt` by @maxl2287 in https://github.com/camaraproject/SimSwap/pull/207
+* [Sim-Swap-Subscriptions]: Add `subscriptionMaxEvents` as a config-property by @maxl2287 in https://github.com/camaraproject/SimSwap/pull/204
+* Enhancements Subscription/Notification Architecture by @fernandopradocabrillo in https://github.com/camaraproject/NumberVerification/pull/226
+
 ### Changed
+* Update x-correlator format by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/222
+* Event name from `subscription-ends` to `subscription-ended` by @fernandopradocabrillo in https://github.com/camaraproject/NumberVerification/pull/226
 * Align date-time definition with latest Commonalities by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/227
 
+### Removed
+* [Sim-Swap-Subscriptions]: Remove `phoneNumber` from the required properties in the Swap-Event by @maxl2287 in https://github.com/camaraproject/SimSwap/pull/206
+* [Sim-Swap-Subscriptions]: remove `SUBSCRIPTION_MISMATCH` error-code by @maxl2287 in https://github.com/camaraproject/SimSwap/pull/209
+* Remove AUTHENTICATION_REQUIRED error code by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/216
+
+### Fixed
+* [Sim-Swap-Subscriptions]: Document that `subscription-ended` notification is also sent when deleted by requester by @maxl2287 in https://github.com/camaraproject/SimSwap/pull/205
+
+## New Contributors
+* @maxl2287 made their first contribution in https://github.com/camaraproject/SimSwap/pull/208
+
+**Full Changelog**: https://github.com/camaraproject/SimSwap/compare/r2.2...r3.2
 
 # r3.1
 

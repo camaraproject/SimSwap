@@ -42,11 +42,11 @@ The API definition(s) are based on
 ### Added
 * Add a documentation note when regulations prevent less than 100 days for check by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/213
 * Documented Error Responses info.description section by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/221
-* Include new test scenario to check maxAge outside of monitored period by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/227
+* Include new test scenario to check maxAge outside of monitored period by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/236
 
 ### Changed
 * Update x-correlator format by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/222
-* Align date-time definition with latest Commonalities by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/227
+* Align date-time definition with latest Commonalities by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/229
 
 ### Removed
 * Remove AUTHENTICATION_REQUIRED error code by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/216
@@ -68,7 +68,7 @@ The API definition(s) are based on
 ### Changed
 * Update x-correlator format by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/222
 * Event name from `subscription-ends` to `subscription-ended` by @fernandopradocabrillo in https://github.com/camaraproject/NumberVerification/pull/226
-* Align date-time definition with latest Commonalities by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/227
+* Align date-time definition with latest Commonalities by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/229
 
 ### Removed
 * [Sim-Swap-Subscriptions]: Remove `phoneNumber` from the required properties in the Swap-Event by @maxl2287 in https://github.com/camaraproject/SimSwap/pull/206

@@ -256,12 +256,12 @@ components:
         status:
           type: integer
           description: HTTP response status code
-        message:
-          type: string
-          description: A human-readable description of what the event represents
         code:
           type: string
           description: A human-readable code to describe the error
+        message:
+          type: string
+          description: A human-readable description of what the event represents
     CreateCheckSimSwap:
       type: object
       properties:

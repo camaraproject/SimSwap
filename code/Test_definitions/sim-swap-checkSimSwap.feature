@@ -4,7 +4,7 @@ Feature: CAMARA SIM Swap API, v2.1.0 - Operation checkSimSwap
   #
   # Testing assets:
   #
-  # References to OAS spec schemas refer to schemas specifies in sim_swap.yaml
+  # References to OAS spec schemas refer to schemas specified in sim_swap.yaml
   #
   # check if SIM swap has been performed during a past period
 

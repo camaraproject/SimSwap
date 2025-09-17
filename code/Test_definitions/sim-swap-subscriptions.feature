@@ -8,7 +8,6 @@ Feature: CAMARA sim swap subscriptions  API, v0.3.0
   #
   # References to OAS spec schemas refer to schemas specified in sim-swap-subscriptions.yaml
 
-
   Background: Common subscriptions setup
     Given the resource "/sim-swap-subscriptions/v0.3/subscriptions" as BaseURL
     And the header "Content-Type" is set to "application/json"

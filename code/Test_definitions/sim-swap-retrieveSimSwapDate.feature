@@ -1,15 +1,15 @@
-Feature: CAMARA SIM Swap API, v2.1.0-rc.2 - Operation retrieveSimSwapDate
+Feature: CAMARA SIM Swap API, v2.1.0 - Operation retrieveSimSwapDate
 
   # Input to be provided by the implementation to the tester
   #
   # Testing assets:
   #
-  # References to OAS spec schemas refer to schemas specifies in sim_swap.yaml, version v2.1.0-rc.2
+  # References to OAS spec schemas refer to schemas specified in sim_swap.yaml
   #
   # Get timestamp of last MSISDN <-> IMSI pairing change for the provided phone number.
 
   Background: Common retrieveSimSwapDate setup
-    Given the resource "sim-swap/v2rc2/retrieve-date"
+    Given the resource "/sim-swap/v2/retrieve-date"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"

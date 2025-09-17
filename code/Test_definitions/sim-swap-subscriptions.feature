@@ -1,4 +1,4 @@
-Feature: CAMARA sim swap subscriptions  API, v0.3.0-rc.1
+Feature: CAMARA sim swap subscriptions  API, v0.3.0
   # Input to be provided by the implementation to the tester
   #
   # Testing assets:
@@ -6,10 +6,10 @@ Feature: CAMARA sim swap subscriptions  API, v0.3.0-rc.1
   # * Be able to perform a sim swap for this mobile line shifting from sim card 1 to sim card 2
   # * a callback url identified as "callbackUrl" allows to receive notification
   #
-  # References to OAS spec schemas refer to schemas specifies in sim-swap-subscriptions.yaml, version v0.3.0-rc.1
+  # References to OAS spec schemas refer to schemas specified in sim-swap-subscriptions.yaml
 
   Background: Common subscriptions setup
-    Given the resource "/sim-swap-subscriptions/v0.3rc1/subscriptions" as BaseURL
+    Given the resource "/sim-swap-subscriptions/v0.3/subscriptions" as BaseURL
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"

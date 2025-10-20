@@ -100,51 +100,51 @@ Feature: CAMARA SIM Swap API, v2.1.0 - Operation retrieveSimSwapDate
 
   @retrieve_sim_swap_date_C02.01_phone_number_not_schema_compliant
   Scenario: Phone number value does not comply with the schema
-      Given the header "Authorization" is set to a valid access token which does not identify a single phone number
-      And the request body property "$.phoneNumber" does not comply with the OAS schema at "/components/schemas/PhoneNumber"
-      When the request "retrieveSimSwapDate" is sent
-      Then the response status code is 400
-      And the response property "$.status" is 400
-      And the response property "$.code" is "INVALID_ARGUMENT"
-      And the response property "$.message" contains a user friendly text
+    Given the header "Authorization" is set to a valid access token which does not identify a single phone number
+    And the request body property "$.phoneNumber" does not comply with the OAS schema at "/components/schemas/PhoneNumber"
+    When the request "retrieveSimSwapDate" is sent
+    Then the response status code is 400
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
 
   @retrieve_sim_swap_date_C02.02_phone_number_not_found
   Scenario: Phone number not found
-      Given the header "Authorization" is set to a valid access token which does not identify a single phone number
-      And the request body property "$.phoneNumber" is compliant with the schema but does not identify a valid phone number
-      When the request "retrieveSimSwapDate" is sent
-      Then the response status code is 404
-      And the response property "$.status" is 404
-      And the response property "$.code" is "IDENTIFIER_NOT_FOUND"
-      And the response property "$.message" contains a user friendly text
+    Given the header "Authorization" is set to a valid access token which does not identify a single phone number
+    And the request body property "$.phoneNumber" is compliant with the schema but does not identify a valid phone number
+    When the request "retrieveSimSwapDate" is sent
+    Then the response status code is 404
+    And the response property "$.status" is 404
+    And the response property "$.code" is "IDENTIFIER_NOT_FOUND"
+    And the response property "$.message" contains a user friendly text
 
   @retrieve_sim_swap_date_C02.03_unnecessary_phone_number
   Scenario: Phone number not to be included when it can be deduced from the access token
-      Given the header "Authorization" is set to a valid access token identifying a phone number
-      And  the request body property "$.phoneNumber" is set to a valid phone number
-      When the request "retrieveSimSwapDate" is sent
-      Then the response status code is 422
-      And the response property "$.status" is 422
-      And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
-      And the response property "$.message" contains a user friendly text
+    Given the header "Authorization" is set to a valid access token identifying a phone number
+    And  the request body property "$.phoneNumber" is set to a valid phone number
+    When the request "retrieveSimSwapDate" is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
+    And the response property "$.message" contains a user friendly text
 
   @retrieve_sim_swap_date_C02.04_missing_phone_number
   Scenario: Phone number not included and cannot be deducted from the access token
-      Given the header "Authorization" is set to a valid access token which does not identify a single phone number
-      And the request body property "$.phoneNumber" is not included
-      When the request "retrieveSimSwapDate" is sent
-      Then the response status code is 422
-      And the response property "$.status" is 422
-      And the response property "$.code" is "MISSING_IDENTIFIER"
-      And the response property "$.message" contains a user friendly text
+    Given the header "Authorization" is set to a valid access token which does not identify a single phone number
+    And the request body property "$.phoneNumber" is not included
+    When the request "retrieveSimSwapDate" is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "MISSING_IDENTIFIER"
+    And the response property "$.message" contains a user friendly text
 
   # When the service is only offered to certain type of subscriptions, e.g. IoT, , B2C, etc
   @retrieve_sim_swap_date_C02.05_phone_number_not_supported
   Scenario: Service not available for the phone number
-      Given that the service is not available for all phone numbers commercialized by the operator
-      And a valid phone number, identified by the token or provided in the request body, for which the service is not applicable
-      When the request "retrieveSimSwapDate" is sent
-      Then the response status code is 422
-      And the response property "$.status" is 422
-      And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
-      And the response property "$.message" contains a user friendly text
+    Given that the service is not available for all phone numbers commercialized by the operator
+    And a valid phone number, identified by the token or provided in the request body, for which the service is not applicable
+    When the request "retrieveSimSwapDate" is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
+    And the response property "$.message" contains a user friendly text

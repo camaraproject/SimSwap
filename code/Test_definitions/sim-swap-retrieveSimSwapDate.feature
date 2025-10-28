@@ -61,46 +61,7 @@ Feature: CAMARA SIM Swap API, v2.1.0 - Operation retrieveSimSwapDate
     When the request "retrieveSimSwapDate" is sent
     Then the response status code is 200
     And the response property "$.latestSimChange" is null
-
-  # Specific errors
-
-  @retrieve_sim_swap_date_6_phone_number_not_supported
-  Scenario: Error when the service is not supported for the provided phone number
-    Given the request body property "$.phoneNumber" is set to a phone number for which the service is not available
-    When the request "retrieveSimSwapDate" is sent
-    Then the response status code is 422
-    And the response property "$.status" is 422
-    And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
-    And the response property "$.message" contains a user friendly text
-
-  @retrieve_sim_swap_date_7_phone_number_provided_both_in_the_body_and_via_the_token
-  Scenario: Error when the phone number is provided in the request body while a phone number is asssociated with the access token
-    Given the request body property "$.phoneNumber" is set to a valid testing phoneNumber
-    And the header "Authorization" is set to a valid access token identifying a phoneNumber
-    When the request "retrieveSimSwapDate" is sent
-    Then the response status code is 422
-    And the response property "$.status" is 422
-    And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
-    And the response property "$.message" contains a user friendly text
-
-  @retrieve_sim_swap_date_8_phone_number_not_provided
-  Scenario: Error when phone number is not provided in the request body with 2-legged access token
-    Given the header "Authorization" is set to a valid 2-legged access token
-    When the request "retrieveSimSwapDate" is sent
-    And the request body property "$.phoneNumber" is not present
-    Then the response status code is 422
-    And the response property "$.status" is 422
-    And the response property "$.code" is "MISSING_IDENTIFIER"
-    And the response property "$.message" contains a user friendly text
-
-  @retrieve_sim_swap_date_9_phone_number_cannot_be_deducted_from_access_token
-  Scenario: Error when phone number can not be deducted from access token with 3-legged access token
-    Given the header "Authorization" is set to a valid 3-legged access token from which the phone number cannot be deducted
-    When the request "retrieveSimSwapDate" is sent
-    Then the response status code is 422
-    And the response property "$.status" is 422
-    And the response property "$.code" is "MISSING_IDENTIFIER"
-    And the response property "$.message" contains a user friendly text
+    And the response optionally contains the property "$.monitoredPeriod" with the value of monitored time frame (in days) supported by the MNO
 
   # Generic 401 errors
 
@@ -135,13 +96,55 @@ Feature: CAMARA SIM Swap API, v2.1.0 - Operation retrieveSimSwapDate
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  # Generic 400 errors
+    # Error scenarios for management of input parameter phoneNumber
 
-  @retrieve_sim_swap_date_4_invalid_phone_number
-  Scenario: Check that the response shows an error when the phone number is invalid
-    Given the request body property "$.phoneNumber" does not comply with the OAS schema at "/components/schemas/PhoneNumber"
+  @retrieve_sim_swap_date_C02.01_phone_number_not_schema_compliant
+  Scenario: Phone number value does not comply with the schema
+    Given the header "Authorization" is set to a valid access token which does not identify a single phone number
+    And the request body property "$.phoneNumber" does not comply with the OAS schema at "/components/schemas/PhoneNumber"
     When the request "retrieveSimSwapDate" is sent
     Then the response status code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
+  @retrieve_sim_swap_date_C02.02_phone_number_not_found
+  Scenario: Phone number not found
+    Given the header "Authorization" is set to a valid access token which does not identify a single phone number
+    And the request body property "$.phoneNumber" is compliant with the schema but does not identify a valid phone number
+    When the request "retrieveSimSwapDate" is sent
+    Then the response status code is 404
+    And the response property "$.status" is 404
+    And the response property "$.code" is "IDENTIFIER_NOT_FOUND"
+    And the response property "$.message" contains a user friendly text
+
+  @retrieve_sim_swap_date_C02.03_unnecessary_phone_number
+  Scenario: Phone number not to be included when it can be deduced from the access token
+    Given the header "Authorization" is set to a valid access token identifying a phone number
+    And  the request body property "$.phoneNumber" is set to a valid phone number
+    When the request "retrieveSimSwapDate" is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
+    And the response property "$.message" contains a user friendly text
+
+  @retrieve_sim_swap_date_C02.04_missing_phone_number
+  Scenario: Phone number not included and cannot be deducted from the access token
+    Given the header "Authorization" is set to a valid access token which does not identify a single phone number
+    And the request body property "$.phoneNumber" is not included
+    When the request "retrieveSimSwapDate" is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "MISSING_IDENTIFIER"
+    And the response property "$.message" contains a user friendly text
+
+  # When the service is only offered to certain type of subscriptions, e.g. IoT, , B2C, etc
+  @retrieve_sim_swap_date_C02.05_phone_number_not_supported
+  Scenario: Service not available for the phone number
+    Given that the service is not available for all phone numbers commercialized by the operator
+    And a valid phone number, identified by the token or provided in the request body, for which the service is not applicable
+    When the request "retrieveSimSwapDate" is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
     And the response property "$.message" contains a user friendly text

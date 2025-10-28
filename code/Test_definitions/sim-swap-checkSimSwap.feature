@@ -94,36 +94,6 @@ Feature: CAMARA SIM Swap API, v2.1.0 - Operation checkSimSwap
       | 24    |
       | 12    |
 
-  # Specific errors
-
-  @check_sim_swap_8_phone_number_not_supported
-  Scenario: Error when the service is not supported for the provided phone number
-    Given the request body property "$.phoneNumber" is set to a phone number for which the service is not available
-    When the request "checkSimSwap" is sent
-    Then the response status code is 422
-    And the response property "$.status" is 422
-    And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
-    And the response property "$.message" contains a user friendly text
-
-  @check_sim_swap_9_phone_number_provided_both_in_the_body_and_via_the_token
-  Scenario: Error when the phone number is provided in the request body while a phone number is associated with the access token
-    Given the request body property "$.phoneNumber" is set to a valid testing phoneNumber
-    And the header "Authorization" is set to a valid access token identifying a phoneNumber
-    When the request "checkSimSwap" is sent
-    Then the response status code is 422
-    And the response property "$.status" is 422
-    And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
-    And the response property "$.message" contains a user friendly text
-
-  @check_sim_swap_10_phone_number_not_provided_and_cannot_be_deducted_from_access_token
-  Scenario: Error when phone number can not be deducted from access token and it is not provided in the request body
-    Given the header "Authorization" is set to a valid access token from which the phone number cannot be deducted
-    When the request "checkSimSwap" is sent
-    Then the response status code is 422
-    And the response property "$.status" is 422
-    And the response property "$.code" is "MISSING_IDENTIFIER"
-    And the response property "$.message" contains a user friendly text
-
   # Generic 401 errors
 
   @check_sim_swap_401.1_no_authorization_header
@@ -159,16 +129,7 @@ Feature: CAMARA SIM Swap API, v2.1.0 - Operation checkSimSwap
 
   # Generic 400 errors
 
-  @check_sim_swap_400.1_invalid_phone_number
-  Scenario: Check that the response shows an error when the phone number is invalid
-    Given the request body property "$.phoneNumber" does not comply with the OAS schema at "/components/schemas/PhoneNumber"
-    When the request "checkSimSwap" is sent
-    Then the response status code is 400
-    And the response property "$.status" is 400
-    And the response property "$.code" is "INVALID_ARGUMENT"
-    And the response property "$.message" contains a user friendly text
-
-  @check_sim_swap_400.2_invalid_max_age
+  @check_sim_swap_400.1_invalid_max_age
   Scenario: Check that the response shows an error when the max age is invalid
     Given the request body property "$.maxAge" does not comply with the OAS schema at "/components/schemas/CreateCheckSimSwap"
     When the request "checkSimSwap" is sent
@@ -177,7 +138,7 @@ Feature: CAMARA SIM Swap API, v2.1.0 - Operation checkSimSwap
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @check_sim_swap_400.3_invalid_max_age_value
+  @check_sim_swap_400.2_invalid_max_age_value
   Scenario: Check that the response shows an error when the max age is above the limit
     Given the request body property "$.maxAge" is set to 100000
     When the request "checkSimSwap" is sent
@@ -186,7 +147,7 @@ Feature: CAMARA SIM Swap API, v2.1.0 - Operation checkSimSwap
     And the response property "$.code" is "OUT_OF_RANGE"
     And the response property "$.message" contains a user friendly text
 
-  @check_sim_swap_400.4_max_age_out_of_monitored_period
+  @check_sim_swap_400.3_max_age_out_of_monitored_period
   Scenario: Check that the response shows an error when the max age is above the supported monitored period of the API Provider
     # This test only applies if the API Provider has a restricted monitored period by local regulations
     Given the request body property "$.maxAge" is set to a valid value above the supported monitored period of the API Provider
@@ -194,4 +155,57 @@ Feature: CAMARA SIM Swap API, v2.1.0 - Operation checkSimSwap
     Then the response status code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "OUT_OF_RANGE"
+    And the response property "$.message" contains a user friendly text
+
+  # Error scenarios for management of input parameter phoneNumber
+
+  @check_sim_swap_C02.01_phone_number_not_schema_compliant
+  Scenario: Phone number value does not comply with the schema
+    Given the header "Authorization" is set to a valid access token which does not identify a single phone number
+    And the request body property "$.phoneNumber" does not comply with the OAS schema at "/components/schemas/PhoneNumber"
+    When the request "checkSimSwap" is sent
+    Then the response status code is 400
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
+  @check_sim_swap_C02.02_phone_number_not_found
+  Scenario: Phone number not found
+    Given the header "Authorization" is set to a valid access token which does not identify a single phone number
+    And the request body property "$.phoneNumber" is compliant with the schema but does not identify a valid phone number
+    When the request "checkSimSwap" is sent
+    Then the response status code is 404
+    And the response property "$.status" is 404
+    And the response property "$.code" is "IDENTIFIER_NOT_FOUND"
+    And the response property "$.message" contains a user friendly text
+
+  @check_sim_swap_C02.03_unnecessary_phone_number
+  Scenario: Phone number not to be included when it can be deduced from the access token
+    Given the header "Authorization" is set to a valid access token identifying a phone number
+    And  the request body property "$.phoneNumber" is set to a valid phone number
+    When the request "checkSimSwap" is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
+    And the response property "$.message" contains a user friendly text
+
+  @check_sim_swap_C02.04_missing_phone_number
+  Scenario: Phone number not included and cannot be deducted from the access token
+    Given the header "Authorization" is set to a valid access token which does not identify a single phone number
+    And the request body property "$.phoneNumber" is not included
+    When the request "checkSimSwap" is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "MISSING_IDENTIFIER"
+    And the response property "$.message" contains a user friendly text
+
+  # When the service is only offered to certain type of subscriptions, e.g. IoT, , B2C, etc
+  @check_sim_swap_C02.05_phone_number_not_supported
+  Scenario: Service not available for the phone number
+    Given that the service is not available for all phone numbers commercialized by the operator
+    And a valid phone number, identified by the token or provided in the request body, for which the service is not applicable
+    When the request "checkSimSwap" is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
     And the response property "$.message" contains a user friendly text

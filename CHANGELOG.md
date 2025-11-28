@@ -56,7 +56,7 @@ The API definition(s) are based on
   - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.3/code/API_definitions/sim-swap-subscriptions.yaml)
 
 **Main changes**
-* There are no changes since the last release r2.2
+* There are no changes since the last release r3.2
 
 **Full Changelog**: https://github.com/camaraproject/SimSwap/compare/r3.2...r3.3
 

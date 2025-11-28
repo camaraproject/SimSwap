@@ -41,7 +41,7 @@ The API definition(s) are based on
   - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/r3.3/code/API_definitions/sim-swap.yaml)
 
 **Main changes**
-* There are no changes in the spec file, just an update in the test plan
+* There are no changes in the spec file since the release r3.2, just an update in the test plan
 
 ### Changed
 * Align test plan with commonalities artifact by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/238

@@ -1,6 +1,6 @@
 # API Readiness Checklist
 
-Checklist for sim-swap-subscriptions 0.3.0 in r3.2
+Checklist for sim-swap-subscriptions 0.3.0 in r3.3
 
 | Nr | API release assets  | alpha | release-candidate |  initial<br>public | stable<br> public | Status | Reference information |
 |----|----------------------------------------------|:-----:|:-----------------:|:-------:|:------:|:----:|:----:|

@@ -2,7 +2,8 @@
 
 ## Table of contents
 
-- **[r3.2](#r32) Fall25**
+- **[r3.3](#r33) Fall25**
+- **[r3.2](#r32) **
 - **[r3.1](#r31)**
 - **[r2.2](#r22) Spring25**
 - **[r2.1](#r21)**
@@ -19,6 +20,45 @@ The below sections record the changes for each API version in each release as fo
 * for the first release-candidate, all changes since the last public release
 * for subsequent release-candidate(s), only the delta to the previous release-candidate
 * for a public release, the consolidated changes since the previous public release
+
+# r3.3
+
+This maintenance release contains the definition and documentation of
+* sim-swap 2.1.0
+* sim-swap-subscriptions 0.3.0
+
+The API definition(s) are based on
+* Commonalities v0.6.0
+* Identity and Consent Management v0.4.0
+
+## sim-swap 2.1.0
+
+**sim-swap v2.1.0 is the public release of the Sim Swap API**
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.3/code/API_definitions/sim-swap.yaml&nocors)
+  - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.3/code/API_definitions/sim-swap.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/r3.3/code/API_definitions/sim-swap.yaml)
+
+**Main changes**
+* There are no changes in the spec file since the release r3.2, just an update in the test plan
+
+### Changed
+* Align test plan with commonalities artifact by @fernandopradocabrillo in https://github.com/camaraproject/SimSwap/pull/238
+
+## Sim Swap Subscriptions v0.3.0
+
+**sim-swap-subscriptions v0.3.0 is the public release of the Sim Swap Subscriptions API**
+
+- API definition **with inline documentation**:
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/r3.3/code/API_definitions/sim-swap-subscriptions.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.3/code/API_definitions/sim-swap-subscriptions.yaml&nocors)
+  - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.3/code/API_definitions/sim-swap-subscriptions.yaml)
+
+**Main changes**
+* There are no changes since the last release r3.2
+
+**Full Changelog**: https://github.com/camaraproject/SimSwap/compare/r3.2...r3.3
 
 # r3.2
 
@@ -353,7 +393,7 @@ The API definition(s) are based on
     - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/r1.2/code/API_definitions/sim-swap-subscriptions.yaml)
     - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.2/code/API_definitions/sim-swap-subscriptions.yaml&nocors)
     - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r1.2/code/API_definitions/sim-swap-subscriptions.yaml)
- 
+
 **Main Changes**
 * Initial contribution of the API definition for Sim Swap Subscriptions allowing API consumers to subscribe to get notified when a sim swap occurs on a device.
 * API and test definitions updated to conform to the Commonalities v0.4.0 and Identity and Consent Management v0.2.0 guidelines included in the CAMARA Fall24 meta-release
@@ -425,7 +465,7 @@ This version contains significant changes compared to v0.4.0, and it is not back
 
 ## Please note:
 
-- There are bug fixes to be expected and incompatible changes in upcoming versions 
+- There are bug fixes to be expected and incompatible changes in upcoming versions
 - The API version is suitable for test implementations and has the purpose to collect feedback for its further development. It should not be used with customers in productive environments.
 
 ### Added
@@ -459,12 +499,12 @@ This version contains significant changes compared to v0.4.0, and it is not back
 
 - API definition **with inline documentation**:
   - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/release-0.4.0/code/API_definitions/sim_swap.yaml)
-  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/v0.4.0/code/API_definitions/sim_swap.yaml&nocors) 
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/v0.4.0/code/API_definitions/sim_swap.yaml&nocors)
   - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/v0.4.0/code/API_definitions/sim_swap.yaml)
 
 ## Please note:
 
-- This is an alpha version, there are bug fixes to be expected and incompatible changes in upcoming versions 
+- This is an alpha version, there are bug fixes to be expected and incompatible changes in upcoming versions
 - The release is suitable for implementors, but it is not recommended to use the API with customers in productive environments
 - Version numbers before v0.4.0 were used during the development of this version but not released
 

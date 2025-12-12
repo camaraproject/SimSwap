@@ -22,7 +22,7 @@ Incubating API Repository to evolve and maintain the definitions and documentati
 * Started: October 2022
 * Incubating stage since: February 2025
 
-## Status and released versions
+## Release Information
 
 * Note: Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. **For best results, use the latest available release**.
 * Public release r3.3 features the following APIs:

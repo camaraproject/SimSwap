@@ -22,24 +22,29 @@ Incubating API Repository to evolve and maintain the definitions and documentati
 * Started: October 2022
 * Incubating stage since: February 2025
 
+<!-- CAMARA:RELEASE-INFO:START -->
+<!-- The following section is automatically maintained by the CAMARA project-administration tooling: https://github.com/camaraproject/project-administration -->
+
 ## Release Information
 
-* Note: Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. **For best results, use the latest available release**.
-* Public release r3.3 features the following APIs:
-  * version 2.1.0 of the **API sim-swap** - available [here](https://github.com/camaraproject/SimSwap/tree/r3.3)
-    * API definitions **with inline documentation**:
-      * OpenAPI [YAML](https://github.com/camaraproject/SimSwap/blob/r3.3/code/API_definitions/sim-swap.yaml)
-      * [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.3/code/API_definitions/sim-swap.yaml&nocors)
-      * [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.3/code/API_definitions/sim-swap.yaml)
-  * version 0.3.0 of the **API sim-swap-subscriptions** - available [here](https://github.com/camaraproject/SimSwap/tree/r3.3)
-    * API definitions **with inline documentation**:
-      * OpenAPI [YAML](https://github.com/camaraproject/SimSwap/blob/r3.3/code/API_definitions/sim-swap-subscriptions.yaml)
-      * [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.3/code/API_definitions/sim-swap-subscriptions.yaml&nocors)
-      * [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.3/code/API_definitions/sim-swap-subscriptions.yaml)
+> [!NOTE]
+> Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. **For best results, use the latest available release**.
 
-* The latest public release is available here: https://github.com/camaraproject/SimSwap/releases/latest
-* Other releases of this sub project are available in https://github.com/camaraproject/SimSwap/releases
+* **NEW**: The latest public release is [r3.3](https://github.com/camaraproject/SimSwap/releases/tag/r3.3) (Fall25), with the following API versions:
+  * **sim-swap-subscriptions v0.3.0**
+  [[YAML]](https://github.com/camaraproject/SimSwap/blob/r3.3/code/API_definitions/sim-swap-subscriptions.yaml)
+  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.3/code/API_definitions/sim-swap-subscriptions.yaml&nocors)
+  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.3/code/API_definitions/sim-swap-subscriptions.yaml)
+  * **sim-swap v2.1.0**
+  [[YAML]](https://github.com/camaraproject/SimSwap/blob/r3.3/code/API_definitions/sim-swap.yaml)
+  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.3/code/API_definitions/sim-swap.yaml&nocors)
+  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.3/code/API_definitions/sim-swap.yaml)
+* The latest public release is always available here: https://github.com/camaraproject/SimSwap/releases/latest
+* Other releases of this repository are available in https://github.com/camaraproject/SimSwap/releases
 * For changes see [CHANGELOG.md](https://github.com/camaraproject/SimSwap/blob/main/CHANGELOG.md)
+
+_The above section is automatically synchronized by CAMARA project-administration._
+<!-- CAMARA:RELEASE-INFO:END -->
 
 ## Contributing
 

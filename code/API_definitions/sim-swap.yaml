@@ -34,8 +34,9 @@ info:
 
       - If the latest SIM swap date (or the activation date if no SIM swap) cannot be communicated due to local regulations (or MNO internal privacy policies) preventing the safekeeping of the information for longer than the stated period, a `null` value will be returned. Optionally, a `monitoredPeriod` could be provided to indicate monitored time frame (in days) supported by the MNO. In this case the response must be treated as "there were no sim swap events during 'monitoredPeriod'. Either the parameter is optional, it is recommended to support it in SimSwap implementations.
 
-    - POST check: Checks if SIM swap has been performed during a past period (defined in the request with 'maxAge' attribute) for a given phone number.
-
+    - POST check: Checks if SIM swap has been performed during a past period for a given phone number.
+      - The API returns a boolean response (true/false) based on the mandatory 'maxAge' attribute.
+      - Optionally, the client can provide 'ageTiers' (list of time buckets) to receive a 'tierIndex', enabling granular risk assessment without exposing exact timestamps.
       - Note: In the specification of the API the 'maxAge' could be between 1 hour to 2400 hours. If this delay is not managed due to the operator's own privacy threshold (which in theory would likely be linked to local regulations in the country) and a request is performed with a value inferior to 2400 but superior to operator policy, then,  an error `400 OUT_OF_RANGE `is expected with an explicit message to explain the limitation like `Check monitor period could not exceed local regulations (30 days)`.
 
     # Authorization and authentication
@@ -241,6 +242,21 @@ components:
           type: boolean
           description: Indicates whether the SIM card has been swapped during the
             period within the provided age.
+        # --- NEW FIELD START ---
+        tierIndex:
+          type: integer
+          format: int32
+          description: |
+            OPTIONAL. The 0-based index of the bucket in 'ageTiers' where the actual SIM swap age falls.
+            
+            Logic:
+            1. Iterate through 'ageTiers'.
+            2. Find the first tier where actual_age <= tier_value.
+            3. Return that index.
+            
+            Returns null (or omitted) if the swap age exceeds all defined tiers or if 'ageTiers' was not provided.
+          example: 1
+        # --- NEW FIELD END ---       
     PhoneNumber:
       type: string
       pattern: '^\+[1-9][0-9]{4,14}$'
@@ -276,6 +292,20 @@ components:
           minimum: 1
           maximum: 2400
           default: 240
+        # --- NEW FIELD START ---
+        ageTiers:
+          type: array
+          description: |
+            OPTIONAL. A list of integers defining time buckets (in hours) for risk assessment.
+            The response will contain 'tierIndex' indicating which bucket the actual swap age falls into.
+            If omitted, the API behaves as a standard boolean check.
+          items:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 2400
+          example: [1, 4, 24, 72, 240]
+        # --- NEW FIELD END ---
     CreateSimSwapDate:
       type: object
       properties:

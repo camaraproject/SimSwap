@@ -1,0 +1,34 @@
+# CAMARA Validation Framework — Caller Workflow
+#
+# Installed in API repositories by the CAMARA onboarding campaign
+# (camaraproject/project-administration). No modification needed;
+# all configuration is centralized in camaraproject/tooling.
+#
+# Replaces the legacy pr_validation_caller.yml (v0 validation).
+
+name: CAMARA Validation
+
+on:
+  pull_request:
+    branches:
+      - main
+      - release-snapshot/**
+      - maintenance/**
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions:
+  checks: write
+  pull-requests: write
+  issues: write
+  contents: read
+  statuses: write
+  id-token: write
+
+jobs:
+  validation:
+    uses: camaraproject/tooling/.github/workflows/validation.yml@v1-rc
+    secrets: inherit

@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: SIM Swap
   description: |
-    The SIM swap API provides a programmable interface for developers and other users (capabilities consumers) to request the last date of a SIM swap performed on the mobile line, or, to check whether a SIM swap has been performed during a past period.
+    The SIM swap API provides a programmable interface for developers and other users (capabilities consumers) to retrieve a standardized recency band for the last SIM swap event.
 
     # Introduction
 
@@ -12,10 +12,16 @@ info:
 
     The SIM Swap API can also be used to protect non-automated actions. For example, when a call center expert contacts a user to clarify or confirm a sensitive operation.
 
-    This API is used by an application to get information about a mobile line latest SIM swap date. It can be easily integrated and used through this secured API and allows SPs (Service Provider) to get this information an easy & secured way. The API provides management of 2 endpoints answering 2 distinct questions:
+    This API is used by an application to get information about a mobile line SIM swap status. It can be easily integrated and used through this secured API and allows SPs (Service Provider) to get this information an easy & secured way. The API provides a single, single-purpose endpoint:
 
-    * When did the last SIM swap occur?
-    * Has a SIM swap occurred during last n hours?
+    * How long ago did the last SIM swap or activation occur (as a standardized recency band)?
+
+    This endpoint returns ONLY the standardized recency band. It deliberately does NOT return the
+    Boolean `swapped` threshold signal (that is the scope of the `/check` endpoint) nor the SIM
+    change timestamp (that is the scope of the `/retrieve-date` endpoint). This single-purpose
+    scope reflects the agreement reached in the 2026-04-29 ad-hoc call (issue #253) and TEF's
+    stance on issue #260: a dedicated third endpoint that exposes the age band alone, without
+    re-implementing check or retrieve-date logic.
 
     # Relevant terms and definitions
 
@@ -26,17 +32,28 @@ info:
 
     # API functionality
 
-    The API provides 2 operations:
+    The API provides 1 operation:
 
-    - POST retrieve-date : Provides timestamp of latest SIM swap, if any, for a given phone number.
+    - POST retrieve-age-band : Returns a standardized `simSwapAgeBandEnum` recency bucket representing the elapsed time between the SIM activation/change date and the current time. This endpoint is the dedicated signal for consumers (e.g., banks, fraud platforms) that need coarse time-band context for risk decisioning, ML features, or step-up logic. The consuming party applies its own thresholds outside the API contract. The response carries the band value only — no `swapped` Boolean and no change date.
 
-      - If no swap has been performed and the network operator supports unlimited SimSwap monitoring timeframe, the API will return the SIM activation date (the timestamp of the first time that the SIM connected to the network).
-
-      - If the latest SIM swap date (or the activation date if no SIM swap) cannot be communicated due to local regulations (or MNO internal privacy policies) preventing the safekeeping of the information for longer than the stated period, a `null` value will be returned. Optionally, a `monitoredPeriod` could be provided to indicate monitored time frame (in days) supported by the MNO. In this case the response must be treated as "there were no sim swap events during 'monitoredPeriod'. Either the parameter is optional, it is recommended to support it in SimSwap implementations.
-
-    - POST check: Checks if SIM swap has been performed during a past period (defined in the request with 'maxAge' attribute) for a given phone number.
-
-      - Note: In the specification of the API the 'maxAge' could be between 1 hour to 2400 hours. If this delay is not managed due to the operator's own privacy threshold (which in theory would likely be linked to local regulations in the country) and a request is performed with a value inferior to 2400 but superior to operator policy, then,  an error `400 OUT_OF_RANGE `is expected with an explicit message to explain the limitation like `Check monitor period could not exceed local regulations (30 days)`.
+      - Standardized AgeBand enum mapping: <br>
+        -1 = Subscriber valid, but no real-time profile found <br>
+         0 = Change has not happened <br>
+         1 = 0h ≤ d < 4h <br>
+         2 = 4h ≤ d < 12h <br>
+         3 = 12h ≤ d < 1d <br>
+         4 = 1d ≤ d < 2d <br>
+         5 = 2d ≤ d < 5d <br>
+         6 = 5d ≤ d < 7d <br>
+         7 = 7d ≤ d < 14d <br>
+         8 = 14d ≤ d < 30d <br>
+         9 = 30d ≤ d < 60d <br>
+        10 = 60d ≤ d < 90d <br>
+        11 = 90d ≤ d < 180d <br>
+        12 = 180d ≤ d < 1y <br>
+        13 = 1y ≤ d < 2y <br>
+        14 = 2y ≤ d < 3y <br>
+        15 = 3y+ <br>
 
     # Authorization and authentication
 
@@ -82,6 +99,9 @@ info:
 externalDocs:
   description: Product documentation at Camara
   url: https://github.com/camaraproject/SimSwap
+tags:
+  - name: Retrieve SIM swap age band
+    description: Operations for retrieving the standardized SIM swap age band signal.
 servers:
   - url: "{apiRoot}/sim-swap/vwip"
     variables:
@@ -89,100 +109,66 @@ servers:
         default: http://localhost:9091
         description: API root, defined by the service provider, e.g. `api.example.com` or `api.example.com/somepath`
 paths:
-  /retrieve-date:
-    post:
-      security:
-        - openId:
-            - sim-swap:retrieve-date
-        - openId:
-            - sim-swap
-      tags:
-        - Retrieve SIM swap date
-      summary: Retrieve SIM swap date
-      description: Get timestamp of last SIM swap event for a mobile user account provided with phone number.
-      operationId: retrieveSimSwapDate
-      parameters:
-        - $ref: '#/components/parameters/x-correlator'
-      requestBody:
-        description: |
-          Create a SIM swap date request for a phone number.
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateSimSwapDate"
-            examples:
-              RETRIEVE_3LEGS:
-                $ref: "#/components/examples/RETRIEVE_3LEGS"
-              RETRIEVE_2LEGS:
-                $ref: "#/components/examples/RETRIEVE_2LEGS"
 
-        required: true
-      responses:
-        "200":
-          description: Contains information about SIM swap change
-          headers:
-            x-correlator:
-              $ref: '#/components/headers/x-correlator'
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SimSwapInfo"
-              examples:
-                RETRIEVE_DATE:
-                  $ref: "#/components/examples/RETRIEVE_DATE"
-                RETRIEVE_MONITORED_PERIOD:
-                  $ref: "#/components/examples/RETRIEVE_MONITORED_PERIOD"
-                RETRIEVE_MONITORED_NULL:
-                  $ref: "#/components/examples/RETRIEVE_MONITORED_NULL"
-        "400":
-          $ref: "#/components/responses/Generic400"
-        "401":
-          $ref: "#/components/responses/Generic401"
-        "403":
-          $ref: "#/components/responses/Generic403"
-        "404":
-          $ref: "#/components/responses/Generic404"
-        "422":
-          $ref: "#/components/responses/Generic422"
-        "429":
-          $ref: "#/components/responses/Generic429"
-  /check:
+  # This is a standalone third endpoint that returns the SIM swap age band ONLY.
+  # Does NOT re-implement /check (the `swapped` Boolean) or /retrieve-date (the timestamp).
+  /retrieve-age-band:
     post:
       security:
         - openId:
-            - sim-swap:check
+            - sim-swap:retrieve-age-band
         - openId:
             - sim-swap
       tags:
-        - Check SIM swap
-      summary: Check SIM swap
-      description: Check if SIM swap has been performed during a past period
-      operationId: checkSimSwap
+        - Retrieve SIM swap age band
+      summary: Retrieve SIM swap age band
+      description: |
+        Returns a standardized `simSwapAgeBandEnum` recency bucket representing the elapsed time
+        between the SIM activation/change date and the current time.
+
+        This endpoint is the dedicated signal for consumers that need coarse time-band context
+        for fraud decisioning, risk scoring, ML features, or step-up logic. The response is
+        intentionally decoupled from `/check` (Boolean threshold) and `/retrieve-date` (timestamp)
+        to keep each endpoint contract clean and unambiguous. Accordingly, the response contains
+        the age band value ONLY — it does not include the `swapped` Boolean or the change date.
+
+        The consuming party (e.g., a bank or fraud platform) applies its own thresholds outside
+        the API contract based on the returned band value.
+      operationId: retrieveSimSwapAgeBand
       parameters:
         - $ref: '#/components/parameters/x-correlator'
       requestBody:
         description: |
-          Create a check SIM swap request for a phone number.
+          Create a SIM swap age band request for a phone number.
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateCheckSimSwap"
+              $ref: "#/components/schemas/CreateSimSwapAgeBand"
             examples:
-              CHECK_3LEGS:
-                $ref: "#/components/examples/CHECK_3LEGS"
-              CHECK_2LEGS:
-                $ref: "#/components/examples/CHECK_2LEGS"
+              AGEBAND_3LEGS:
+                $ref: "#/components/examples/AGEBAND_3LEGS"
+              AGEBAND_2LEGS:
+                $ref: "#/components/examples/AGEBAND_2LEGS"
         required: true
       responses:
         "200":
-          description: Returns whether a SIM swap has been performed during a past period
+          description: Returns the standardized SIM swap recency band for the given phone number
           headers:
             x-correlator:
               $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CheckSimSwapInfo"
+                $ref: "#/components/schemas/SimSwapAgeBandInfo"
+              examples:
+                AGEBAND_RECENT:
+                  $ref: "#/components/examples/AGEBAND_RECENT"
+                AGEBAND_NO_CHANGE:
+                  $ref: "#/components/examples/AGEBAND_NO_CHANGE"
+                AGEBAND_NO_PROFILE:
+                  $ref: "#/components/examples/AGEBAND_NO_PROFILE"
+                AGEBAND_LONG_TERM:
+                  $ref: "#/components/examples/AGEBAND_LONG_TERM"
         "400":
           $ref: "#/components/responses/Generic400"
         "401":
@@ -199,6 +185,7 @@ components:
   securitySchemes:
     openId:
       type: openIdConnect
+      description: OpenID Connect security scheme used to authenticate API consumers for SIM swap requests.
       openIdConnectUrl: https://example.com/.well-known/openid-configuration
   parameters:
     x-correlator:
@@ -215,32 +202,80 @@ components:
   schemas:
     XCorrelator:
       type: string
-      pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
+      description: Unique correlation identifier used for tracing requests and responses across distributed systems.
+      pattern: ^[a-zA-Z0-9-_:;.\/<>\{\}]{0,256}$
       example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
-    SimSwapInfo:
+    SimSwapAgeBandEnum:
+      type: integer
+      description: |
+        Standardized recency bucket representing the elapsed time between the SIM activation/change
+        date and the current time. The enum is fully standardized to ensure consistent interpretation
+        across operators, aggregators, and consuming applications.
+
+        | Value | Duration band                                         |
+        |-------|-------------------------------------------------------|
+        | -1    | Subscriber valid, but no real-time profile available  |
+        | 0     | Change has not occurred                               |
+        | 1     | 0h ≤ d < 4h                                           |
+        | 2     | 4h ≤ d < 12h                                          |
+        | 3     | 12h ≤ d < 1d                                          |
+        | 4     | 1d ≤ d < 2d                                           |
+        | 5     | 2d ≤ d < 5d                                           |
+        | 6     | 5d ≤ d < 7d                                           |
+        | 7     | 7d ≤ d < 14d                                          |
+        | 8     | 14d ≤ d < 30d                                         |
+        | 9     | 30d ≤ d < 60d                                         |
+        | 10    | 60d ≤ d < 90d                                         |
+        | 11    | 90d ≤ d < 180d                                        |
+        | 12    | 180d ≤ d < 1y                                         |
+        | 13    | 1y ≤ d < 2y                                           |
+        | 14    | 2y ≤ d < 3y                                           |
+        | 15    | 3y+                                                   |
+
+        Special states use negative and zero values so the band signal is compact and self-contained,
+        which is what allows this endpoint to expose the band alone without a separate `swapped`
+        Boolean (the scope of `/check`) or change date (the scope of `/retrieve-date`):
+        `0` means no SIM change has happened, and `-1` distinguishes a valid subscriber with
+        unavailable real-time profile data from both "no change" (`0`) and actual recency
+        buckets (`1`–`15`).
+      enum:
+        - -1
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        - 9
+        - 10
+        - 11
+        - 12
+        - 13
+        - 14
+        - 15
+      example: 2
+    # Single-purpose response: the band value ONLY.
+    # Per the 2026-04-29 ad-hoc agreement (issue #253) and TEF stance (issue #260), the
+    # `swapped` Boolean was intentionally removed from this schema — deriving/returning it
+    # here would duplicate /check logic and put this endpoint out of scope. The enum itself
+    # already encodes the "no change" (0) and "no profile" (-1) states.
+    SimSwapAgeBandInfo:
       type: object
       required:
-        - latestSimChange
+        - simSwapAgeBandEnum
+      description: |
+        Response schema for the /retrieve-age-band endpoint. Returns ONLY the standardized
+        recency bucket. This endpoint deliberately excludes the `swapped` Boolean (provided by
+        `/check`) and the SIM change timestamp (provided by `/retrieve-date`) so that each
+        endpoint contract stays single-purpose and unambiguous. Consuming parties apply their own
+        risk thresholds, ML features, or step-up logic against the returned band value outside
+        the API contract.
       properties:
-        latestSimChange:
-          type: string
-          format: date-time
-          description: Timestamp of latest SIM swap performed. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
-          nullable: true
-          example: "2023-07-03T14:27:08.312+02:00"
-        monitoredPeriod:
-          type: integer
-          description: Timeframe in days for SIM card change supervision for the phone number. It could be valued in the response if the latest SIM swap occurred before this monitored period.
-          example: 120
-    CheckSimSwapInfo:
-      type: object
-      required:
-        - swapped
-      properties:
-        swapped:
-          type: boolean
-          description: Indicates whether the SIM card has been swapped during the
-            period within the provided age.
+        simSwapAgeBandEnum:
+          $ref: "#/components/schemas/SimSwapAgeBandEnum"
     PhoneNumber:
       type: string
       pattern: '^\+[1-9][0-9]{4,14}$'
@@ -248,6 +283,7 @@ components:
       description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
     ErrorInfo:
       type: object
+      description: Structured error payload returned by the API when requests cannot be processed successfully.
       required:
         - status
         - code
@@ -262,22 +298,9 @@ components:
         message:
           type: string
           description: A human-readable description of what the event represents
-    CreateCheckSimSwap:
+    CreateSimSwapAgeBand:
       type: object
-      properties:
-        phoneNumber:
-          $ref: "#/components/schemas/PhoneNumber"
-        maxAge:
-          type: integer
-          example: 240
-          description: |
-            Period in hours to be checked for SIM swap.
-          format: int32
-          minimum: 1
-          maximum: 2400
-          default: 240
-    CreateSimSwapDate:
-      type: object
+      description: Request schema for retrieving the SIM swap age band for a given phone number.
       properties:
         phoneNumber:
           $ref: "#/components/schemas/PhoneNumber"
@@ -462,33 +485,34 @@ components:
                 code: TOO_MANY_REQUESTS
                 message: Rejected due to request rate limit overpassed.
   examples:
-    RETRIEVE_DATE:
-      summary: Lastest SIM swap date is send back
-      value:
-        latestSimChange: 2024-09-18T07:37:53.471829447Z
-    RETRIEVE_MONITORED_NULL:
-      summary: Only null value is retrieved
-      value:
-        latestSimChange: null
-    RETRIEVE_MONITORED_PERIOD:
-      summary: null is send back for the date but a monitoredPeriod is provided
-      value:
-        latestSimChange: null
-        monitoredPeriod: 120
-    CHECK_2LEGS:
-      summary: Check request without 3-legged access tokens
+    AGEBAND_2LEGS:
+      summary: Age band request without 3-legged access tokens
+      description: Example request payload when the phone number is supplied by the consumer.
       value:
         phoneNumber: "+346661113334"
-        maxAge: 120
-    CHECK_3LEGS:
-      summary: Check request with 3-legged access tokens
+    AGEBAND_3LEGS:
+      summary: Age band request with 3-legged access tokens
+      description: Example request payload when the phone number is resolved from the access token.
+      value: {}
+    # Response examples carry the band value ONLY (no `swapped`), matching the single-purpose
+    # scope agreed in issue #253 / #260.
+    AGEBAND_RECENT:
+      summary: SIM was swapped between 4h and 12h ago (band 2)
+      description: Example success response for a recent SIM swap age band.
       value:
-        maxAge: 120
-    RETRIEVE_2LEGS:
-      summary: Retrieve request without 3-legged access tokens
+        simSwapAgeBandEnum: 2
+    AGEBAND_NO_CHANGE:
+      summary: No SIM change has occurred (band 0)
+      description: Example success response when no SIM change has been detected.
       value:
-        phoneNumber: "+346661113334"
-    RETRIEVE_3LEGS:
-      summary: Retrieve request with 3-legged access tokens
+        simSwapAgeBandEnum: 0
+    AGEBAND_NO_PROFILE:
+      summary: Subscriber valid but no real-time profile available (band -1)
+      description: Example success response when no real-time subscriber profile is available.
       value:
-        {}
+        simSwapAgeBandEnum: -1
+    AGEBAND_LONG_TERM:
+      summary: SIM unchanged for 3 years or more (band 15)
+      description: Example success response for a long-term unchanged SIM state.
+      value:
+        simSwapAgeBandEnum: 15

@@ -64,7 +64,7 @@ info:
 
     The "Camara Security and Interoperability Profile" provides details of how an API consumer requests an access token. Please refer to Identity and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the profile.
 
-    The specific authorization flows to be used will be agreed upon during the onboarding process, happening between the provider of the application consuming the API and the operator's API exposure platform, taking into account the declared purpose for accessing the API, whilst also being subject to the prevailing legal framework dictated by local legislation.
+    The specific authorization flows to be used will be agreed upon during the onboarding process, happening between the API consumer and the API provider, taking into account the declared purpose for accessing the API, whilst also being subject to the prevailing legal framework dictated by local legislation.
 
     In cases where personal data is processed by the API and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of three-legged access tokens is mandatory. This ensures that the API remains in compliance with privacy regulations, upholding the principles of transparency and user-centric privacy-by-design.
     <!-- CAMARA:MANDATORY:authorization-and-authentication:END -->
@@ -331,9 +331,9 @@ paths:
         "400":
           $ref: "../common/CAMARA_event_common.yaml#/components/responses/SubscriptionIdRequired400"
         "401":
-           $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
         "403":
-         $ref: "../common/CAMARA_common.yaml#/components/responses/Generic403"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic403"
         "404":
           $ref: "../common/CAMARA_common.yaml#/components/responses/Generic404"
 components:
@@ -766,7 +766,6 @@ components:
           - org.camaraproject.sim-swap-subscriptions.v0.swapped
         config:
           subscriptionDetail: {}
-
           subscriptionExpireTime: '2025-01-17T13:18:23.682Z'
         id: '1119920371'
         startsAt: '2024-06-07T16:10:15.302Z'
@@ -774,29 +773,40 @@ components:
         status: ACTIVATION_REQUESTED
     SUBSCRIPTIONS:
       value:
-        - protocol: HTTP
-          sink: https://endpoint.example.com/sink
-          types:
-            - org.camaraproject.sim-swap-subscriptions.v0.swapped
-          config:
-            subscriptionDetail:
-              phoneNumber: "+123456789"
-            subscriptionExpireTime: '2025-01-17T13:18:23.682Z'
-          id: '1119920371'
-          startsAt: '2024-06-07T16:10:15.302Z'
-          expiresAt: '2024-06-07T16:10:15.302Z'
-          status: ACTIVATION_REQUESTED
+        subscriptions:
+          - protocol: HTTP
+            sink: https://endpoint.example.com/sink
+            types:
+              - org.camaraproject.sim-swap-subscriptions.v0.swapped
+            config:
+              subscriptionDetail:
+                phoneNumber: "+123456789"
+              subscriptionExpireTime: '2025-01-17T13:18:23.682Z'
+            id: '1119920371'
+            startsAt: '2024-06-07T16:10:15.302Z'
+            expiresAt: '2024-06-07T16:10:15.302Z'
+            status: ACTIVATION_REQUESTED
+        pagination:
+          page: 1
+          perPage: 1
+          totalCount: 1
+          totalPages: 1
     SUBSCRIPTIONS_3LEGS:
       value:
-        - protocol: HTTP
-          sink: https://endpoint.example.com/sink
-          types:
-            - org.camaraproject.sim-swap-subscriptions.v0.swapped
-          config:
-            subscriptionDetail: {}
-
-            subscriptionExpireTime: '2025-01-17T13:18:23.682Z'
-          id: '1119920371'
-          startsAt: '2024-06-07T16:10:15.302Z'
-          expiresAt: '2024-06-07T16:10:15.302Z'
+        subscriptions:
+          - protocol: HTTP
+            sink: https://endpoint.example.com/sink
+            types:
+              - org.camaraproject.sim-swap-subscriptions.v0.swapped
+            config:
+              subscriptionDetail: {}
+              subscriptionExpireTime: '2025-01-17T13:18:23.682Z'
+            id: '1119920371'
+            startsAt: '2024-06-07T16:10:15.302Z'
+            expiresAt: '2024-06-07T16:10:15.302Z'
           status: ACTIVATION_REQUESTED
+        pagination:
+          page: 1
+          perPage: 1
+          totalCount: 1
+          totalPages: 1

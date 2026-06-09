@@ -38,6 +38,7 @@ info:
 
       - Note: In the specification of the API the 'maxAge' could be between 1 hour to 2400 hours. If this delay is not managed due to the operator's own privacy threshold (which in theory would likely be linked to local regulations in the country) and a request is performed with a value inferior to 2400 but superior to operator policy, then,  an error `400 OUT_OF_RANGE `is expected with an explicit message to explain the limitation like `Check monitor period could not exceed local regulations (30 days)`.
 
+    <!-- CAMARA:MANDATORY:authorization-and-authentication:BEGIN -->
     # Authorization and authentication
 
     The "Camara Security and Interoperability Profile" provides details of how an API consumer requests an access token. Please refer to Identity and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the profile.
@@ -46,6 +47,7 @@ info:
 
     In cases where personal data is processed by the API and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of three-legged access tokens is mandatory. This ensures that the API remains in compliance with privacy regulations, upholding the principles of transparency and user-centric privacy-by-design.
 
+    <!-- CAMARA:MANDATORY:authorization-and-authentication:END -->
     # Identifying the phone number from the access token
 
     This API requires the API consumer to identify a phone number as the subject of the API. There is 2 ways to retrieve it depending on the authorization flow used:
@@ -60,13 +62,21 @@ info:
 
     - If the phoneNumber can be identified from the access token and the optional `phoneNumber` identifier is also included in the request, then the server will return an error with the `422 UNNECESSARY_IDENTIFIER` error code. This will be the case even if the same device is identified by these two methods, as the server is unable to make this comparison.
 
+    <!-- CAMARA:MANDATORY:additional-error-responses:BEGIN -->
     # Additional CAMARA error responses
 
-      The list of error codes in this API specification is not exhaustive. Therefore the API specification may not document some non-mandatory error statuses as indicated in `CAMARA API Design Guide`.
+      The list of error codes in this API specification is not exhaustive. Therefore the API specification MAY not document some non-mandatory error statuses as indicated in `CAMARA API Design Guide`.
 
       Please refer to the `CAMARA_common.yaml` of the Commonalities Release associated to this API version for a complete list of error responses. The applicable Commonalities Release can be identified in the `API Readiness Checklist` document associated to this API version.
 
       As a specific rule, error `501 - NOT_IMPLEMENTED` can be only a possible error response if it is explicitly documented in the API.
+    <!-- CAMARA:MANDATORY:additional-error-responses:END -->
+
+    <!-- CAMARA:MANDATORY:request-body-strictness:BEGIN -->
+    # Request body strictness
+
+    This API rejects requests with JSON request bodies that contain properties not declared in this specification, at any nesting level. Unknown properties result in a `400 INVALID_ARGUMENT` response.
+    <!-- CAMARA:MANDATORY:request-body-strictness:END -->
 
     # Further info and support
 
@@ -102,7 +112,7 @@ paths:
       description: Get timestamp of last SIM swap event for a mobile user account provided with phone number.
       operationId: retrieveSimSwapDate
       parameters:
-        - $ref: '#/components/parameters/x-correlator'
+        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
       requestBody:
         description: |
           Create a SIM swap date request for a phone number.
@@ -122,7 +132,7 @@ paths:
           description: Contains information about SIM swap change
           headers:
             x-correlator:
-              $ref: '#/components/headers/x-correlator'
+              $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
           content:
             application/json:
               schema:
@@ -135,17 +145,17 @@ paths:
                 RETRIEVE_MONITORED_NULL:
                   $ref: "#/components/examples/RETRIEVE_MONITORED_NULL"
         "400":
-          $ref: "#/components/responses/Generic400"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic400"
         "401":
-          $ref: "#/components/responses/Generic401"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
         "403":
-          $ref: "#/components/responses/Generic403"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic403"
         "404":
-          $ref: "#/components/responses/Generic404"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic404"
         "422":
-          $ref: "#/components/responses/Generic422"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic422"
         "429":
-          $ref: "#/components/responses/Generic429"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic429"
   /check:
     post:
       security:
@@ -159,7 +169,7 @@ paths:
       description: Check if SIM swap has been performed during a past period
       operationId: checkSimSwap
       parameters:
-        - $ref: '#/components/parameters/x-correlator'
+        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"'
       requestBody:
         description: |
           Create a check SIM swap request for a phone number.
@@ -178,62 +188,46 @@ paths:
           description: Returns whether a SIM swap has been performed during a past period
           headers:
             x-correlator:
-              $ref: '#/components/headers/x-correlator'
+              $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/CheckSimSwapInfo"
         "400":
-          $ref: "#/components/responses/Generic400"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic400"
         "401":
-          $ref: "#/components/responses/Generic401"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
         "403":
-          $ref: "#/components/responses/Generic403"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic403"
         "404":
-          $ref: "#/components/responses/Generic404"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic404"
         "422":
-          $ref: "#/components/responses/Generic422"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic422"
         "429":
-          $ref: "#/components/responses/Generic429"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic429"
 components:
   securitySchemes:
     openId:
-      type: openIdConnect
-      openIdConnectUrl: https://example.com/.well-known/openid-configuration
-  parameters:
-    x-correlator:
-      name: x-correlator
-      in: header
-      description: Correlation id for the different services
-      schema:
-        $ref: "#/components/schemas/XCorrelator"
-  headers:
-    x-correlator:
-      description: Correlation id for the different services
-      schema:
-        $ref: "#/components/schemas/XCorrelator"
+      $ref: "../common/CAMARA_common.yaml#/components/securitySchemes/openId"
   schemas:
-    XCorrelator:
-      type: string
-      pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
-      example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
     SimSwapInfo:
       type: object
+      description: Definition of the data that can be returned in the response body for retrieve-date operation
       required:
         - latestSimChange
       properties:
         latestSimChange:
-          type: string
-          format: date-time
           description: Timestamp of latest SIM swap performed. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
           nullable: true
-          example: "2023-07-03T14:27:08.312+02:00"
+          allOf:
+            - $ref: "../common/CAMARA_common.yaml#/components/schemas/DateTime"
         monitoredPeriod:
           type: integer
           description: Timeframe in days for SIM card change supervision for the phone number. It could be valued in the response if the latest SIM swap occurred before this monitored period.
           example: 120
     CheckSimSwapInfo:
       type: object
+      description: Definition of the data that can be returned in the response body for check operation
       required:
         - swapped
       properties:
@@ -242,28 +236,12 @@ components:
           description: Indicates whether the SIM card has been swapped during the
             period within the provided age.
     PhoneNumber:
-      type: string
-      pattern: '^\+[1-9][0-9]{4,14}$'
-      example: '+346661113334'
-      description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
+      $ref: "../common/CAMARA_common.yaml#/components/schemas/PhoneNumber"
     ErrorInfo:
-      type: object
-      required:
-        - status
-        - code
-        - message
-      properties:
-        status:
-          type: integer
-          description: HTTP response status code
-        code:
-          type: string
-          description: A human-readable code to describe the error
-        message:
-          type: string
-          description: A human-readable description of what the event represents
+      $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
     CreateCheckSimSwap:
       type: object
+      description: Definition of the data that must be provided in the request body for check operation
       properties:
         phoneNumber:
           $ref: "#/components/schemas/PhoneNumber"
@@ -278,189 +256,10 @@ components:
           default: 240
     CreateSimSwapDate:
       type: object
+      description: Definition of the data that must be provided in the request body for retrieve-date operation
       properties:
         phoneNumber:
           $ref: "#/components/schemas/PhoneNumber"
-  responses:
-    Generic400:
-      description: Bad Request
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 400
-                  code:
-                    enum:
-                      - INVALID_ARGUMENT
-                      - OUT_OF_RANGE
-          examples:
-            GENERIC_400_INVALID_ARGUMENT:
-              description: Invalid Argument. Generic Syntax Exception
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: Client specified an invalid argument, request body or query param.
-            GENERIC_400_OUT_OF_RANGE:
-              description: Out of Range. Specific Syntax Exception used when a given field has a pre-defined range or a invalid filter criteria combination is requested
-              value:
-                status: 400
-                code: OUT_OF_RANGE
-                message: Client specified an invalid range.
-    Generic401:
-      description: Unauthorized
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 401
-                  code:
-                    enum:
-                      - UNAUTHENTICATED
-          examples:
-            GENERIC_401_UNAUTHENTICATED:
-              description: Request cannot be authenticated and a new authentication is required
-              value:
-                status: 401
-                code: UNAUTHENTICATED
-                message: Request not authenticated due to missing, invalid, or expired credentials. A new authentication is required.
-    Generic403:
-      description: Forbidden
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 403
-                  code:
-                    enum:
-                      - PERMISSION_DENIED
-          examples:
-            GENERIC_403_PERMISSION_DENIED:
-              description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
-              value:
-                status: 403
-                code: PERMISSION_DENIED
-                message: Client does not have sufficient permissions to perform this action.
-    Generic404:
-      description: Not found
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 404
-                  code:
-                    enum:
-                      - NOT_FOUND
-                      - IDENTIFIER_NOT_FOUND
-          examples:
-            GENERIC_404_NOT_FOUND:
-              description: Resource is not found
-              value:
-                status: 404
-                code: NOT_FOUND
-                message: The specified resource is not found.
-    Generic422:
-      description: Unprocessable Content
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 422
-                  code:
-                    enum:
-                      - SERVICE_NOT_APPLICABLE
-                      - MISSING_IDENTIFIER
-                      - UNNECESSARY_IDENTIFIER
-          examples:
-            GENERIC_422_SERVICE_NOT_APPLICABLE:
-              description: Service not applicable for the provided identifier
-              value:
-                status: 422
-                code: SERVICE_NOT_APPLICABLE
-                message: The service is not available for the provided identifier.
-            GENERIC_422_MISSING_IDENTIFIER:
-              description: phone number is not included in the request (in case of 2-legged) or the phone number identification cannot be derived from access token (in 3-legged)
-              value:
-                status: 422
-                code: MISSING_IDENTIFIER
-                message: The device cannot be identified.
-            GENERIC_422_UNNECESSARY_IDENTIFIER:
-              description: An explicit identifier is provided when a device or phone number has already been identified from the access token
-              value:
-                status: 422
-                code: UNNECESSARY_IDENTIFIER
-                message: The device is already identified by the access token.
-    Generic429:
-      description: Too Many Requests
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 429
-                  code:
-                    enum:
-                      - QUOTA_EXCEEDED
-                      - TOO_MANY_REQUESTS
-          examples:
-            GENERIC_429_QUOTA_EXCEEDED:
-              description: Request is rejected due to exceeding a business quota limit
-              value:
-                status: 429
-                code: QUOTA_EXCEEDED
-                message: Rejected due to exceeding a business quota limit.
-            GENERIC_429_TOO_MANY_REQUESTS:
-              description: API Server request limit is overpassed
-              value:
-                status: 429
-                code: TOO_MANY_REQUESTS
-                message: Rejected due to request rate limit overpassed.
   examples:
     RETRIEVE_DATE:
       summary: Lastest SIM swap date is send back

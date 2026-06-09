@@ -169,7 +169,7 @@ paths:
       description: Check if SIM swap has been performed during a past period
       operationId: checkSimSwap
       parameters:
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"'
+        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
       requestBody:
         description: |
           Create a check SIM swap request for a phone number.

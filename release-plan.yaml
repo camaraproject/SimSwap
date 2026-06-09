@@ -10,37 +10,37 @@ repository:
   # Options: independent (default) | meta-release
   release_track: meta-release
   # Meta-release participation (update for next cycle when planning)
-  meta_release: Fall25
+  meta_release: Sync26
 
   # Target CAMARA release tag.
   # Initialized to the latest release; update when planning the next release.
   # - New release cycle (increment first number, reset second to 1)
   # - Progression in same cycle (increment second number)
-  target_release_tag: r3.3
+  target_release_tag: r4.1
 
   # Release type being prepared (must be set before release can be triggered)
   # Options: none | pre-release-alpha | pre-release-rc | public-release | maintenance-release
-  target_release_type: none
+  target_release_type: pre-release-alpha
 
 # Dependencies on Commonalities and ICM releases
 # Update per ReleaseManagement requirements for each release cycle
 dependencies:
-  commonalities_release: r3.4
-  identity_consent_management_release: r3.3
+  commonalities_release: r4.3
+  identity_consent_management_release: r4.2
 
 # APIs in this repository
 # - api_name: kebab-case identifier (must be filename in code/API_definitions/)
 # - target_api_status: draft (no file yet) | alpha | rc | public
 apis:
   - api_name: sim-swap-subscriptions
-    target_api_version: 0.3.0
+    target_api_version: 0.4.0
     target_api_status: public
     main_contacts:
       - bigludo7
       - fernandopradocabrillo
       - maxl2287
   - api_name: sim-swap
-    target_api_version: 2.1.0
+    target_api_version: 2.2.0
     target_api_status: public
     main_contacts:
       - bigludo7

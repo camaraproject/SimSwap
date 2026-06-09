@@ -178,7 +178,7 @@ paths:
                 "400":
                   $ref: "../common/CAMARA_common.yaml#/components/responses/Generic400"
                 "401":
-                  $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401
+                  $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
                 "403":
                   $ref: "../common/CAMARA_common.yaml#/components/responses/Generic403"
                 "410":
@@ -374,7 +374,7 @@ components:
         message:
           type: string
           description: A human-readable description of what the event represents
-  
+
     Config:
       description: Config schema allowing for device to be specified as part of subscription detail
       allOf:
@@ -481,7 +481,7 @@ components:
         sink: https://endpoint.example.com/sink
         protocol: HTTP
         types:
-          - "org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed"
+          - "org.camaraproject.sim-swap-subscriptions.v0.swapped"
         config:
           subscriptionDetail:
             device:

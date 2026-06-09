@@ -358,23 +358,6 @@ components:
         phoneNumber:
           $ref: "../common/CAMARA_common.yaml#/components/schemas/PhoneNumber"
 
-    ErrorInfo:
-      type: object
-      required:
-        - status
-        - code
-        - message
-      properties:
-        status:
-          type: integer
-          description: HTTP response status code
-        code:
-          type: string
-          description: A human-readable code to describe the error
-        message:
-          type: string
-          description: A human-readable description of what the event represents
-
     Config:
       description: Config schema allowing for device to be specified as part of subscription detail
       allOf:
@@ -689,6 +672,7 @@ components:
 
   examples:
     SWAPPED:
+      description: The cloud event when the line was sim swapped
       value:
         id: "123655"
         source: supertelco.notificationSendServer12
@@ -701,6 +685,7 @@ components:
         time: 2023-01-18T13:18:23.682Z
 
     SUBSCRIPTION_ENDS:
+      description: The cloud event when a sim swap subscription ends
       value:
         id: "123658"
         source: supertelco.notificationSendServer12
@@ -715,6 +700,7 @@ components:
         time: 2023-01-19T13:18:23.682Z
 
     SUBSCRIPTION_REQUEST:
+      description: The cloud event for a subscription request created in 2-legs
       value:
         protocol: HTTP
         sink: https://endpoint.example.com/sink
@@ -731,6 +717,7 @@ components:
           subscriptionMaxEvents: 10
           subscriptionExpireTime: '2025-01-17T13:18:23.682Z'
     SUBSCRIPTION_REQUEST_3LEGS:
+      description: The cloud event for a subscription request created in 3-legs
       value:
         protocol: HTTP
         sink: https://endpoint.example.com/sink
@@ -745,6 +732,7 @@ components:
           subscriptionDetail: {}
           subscriptionExpireTime: '2025-01-17T13:18:23.682Z'
     SUBSCRIPTION_RESPONSE:
+      description: Subscription details for an active subscription
       value:
         protocol: HTTP
         sink: https://endpoint.example.com/sink
@@ -759,6 +747,7 @@ components:
         expiresAt: '2024-06-07T16:10:15.302Z'
         status: ACTIVATION_REQUESTED
     SUBSCRIPTION_RESPONSE_3LEGS:
+      description: Subscription details for an active subscription
       value:
         protocol: HTTP
         sink: https://endpoint.example.com/sink
@@ -772,6 +761,7 @@ components:
         expiresAt: '2024-06-07T16:10:15.302Z'
         status: ACTIVATION_REQUESTED
     SUBSCRIPTIONS:
+      description: A list of API consumer subscriptions.
       value:
         subscriptions:
           - protocol: HTTP
@@ -792,6 +782,7 @@ components:
           totalCount: 1
           totalPages: 1
     SUBSCRIPTIONS_3LEGS:
+      description: A list of API consumer subscriptions. If a 3-legged access token is used, the list is specific to the device associated with that token.
       value:
         subscriptions:
           - protocol: HTTP

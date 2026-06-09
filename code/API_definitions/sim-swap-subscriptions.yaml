@@ -804,7 +804,7 @@ components:
             id: '1119920371'
             startsAt: '2024-06-07T16:10:15.302Z'
             expiresAt: '2024-06-07T16:10:15.302Z'
-          status: ACTIVATION_REQUESTED
+            status: ACTIVATION_REQUESTED
         pagination:
           page: 1
           perPage: 1

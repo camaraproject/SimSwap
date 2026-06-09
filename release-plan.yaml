@@ -34,14 +34,14 @@ dependencies:
 apis:
   - api_name: sim-swap-subscriptions
     target_api_version: 0.4.0
-    target_api_status: public
+    target_api_status: alpha
     main_contacts:
       - bigludo7
       - fernandopradocabrillo
       - maxl2287
   - api_name: sim-swap
     target_api_version: 2.2.0
-    target_api_status: public
+    target_api_status: alpha
     main_contacts:
       - bigludo7
       - fernandopradocabrillo

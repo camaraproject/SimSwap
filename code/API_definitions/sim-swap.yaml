@@ -217,10 +217,11 @@ components:
         - latestSimChange
       properties:
         latestSimChange:
-          description: Timestamp of latest SIM swap performed. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
+          type: string
+          format: date-time
+          maxLength: 64
           nullable: true
-          allOf:
-            - $ref: "../common/CAMARA_common.yaml#/components/schemas/DateTime"
+          description: Timestamp of latest SIM swap performed. It must follow [RFC 3339 (https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
         monitoredPeriod:
           type: integer
           description: Timeframe in days for SIM card change supervision for the phone number. It could be valued in the response if the latest SIM swap occurred before this monitored period.

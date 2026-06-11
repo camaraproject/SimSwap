@@ -43,22 +43,24 @@ info:
 
     - POST retrieve-age-band : Returns a standardized `simSwapAgeBand` value indicating how recently a SIM swap or activation occurred, expressed as a time band. This operation is an alternative way to expose SIM swap recency for API providers that do not expose the exact SIM swap date; it does not return the actual SIM swap date. API providers are not expected to support this operation in addition to `check` and `retrieve-date` — support depends on the provider's available capabilities and commercial use case. The returned value is a technical network signal indicating recency; it is not a customer-side risk score or scoring model. Consuming parties apply their own decisioning outside the API contract.
 
-      - Standardized age-band value mapping. Values `1` through `15` represent increasing recency bands for the most recent SIM swap event (`1` = most recent, `15` = oldest). Value `999` indicates that no SIM swap event was found for the subscriber. When the age-band information is unavailable for the provided subscriber, the request returns a `422` error response (e.g. `SERVICE_NOT_APPLICABLE`) rather than a success value: <br>
+      - Standardized age-band value mapping. Values `1` through `17` represent increasing recency bands for the most recent SIM swap event (`1` = most recent, `17` = oldest). Value `999` indicates that no SIM swap event was found for the subscriber. When the age-band information is unavailable for the provided subscriber, the request returns a `422` error response (e.g. `SERVICE_NOT_APPLICABLE`) rather than a success value: <br>
          1 = 0h ≤ d < 4h <br>
          2 = 4h ≤ d < 12h <br>
          3 = 12h ≤ d < 1d <br>
          4 = 1d ≤ d < 2d <br>
-         5 = 2d ≤ d < 5d <br>
-         6 = 5d ≤ d < 7d <br>
-         7 = 7d ≤ d < 14d <br>
-         8 = 14d ≤ d < 30d <br>
-         9 = 30d ≤ d < 60d <br>
-        10 = 60d ≤ d < 90d <br>
-        11 = 90d ≤ d < 180d <br>
-        12 = 180d ≤ d < 1y <br>
-        13 = 1y ≤ d < 2y <br>
-        14 = 2y ≤ d < 3y <br>
-        15 = 3y+ <br>
+         5 = 2d ≤ d < 3d <br>
+         6 = 3d ≤ d < 4d <br>
+         7 = 4d ≤ d < 5d <br>
+         8 = 5d ≤ d < 7d <br>
+         9 = 7d ≤ d < 14d <br>
+        10 = 14d ≤ d < 30d <br>
+        11 = 30d ≤ d < 60d <br>
+        12 = 60d ≤ d < 90d <br>
+        13 = 90d ≤ d < 180d <br>
+        14 = 180d ≤ d < 1y <br>
+        15 = 1y ≤ d < 2y <br>
+        16 = 2y ≤ d < 3y <br>
+        17 = 3y+ <br>
         999 = No SIM swap event found <br>
 
     # Authorization and authentication
@@ -281,6 +283,8 @@ paths:
               examples:
                 AGEBAND_RECENT:
                   $ref: "#/components/examples/AGEBAND_RECENT"
+                AGEBAND_WITHIN_72H:
+                  $ref: "#/components/examples/AGEBAND_WITHIN_72H"
                 AGEBAND_NO_SWAP:
                   $ref: "#/components/examples/AGEBAND_NO_SWAP"
                 AGEBAND_LONG_TERM:
@@ -348,8 +352,8 @@ components:
       description: |
         Time-bucketed indication of the most recent SIM swap event for the subscriber.
 
-        Values `1` through `15` represent increasing recency bands for the most recent SIM swap
-        event (`1` = most recent, `15` = oldest). Value `999` indicates that no SIM swap event
+        Values `1` through `17` represent increasing recency bands for the most recent SIM swap
+        event (`1` = most recent, `17` = oldest). Value `999` indicates that no SIM swap event
         was found for the subscriber.
 
         This value is a technical network signal indicating SIM swap recency. It is not a
@@ -362,17 +366,19 @@ components:
         | 2     | 4h ≤ d < 12h       |
         | 3     | 12h ≤ d < 1d       |
         | 4     | 1d ≤ d < 2d        |
-        | 5     | 2d ≤ d < 5d        |
-        | 6     | 5d ≤ d < 7d        |
-        | 7     | 7d ≤ d < 14d       |
-        | 8     | 14d ≤ d < 30d      |
-        | 9     | 30d ≤ d < 60d      |
-        | 10    | 60d ≤ d < 90d      |
-        | 11    | 90d ≤ d < 180d     |
-        | 12    | 180d ≤ d < 1y      |
-        | 13    | 1y ≤ d < 2y        |
-        | 14    | 2y ≤ d < 3y        |
-        | 15    | 3y+                |
+        | 5     | 2d ≤ d < 3d        |
+        | 6     | 3d ≤ d < 4d        |
+        | 7     | 4d ≤ d < 5d        |
+        | 8     | 5d ≤ d < 7d        |
+        | 9     | 7d ≤ d < 14d       |
+        | 10    | 14d ≤ d < 30d      |
+        | 11    | 30d ≤ d < 60d      |
+        | 12    | 60d ≤ d < 90d      |
+        | 13    | 90d ≤ d < 180d     |
+        | 14    | 180d ≤ d < 1y      |
+        | 15    | 1y ≤ d < 2y        |
+        | 16    | 2y ≤ d < 3y        |
+        | 17    | 3y+                |
         | 999   | No SIM swap event found |
 
         When SIM swap age-band information is unavailable for the provided subscriber, the
@@ -393,6 +399,8 @@ components:
         - 13
         - 14
         - 15
+        - 16
+        - 17
         - 999
       example: 3
     SimSwapAgeBandInfo:
@@ -675,6 +683,10 @@ components:
       summary: Most recent SIM swap falls in the 12h–1d band
       value:
         simSwapAgeBand: 3
+    AGEBAND_WITHIN_72H:
+      summary: Most recent SIM swap falls in the 2d–3d band (i.e. within 72h)
+      value:
+        simSwapAgeBand: 5
     AGEBAND_NO_SWAP:
       summary: No SIM swap event was found for the subscriber
       value:
@@ -682,4 +694,4 @@ components:
     AGEBAND_LONG_TERM:
       summary: Most recent SIM swap was 3 years ago or more
       value:
-        simSwapAgeBand: 15
+        simSwapAgeBand: 17

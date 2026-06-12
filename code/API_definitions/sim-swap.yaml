@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: SIM Swap
   description: |
-    The SIM swap API provides a programmable interface for developers and other users (capabilities consumers) to request the last date of a SIM swap performed on the mobile line, or, to check whether a SIM swap has been performed during a past period.
+    The SIM swap API provides a programmable interface for developers and other users (capabilities consumers) to request the last date of a SIM swap performed on the mobile line, to check whether a SIM swap has been performed during a past period, or — as an alternative when the exact SIM swap date is not exposed — to retrieve a standardized recency band for the last SIM swap event.
 
     # Introduction
 
@@ -12,10 +12,13 @@ info:
 
     The SIM Swap API can also be used to protect non-automated actions. For example, when a call center expert contacts a user to clarify or confirm a sensitive operation.
 
-    This API is used by an application to get information about a mobile line latest SIM swap date. It can be easily integrated and used through this secured API and allows SPs (Service Provider) to get this information an easy & secured way. The API provides management of 2 endpoints answering 2 distinct questions:
+    This API is used by an application to get information about a mobile line latest SIM swap. It can be easily integrated and used through this secured API and allows SPs (Service Provider) to get this information an easy & secured way. The API provides the following operations. An API provider is not expected to support all of them: the age-band operation is an alternative to exposing the exact SIM swap date, and support depends on the provider's available capabilities and commercial use case.
 
     * When did the last SIM swap occur?
+
     * Has a SIM swap occurred during last n hours?
+
+    * How recently did the last SIM swap occur, as a standardized time band? (alternative to the exact date)
 
     # Relevant terms and definitions
 
@@ -26,7 +29,7 @@ info:
 
     # API functionality
 
-    The API provides 2 operations:
+    The API provides 3 operations:
 
     - POST retrieve-date : Provides timestamp of latest SIM swap, if any, for a given phone number.
 
@@ -36,7 +39,29 @@ info:
 
     - POST check: Checks if SIM swap has been performed during a past period (defined in the request with 'maxAge' attribute) for a given phone number.
 
-      - Note: In the specification of the API the 'maxAge' could be between 1 hour to 2400 hours. If this delay is not managed due to the operator's own privacy threshold (which in theory would likely be linked to local regulations in the country) and a request is performed with a value inferior to 2400 but superior to operator policy, then,  an error `400 OUT_OF_RANGE `is expected with an explicit message to explain the limitation like `Check monitor period could not exceed local regulations (30 days)`.
+      - Note: In the specification of the API the 'maxAge' could be between 1 hour to 2400 hours. If this delay is not managed due to the operator's own privacy threshold (which in theory would likely be linked to local regulations in the country) and a request is performed with a value inferior to 2400 but superior to operator policy, then, an error `400 OUT_OF_RANGE `is expected with an explicit message to explain the limitation like `Check monitor period could not exceed local regulations (30 days)`.
+
+    - POST retrieve-age-band : Returns a standardized `simSwapAgeBand` value indicating how recently a SIM swap occurred, expressed as a time band. This operation is an alternative way to expose SIM swap recency for API providers that do not expose the exact SIM swap date; it does not return the actual SIM swap date. API providers are not expected to support this operation in addition to `check` and `retrieve-date` — support depends on the provider's available capabilities and commercial use case. The returned value is a technical network signal indicating recency; it is not a customer-side risk score or scoring model. Consuming parties apply their own decisioning outside the API contract.
+
+      - Standardized age-band value mapping. Values `1` through `17` represent increasing recency bands for the most recent SIM swap event (`1` = most recent, `17` = oldest). Value `999` indicates that the provider positively confirms a SIM swap has never happened for the subscriber — this includes a valid line that was only ever activated and never swapped. If the age band cannot be determined because data is unexpectedly missing, the request returns a `422` error response (e.g. `SERVICE_NOT_APPLICABLE`) rather than a success value. Where a provider supports only a limited lookback period, that limit is stated in its implementation notes and documentation; it is not an error: <br>
+         1 = 0h ≤ d < 4h <br>
+         2 = 4h ≤ d < 12h <br>
+         3 = 12h ≤ d < 1d <br>
+         4 = 1d ≤ d < 2d <br>
+         5 = 2d ≤ d < 3d <br>
+         6 = 3d ≤ d < 4d <br>
+         7 = 4d ≤ d < 5d <br>
+         8 = 5d ≤ d < 7d <br>
+         9 = 7d ≤ d < 14d <br>
+        10 = 14d ≤ d < 30d <br>
+        11 = 30d ≤ d < 60d <br>
+        12 = 60d ≤ d < 90d <br>
+        13 = 90d ≤ d < 180d <br>
+        14 = 180d ≤ d < 1y <br>
+        15 = 1y ≤ d < 2y <br>
+        16 = 2y ≤ d < 3y <br>
+        17 = 3y+ <br>
+        999 = SIM swap has never happened (provider positively confirms; includes a line only ever activated and never swapped) <br>
 
     # Authorization and authentication
 
@@ -60,13 +85,23 @@ info:
 
     - If the phoneNumber can be identified from the access token and the optional `phoneNumber` identifier is also included in the request, then the server will return an error with the `422 UNNECESSARY_IDENTIFIER` error code. This will be the case even if the same device is identified by these two methods, as the server is unable to make this comparison.
 
+    - If the SIM swap age band cannot be determined for the provided subscriber because data is missing or unavailable for the identified phone number, then the server will return an error with the `422 SERVICE_NOT_APPLICABLE` error code. Note that a provider supporting only a limited lookback period documents that limit in its implementation notes; an unsupported longer lookback is not an error and does not by itself trigger this response:
+
+      ```json
+      {
+        "status": 422,
+        "code": "SERVICE_NOT_APPLICABLE",
+        "message": "The service is not available for the provided identifier."
+      }
+      ```
+
     # Additional CAMARA error responses
 
-      The list of error codes in this API specification is not exhaustive. Therefore the API specification may not document some non-mandatory error statuses as indicated in `CAMARA API Design Guide`.
+    The list of error codes in this API specification is not exhaustive. Therefore the API specification may not document some non-mandatory error statuses as indicated in `CAMARA API Design Guide`.
 
-      Please refer to the `CAMARA_common.yaml` of the Commonalities Release associated to this API version for a complete list of error responses. The applicable Commonalities Release can be identified in the `API Readiness Checklist` document associated to this API version.
+    Please refer to the `CAMARA_common.yaml` of the Commonalities Release associated to this API version for a complete list of error responses. The applicable Commonalities Release can be identified in the `API Readiness Checklist` document associated to this API version.
 
-      As a specific rule, error `501 - NOT_IMPLEMENTED` can be only a possible error response if it is explicitly documented in the API.
+    As a specific rule, error `501 - NOT_IMPLEMENTED` can be only a possible error response if it is explicitly documented in the API.
 
     # Further info and support
 
@@ -115,7 +150,6 @@ paths:
                 $ref: "#/components/examples/RETRIEVE_3LEGS"
               RETRIEVE_2LEGS:
                 $ref: "#/components/examples/RETRIEVE_2LEGS"
-
         required: true
       responses:
         "200":
@@ -195,6 +229,80 @@ paths:
           $ref: "#/components/responses/Generic422"
         "429":
           $ref: "#/components/responses/Generic429"
+  # Alternative operation: exposes SIM swap recency as a time band for providers that do not
+  # expose the exact SIM swap date. Support is optional and provider-dependent. Returns the
+  # age-band value only; if the band can't be determined due to unexpectedly unavailable or missing data, a 422 error is returned.
+  /retrieve-age-band:
+    post:
+      security:
+        - openId:
+            - sim-swap:retrieve-age-band
+        - openId:
+            - sim-swap
+      tags:
+        - Retrieve SIM swap age band
+      summary: Retrieve SIM swap age band
+      description: |
+        Returns a standardized `simSwapAgeBand` value indicating how recently a SIM swap
+        occurred, expressed as a time band.
+
+        This operation is an alternative way to expose SIM swap recency for API providers that
+        do not expose the exact SIM swap date. It does not return the actual SIM swap date, and
+        is not expected to be supported in addition to `check` and `retrieve-date`; support
+        depends on the provider's available capabilities and commercial use case.
+
+        The returned value is a technical network signal indicating recency. Consuming parties apply their own decisioning
+        outside the API contract. Value `999` indicates the provider positively confirms a SIM
+        swap has never happened (including a line only ever activated and never swapped). If the
+        age band cannot be determined because data is unexpectedly missing, the request returns a
+        `422` error response rather than a successful value.
+      operationId: retrieveSimSwapAgeBand
+      parameters:
+        - $ref: '#/components/parameters/x-correlator'
+      requestBody:
+        description: |
+          Create a SIM swap age band request for a phone number.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSimSwapAgeBand"
+            examples:
+              AGEBAND_3LEGS:
+                $ref: "#/components/examples/AGEBAND_3LEGS"
+              AGEBAND_2LEGS:
+                $ref: "#/components/examples/AGEBAND_2LEGS"
+        required: true
+      responses:
+        "200":
+          description: Returns the standardized SIM swap age-band value for the given phone number
+          headers:
+            x-correlator:
+              $ref: '#/components/headers/x-correlator'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SimSwapAgeBandInfo"
+              examples:
+                AGEBAND_RECENT:
+                  $ref: "#/components/examples/AGEBAND_RECENT"
+                AGEBAND_WITHIN_72H:
+                  $ref: "#/components/examples/AGEBAND_WITHIN_72H"
+                AGEBAND_NO_SWAP:
+                  $ref: "#/components/examples/AGEBAND_NO_SWAP"
+                AGEBAND_LONG_TERM:
+                  $ref: "#/components/examples/AGEBAND_LONG_TERM"
+        "400":
+          $ref: "#/components/responses/Generic400"
+        "401":
+          $ref: "#/components/responses/Generic401"
+        "403":
+          $ref: "#/components/responses/Generic403"
+        "404":
+          $ref: "#/components/responses/Generic404"
+        "422":
+          $ref: "#/components/responses/Generic422"
+        "429":
+          $ref: "#/components/responses/Generic429"
 components:
   securitySchemes:
     openId:
@@ -241,6 +349,79 @@ components:
           type: boolean
           description: Indicates whether the SIM card has been swapped during the
             period within the provided age.
+    SimSwapAgeBand:
+      type: integer
+      description: |
+        Time-bucketed indication of the most recent SIM swap event for the subscriber.
+
+        Values `1` through `17` represent increasing recency bands for the most recent SIM swap
+        event (`1` = most recent, `17` = oldest). Value `999` indicates that the provider
+        positively confirms a SIM swap has never happened for the subscriber — this includes a
+        valid line that was only ever activated and never swapped.
+
+        This value is a technical network signal indicating SIM swap recency. It is not a
+        customer-side risk score or scoring model; consuming parties apply their own decisioning
+        outside the API contract.
+
+        | Value | Meaning            |
+        |-------|--------------------|
+        | 1     | 0h ≤ d < 4h        |
+        | 2     | 4h ≤ d < 12h       |
+        | 3     | 12h ≤ d < 1d       |
+        | 4     | 1d ≤ d < 2d        |
+        | 5     | 2d ≤ d < 3d        |
+        | 6     | 3d ≤ d < 4d        |
+        | 7     | 4d ≤ d < 5d        |
+        | 8     | 5d ≤ d < 7d        |
+        | 9     | 7d ≤ d < 14d       |
+        | 10    | 14d ≤ d < 30d      |
+        | 11    | 30d ≤ d < 60d      |
+        | 12    | 60d ≤ d < 90d      |
+        | 13    | 90d ≤ d < 180d     |
+        | 14    | 180d ≤ d < 1y      |
+        | 15    | 1y ≤ d < 2y        |
+        | 16    | 2y ≤ d < 3y        |
+        | 17    | 3y+                |
+        | 999   | SIM swap has never happened (positively confirmed; includes activated-but-never-swapped) |
+
+        If the age band cannot be determined due to unexpectedly unavailable or missing data, the request
+        returns a `422` error response rather than a successful value. A provider that supports
+        only a limited lookback period documents that limit in its implementation notes; an
+        unsupported longer lookback is not an error.
+      enum:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        - 9
+        - 10
+        - 11
+        - 12
+        - 13
+        - 14
+        - 15
+        - 16
+        - 17
+        - 999
+      example: 3
+    SimSwapAgeBandInfo:
+      type: object
+      required:
+        - simSwapAgeBand
+      description: |
+        Response schema for the /retrieve-age-band operation. Returns the standardized SIM swap
+        age-band value only. It does not include the `swapped` Boolean (provided by `/check`) or
+        the SIM change timestamp (provided by `/retrieve-date`). A SIM swap that has never
+        happened is reported as `999`; if the age band cannot be determined because data is
+        unexpectedly missing, the operation returns a `422` error response rather than a success
+        body.
+      properties:
+        simSwapAgeBand:
+          $ref: "#/components/schemas/SimSwapAgeBand"
     PhoneNumber:
       type: string
       pattern: '^\+[1-9][0-9]{4,14}$'
@@ -277,6 +458,11 @@ components:
           maximum: 2400
           default: 240
     CreateSimSwapDate:
+      type: object
+      properties:
+        phoneNumber:
+          $ref: "#/components/schemas/PhoneNumber"
+    CreateSimSwapAgeBand:
       type: object
       properties:
         phoneNumber:
@@ -412,7 +598,7 @@ components:
                       - UNNECESSARY_IDENTIFIER
           examples:
             GENERIC_422_SERVICE_NOT_APPLICABLE:
-              description: Service not applicable for the provided identifier
+              description: Service not applicable for the provided identifier. For the age-band operation this also covers the case where the SIM swap age band cannot be determined due to unexpectedly unavailable or missing data.
               value:
                 status: 422
                 code: SERVICE_NOT_APPLICABLE
@@ -492,3 +678,26 @@ components:
       summary: Retrieve request with 3-legged access tokens
       value:
         {}
+    AGEBAND_2LEGS:
+      summary: Age band request without 3-legged access tokens
+      value:
+        phoneNumber: "+346661113334"
+    AGEBAND_3LEGS:
+      summary: Age band request with 3-legged access tokens
+      value: {}
+    AGEBAND_RECENT:
+      summary: Most recent SIM swap falls in the 12h–1d band
+      value:
+        simSwapAgeBand: 3
+    AGEBAND_WITHIN_72H:
+      summary: Most recent SIM swap falls in the 2d–3d band (i.e. within 72h)
+      value:
+        simSwapAgeBand: 5
+    AGEBAND_NO_SWAP:
+      summary: Provider confirms a SIM swap has never happened (e.g. line only ever activated, never swapped)
+      value:
+        simSwapAgeBand: 999
+    AGEBAND_LONG_TERM:
+      summary: Most recent SIM swap was 3 years ago or more
+      value:
+        simSwapAgeBand: 17

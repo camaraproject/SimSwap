@@ -372,13 +372,15 @@ components:
         subscriptionExpireTime:
           type: string
           format: date-time
-          example: 2025-01-17T13:18:23.682Z
+          maxLength: 64
+          example: 2023-01-17T13:18:23.682Z
           description: The subscription expiration time (in date-time format) requested by the API consumer. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
         subscriptionMaxEvents:
           type: integer
-          description: |
-            Identifies the maximum number of event reports to be generated (>=1) requested by the API consumer - Once this number is reached, the subscription ends.
+          format: int32
+          description: Identifies the maximum number of event reports to be generated (>=1) requested by the API consumer - Once this number is reached, the subscription ends.
           minimum: 1
+          maximum: 1000000
           example: 5
 
     ApiEventType:

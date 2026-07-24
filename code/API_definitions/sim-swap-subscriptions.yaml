@@ -680,7 +680,6 @@ components:
         specversion: "1.0"
         datacontenttype: application/json
         data:
-          phoneNumber: "+123456789"
           terminationReason: SUBSCRIPTION_EXPIRED
           subscriptionId: 2ghy-55gg-7iup-yuo9
           terminationDescription: subscription expire time reached

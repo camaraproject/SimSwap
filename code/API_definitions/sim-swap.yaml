@@ -12,7 +12,7 @@ info:
 
     The SIM Swap API can also be used to protect non-automated actions. For example, when a call center expert contacts a user to clarify or confirm a sensitive operation.
 
-    This API is used by an application to get information about a mobile line latest SIM swap date. It can be easily integrated and used through this secured API and allows SPs (Service Provider) to get this information an easy & secured way. The API provides management of 3 endpoints answering 3 distinct questions: 
+    This API is used by an application to get information about a mobile line latest SIM swap date. It can be easily integrated and used through this secured API and allows SPs (Service Provider) to get this information an easy & secured way. The API provides management of 3 endpoints answering 3 distinct questions:
     An API provider is not expected to support all of them: the age-band operation is an alternative to exposing the exact SIM swap date, and support depends on the provider's available capabilities and commercial use case.
 
     * When did the last SIM swap occur?
@@ -69,7 +69,7 @@ info:
         | 16 | 2y ≤ d < 3y |
         | 17 | 3y+ |
         | 111 | SIM swap has never happened; positively confirmed (and never ported). Sentinel, not an ordinal band |
-    
+
     <!-- CAMARA:MANDATORY:authorization-and-authentication:BEGIN -->
     # Authorization and authentication
 
@@ -94,13 +94,13 @@ info:
 
     - If the phoneNumber can be identified from the access token and the optional `phoneNumber` identifier is also included in the request, then the server will return an error with the `422 UNNECESSARY_IDENTIFIER` error code. This will be the case even if the same device is identified by these two methods, as the server is unable to make this comparison.
 
-    <!-- CAMARA:MANDATORY:additional-error-responses:BEGIN -->
     - `/retrieve-age-band` is an OPTIONAL operation. A provider that does not implement it MUST return `501 NOT_IMPLEMENTED` so that a consumer receives a clear, interoperable signal (rather than a `404` or undefined behaviour) and can fall back to `/check` and/or `/retrieve-date`.
 
     - A provider that exposes `/retrieve-age-band` MUST support the complete standardized band model. Partial support is not permitted, as it would create false interoperability. If a provider cannot support the required granularity, or cannot determine the correct band due to historical retention limitations, it MUST either return `422 SERVICE_NOT_APPLICABLE` (structural non-applicability for the provided identifier) or not expose `/retrieve-age-band` at all.
 
     - Transient backend or data-source failures MUST be returned as standard server-side errors (5xx, see `CAMARA_common.yaml`), never as `422 SERVICE_NOT_APPLICABLE`; `SERVICE_NOT_APPLICABLE` covers structural non-applicability only.
 
+    <!-- CAMARA:MANDATORY:additional-error-responses:BEGIN -->
     # Additional CAMARA error responses
 
       The list of error codes in this API specification is not exhaustive. Therefore the API specification MAY not document some non-mandatory error statuses as indicated in `CAMARA API Design Guide`.
@@ -141,7 +141,7 @@ tags:
     description: operation to retrieve latest SIM swap change date
   - name: Check SIM Swap
     description: operation to perform a sim swap check for a past period
-  - name: Retrieve SIM swap age band
+  - name: Retrieve SIM Swap Age Band
     description: operation to retrieve a standardized time-band indication of how recently a SIM swap occurred, as an alternative to the exact SIM swap date
 paths:
   /retrieve-date:
@@ -177,7 +177,7 @@ paths:
           description: Contains information about SIM swap change
           headers:
             x-correlator:
-              $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
+              $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
           content:
             application/json:
               schema:
@@ -194,13 +194,13 @@ paths:
         "401":
           $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
         "403":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic403"
+          $ref: "#/components/responses/Generic403"
         "404":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic404"
+          $ref: "#/components/responses/Generic404"
         "422":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic422"
+          $ref: "#/components/responses/Generic422"
         "429":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic429"
+          $ref: "#/components/responses/Generic429"
   /check:
     post:
       security:
@@ -233,7 +233,7 @@ paths:
           description: Returns whether a SIM swap has been performed during a past period
           headers:
             x-correlator:
-              $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
+              $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
           content:
             application/json:
               schema:
@@ -243,16 +243,16 @@ paths:
         "401":
           $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
         "403":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic403"
+          $ref: "#/components/responses/Generic403"
         "404":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic404"
+          $ref: "#/components/responses/Generic404"
         "422":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic422"
+          $ref: "#/components/responses/Generic422"
         "429":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic429"
+          $ref: "#/components/responses/Generic429"
 
   # Alternative operation: exposes SIM swap recency as a time band for providers that do not expose the exact SIM swap date.
-  # Support is optional and provider-dependent. 
+  # Support is optional and provider-dependent.
   # Returns the age-band value only.
   /retrieve-age-band:
     post:
@@ -262,7 +262,7 @@ paths:
         - openId:
             - sim-swap
       tags:
-        - Retrieve SIM swap age band
+        - Retrieve SIM Swap Age Band
       summary: Retrieve SIM swap age band
       description: |
         Returns a standardized `simSwapAgeBand` value indicating how recently a SIM swap
@@ -285,7 +285,7 @@ paths:
         backend or data-source failures are returned as `5xx`, never `422`.
       operationId: retrieveSimSwapAgeBand
       parameters:
-        - $ref: '#/components/parameters/x-correlator'
+        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
       requestBody:
         description: |
           Create a SIM swap age band request for a phone number.
@@ -304,7 +304,7 @@ paths:
           description: Returns the standardized SIM swap age-band value for the given phone number
           headers:
             x-correlator:
-              $ref: '#/components/headers/x-correlator'
+              $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
           content:
             application/json:
               schema:
@@ -319,9 +319,9 @@ paths:
                 AGEBAND_LONG_TERM:
                   $ref: "#/components/examples/AGEBAND_LONG_TERM"
         "400":
-          $ref: "#/components/responses/Generic400"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic400"
         "401":
-          $ref: "#/components/responses/Generic401"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
         "403":
           $ref: "#/components/responses/Generic403"
         "404":
@@ -368,6 +368,9 @@ components:
             period within the provided age.
     SimSwapAgeBand:
       type: integer
+      format: int32
+      minimum: 1
+      maximum: 111
       description: |
         Time-bucketed indication of the most recent SIM swap event for the subscriber.
 
@@ -478,77 +481,21 @@ components:
           $ref: "#/components/schemas/PhoneNumber"
     CreateSimSwapAgeBand:
       type: object
+      description: Definition of the data that must be provided in the request body for retrieve-age-band operation
       properties:
         phoneNumber:
           $ref: "#/components/schemas/PhoneNumber"
   responses:
-    Generic400:
-      description: Bad Request
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 400
-                  code:
-                    enum:
-                      - INVALID_ARGUMENT
-                      - OUT_OF_RANGE
-          examples:
-            GENERIC_400_INVALID_ARGUMENT:
-              description: Invalid Argument. Generic Syntax Exception
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: Client specified an invalid argument, request body or query param.
-            GENERIC_400_OUT_OF_RANGE:
-              description: Out of Range. Specific Syntax Exception used when a given field has a pre-defined range or a invalid filter criteria combination is requested
-              value:
-                status: 400
-                code: OUT_OF_RANGE
-                message: Client specified an invalid range.
-    Generic401:
-      description: Unauthorized
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 401
-                  code:
-                    enum:
-                      - UNAUTHENTICATED
-          examples:
-            GENERIC_401_UNAUTHENTICATED:
-              description: Request cannot be authenticated and a new authentication is required
-              value:
-                status: 401
-                code: UNAUTHENTICATED
-                message: Request not authenticated due to missing, invalid, or expired credentials. A new authentication is required.
     Generic403:
       description: Forbidden
       headers:
         x-correlator:
-          $ref: "#/components/headers/x-correlator"
+          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
+              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
               - type: object
                 properties:
                   status:
@@ -568,12 +515,12 @@ components:
       description: Not found
       headers:
         x-correlator:
-          $ref: "#/components/headers/x-correlator"
+          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
+              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
               - type: object
                 properties:
                   status:
@@ -594,12 +541,12 @@ components:
       description: Unprocessable Content
       headers:
         x-correlator:
-          $ref: "#/components/headers/x-correlator"
+          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
+              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
               - type: object
                 properties:
                   status:
@@ -633,12 +580,12 @@ components:
       description: Too Many Requests
       headers:
         x-correlator:
-          $ref: "#/components/headers/x-correlator"
+          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
+              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
               - type: object
                 properties:
                   status:
@@ -665,12 +612,12 @@ components:
       description: Not Implemented
       headers:
         x-correlator:
-          $ref: "#/components/headers/x-correlator"
+          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
+              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
               - type: object
                 properties:
                   status:
@@ -725,25 +672,31 @@ components:
       value:
         {}
     AGEBAND_2LEGS:
-          summary: Age band request without 3-legged access tokens
-          value:
-            phoneNumber: "+346661113334"
+      summary: Age band request without 3-legged access tokens
+      description: Age band request in 2-legs (with phoneNumber in the request body)
+      value:
+        phoneNumber: "+346661113334"
     AGEBAND_3LEGS:
       summary: Age band request with 3-legged access tokens
+      description: Age band request with 3-legged access tokens
       value: {}
     AGEBAND_RECENT:
       summary: Most recent SIM swap falls in the 12h–1d band
+      description: Most recent SIM swap falls in the 12h–1d band
       value:
         simSwapAgeBand: 3
     AGEBAND_WITHIN_72H:
       summary: Most recent SIM swap falls in the 2d–3d band (i.e. within 72h)
+      description: Most recent SIM swap falls in the 2d–3d band (i.e. within 72h)
       value:
         simSwapAgeBand: 5
     AGEBAND_NO_SWAP:
       summary: Provider positively confirms a SIM swap has never happened and the number was never ported
+      description: Provider positively confirms a SIM swap has never happened and the number was never ported
       value:
         simSwapAgeBand: 111
     AGEBAND_LONG_TERM:
       summary: Most recent SIM swap was 3 years ago or more
+      description: Most recent SIM swap was 3 years ago or more
       value:
         simSwapAgeBand: 17

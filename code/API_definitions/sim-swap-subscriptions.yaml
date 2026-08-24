@@ -359,13 +359,29 @@ components:
           $ref: "../common/CAMARA_common.yaml#/components/schemas/PhoneNumber"
 
     Config:
-      description: Config schema allowing for device to be specified as part of subscription detail
-      allOf:
-        - $ref: "../common/CAMARA_event_common.yaml#/components/schemas/Config"
-        - type: object
-          properties:
-            subscriptionDetail:
-              $ref: "#/components/schemas/CreateSubscriptionDetail"
+      description: |
+        Implementation-specific configuration parameters needed by the subscription manager for acquiring events.
+        In CAMARA we have predefined attributes like `subscriptionExpireTime` or `subscriptionMaxEvents` to limit subscription lifetime.
+        Event type attributes must be defined in `subscriptionDetail`
+      type: object
+      required:
+        - subscriptionDetail
+      properties:
+        subscriptionDetail:
+          $ref: "#/components/schemas/CreateSubscriptionDetail"
+        subscriptionExpireTime:
+          type: string
+          format: date-time
+          maxLength: 64
+          example: 2023-01-17T13:18:23.682Z
+          description: The subscription expiration time (in date-time format) requested by the API consumer. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
+        subscriptionMaxEvents:
+          type: integer
+          format: int32
+          description: Identifies the maximum number of event reports to be generated (>=1) requested by the API consumer - Once this number is reached, the subscription ends.
+          minimum: 1
+          maximum: 1000000
+          example: 5
 
     ApiEventType:
       type: string
@@ -467,11 +483,9 @@ components:
           - "org.camaraproject.sim-swap-subscriptions.v0.swapped"
         config:
           subscriptionDetail:
-            device:
-              phoneNumber: "+123456789"
+            phoneNumber: "+123456789"
           subscriptionExpireTime: "2024-07-17T13:18:23.682Z"
           subscriptionMaxEvents: 5
-          initialEvent: true
         startsAt: "2024-07-03T21:12:02.871Z"
         expiresAt: "2024-07-03T21:12:02.871Z"
         status: ACTIVE
@@ -599,12 +613,7 @@ components:
         - type: object
           properties:
             data:
-              allOf:
-                - type: object
-                  properties:
-                    device:
-                      $ref: "../common/CAMARA_common.yaml#/components/schemas/DeviceResponse"
-                - $ref: "../common/CAMARA_event_common.yaml#/components/schemas/SubscriptionStarted"
+              $ref: "../common/CAMARA_event_common.yaml#/components/schemas/SubscriptionStarted"
 
     EventSubscriptionUpdated:
       description: event structure for event subscription updated
@@ -613,12 +622,7 @@ components:
         - type: object
           properties:
             data:
-              allOf:
-                - type: object
-                  properties:
-                    device:
-                      $ref: "../common/CAMARA_common.yaml#/components/schemas/DeviceResponse"
-                - $ref: "../common/CAMARA_event_common.yaml#/components/schemas/SubscriptionUpdated"
+              $ref: "../common/CAMARA_event_common.yaml#/components/schemas/SubscriptionUpdated"
 
     EventSubscriptionEnded:
       description: event structure for event subscription ended
@@ -627,12 +631,7 @@ components:
         - type: object
           properties:
             data:
-              allOf:
-                - type: object
-                  properties:
-                    device:
-                      $ref: "../common/CAMARA_common.yaml#/components/schemas/DeviceResponse"
-                - $ref: "../common/CAMARA_event_common.yaml#/components/schemas/SubscriptionEnded"
+              $ref: "../common/CAMARA_event_common.yaml#/components/schemas/SubscriptionEnded"
 
     Sink:
       description: The address to which events shall be delivered using the selected protocol.
@@ -683,7 +682,6 @@ components:
         specversion: "1.0"
         datacontenttype: application/json
         data:
-          phoneNumber: "+123456789"
           terminationReason: SUBSCRIPTION_EXPIRED
           subscriptionId: 2ghy-55gg-7iup-yuo9
           terminationDescription: subscription expire time reached

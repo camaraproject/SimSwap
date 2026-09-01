@@ -20,7 +20,7 @@ repository:
 
   # Release type being prepared (must be set before release can be triggered)
   # Options: none | pre-release-alpha | pre-release-rc | public-release | maintenance-release
-  target_release_type: pre-release-alpha
+  target_release_type: pre-release-rc
 
 # Dependencies on Commonalities and ICM releases
 # Update per ReleaseManagement requirements for each release cycle
@@ -34,14 +34,14 @@ dependencies:
 apis:
   - api_name: sim-swap-subscriptions
     target_api_version: 0.4.0
-    target_api_status: alpha
+    target_api_status: rc
     main_contacts:
       - bigludo7
       - fernandopradocabrillo
       - maxl2287
   - api_name: sim-swap
     target_api_version: 2.2.0
-    target_api_status: alpha
+    target_api_status: rc
     main_contacts:
       - bigludo7
       - fernandopradocabrillo

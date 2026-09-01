@@ -111,7 +111,7 @@ info:
 
 externalDocs:
   description: Product documentation at CAMARA
-  url: https://github.com/camaraproject/
+  url: https://github.com/camaraproject/SimSwap
 servers:
   - url: '{apiRoot}/sim-swap-subscriptions/vwip'
     variables:

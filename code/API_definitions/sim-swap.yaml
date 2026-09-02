@@ -40,6 +40,17 @@ info:
 
       - Note: In the specification of the API the 'maxAge' could be between 1 hour to 2400 hours. If this delay is not managed due to the operator's own privacy threshold (which in theory would likely be linked to local regulations in the country) and a request is performed with a value inferior to 2400 but superior to operator policy, then,  an error `400 OUT_OF_RANGE `is expected with an explicit message to explain the limitation like `Check monitor period could not exceed local regulations (30 days)`.
 
+    Additional information can optionally be returned:
+
+    - simType : what type of SIM (eSIM of physical SIM) the phone number is associated with after the relevant SIM Swap event:
+      - for /check, the latest swap within the requested maxAge window;
+      - for /retrieve-date, the event behind latestSimChange.
+
+    - assuredTransfer : indicator of what level assurance / risk can be expected to be associated with the SIM Swap event
+      - when assuredTransfer=true: the CSP knows the SIM swap to an eSIM was performed through a CSP-verified transfer flow requiring possession/control of the previously active SIM or trusted device, for example by Apple eSIM Quick Transfer or Android eSIM Transfer functionality
+      - when assuredTransfer=false: the CSP knows the SIM swap was not performed through such an assured transfer flow, for example after the SIM was lost or stolen.
+      - if the CSP cannot determine this or does not support the attribute, the field should be omitted.
+
     - POST retrieve-age-band : Returns a standardized `simSwapAgeBand` value indicating how recently a SIM swap occurred, expressed as a time band. This operation is an alternative way to expose SIM swap recency for API providers that do not expose the exact SIM swap date; it does not return the actual SIM swap date. This operation is OPTIONAL. A provider that does not implement it returns `501 NOT_IMPLEMENTED`; consumers can then fall back to `check` and/or `retrieve-date`. The returned value is a technical network signal indicating recency; it is not a customer-side risk score or scoring model. Consuming parties apply their own decisioning outside the API contract.
 
       - Definition of `d`:
@@ -189,6 +200,8 @@ paths:
                   $ref: "#/components/examples/RETRIEVE_MONITORED_PERIOD"
                 RETRIEVE_MONITORED_NULL:
                   $ref: "#/components/examples/RETRIEVE_MONITORED_NULL"
+                RETRIEVE_DATE_WITH_OPTIONAL_SIM_INFORMATION:
+                  $ref: "#/components/examples/RETRIEVE_DATE_WITH_OPTIONAL_SIM_INFORMATION"
         "400":
           $ref: "../common/CAMARA_common.yaml#/components/responses/Generic400"
         "401":
@@ -238,6 +251,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CheckSimSwapInfo"
+              examples:
+                CHECK_SIM_SWAP:
+                  $ref: "#/components/examples/CHECK_SIM_SWAP"
+                CHECK_SIM_SWAP_WITH_OPTIONAL_SIM_INFORMATION:
+                  $ref: "#/components/examples/CHECK_SIM_SWAP_WITH_OPTIONAL_SIM_INFORMATION"
         "400":
           $ref: "../common/CAMARA_common.yaml#/components/responses/Generic400"
         "401":
@@ -356,6 +374,14 @@ components:
           maximum: 999
           description: Timeframe in days for SIM card change supervision for the phone number. It could be valued in the response if the latest SIM swap occurred before this monitored period.
           example: 120
+        simType:
+          type: string
+          maxLength: 4
+          enum: [eSIM, pSIM]
+          description: The type of SIM that is currently active, either an eSIM or a physical SIM card
+        assuredTransfer:
+          type: boolean
+          description: Indicates whether the SIM swap was performed through a CSP-verified transfer flow requiring possession/control of the previously active SIM or trusted device
     CheckSimSwapInfo:
       type: object
       description: Definition of the data that can be returned in the response body for check operation
@@ -366,6 +392,14 @@ components:
           type: boolean
           description: Indicates whether the SIM card has been swapped during the
             period within the provided age.
+        simType:
+          type: string
+          maxLength: 4
+          enum: [eSIM, pSIM]
+          description: The type of SIM that is currently active, either an eSIM or a physical SIM card
+        assuredTransfer:
+          type: boolean
+          description: Indicates whether the SIM swap was performed through a CSP-verified transfer flow requiring possession/control of the previously active SIM or trusted device
     SimSwapAgeBand:
       type: integer
       format: int32
@@ -650,6 +684,28 @@ components:
       value:
         latestSimChange: null
         monitoredPeriod: 120
+    RETRIEVE_DATE_WITH_OPTIONAL_SIM_INFORMATION:
+      summary: Lastest SIM swap date is send back including simType and assuredTransfer information
+      description: Lastest SIM swap date is send back, and the new sim is an eSIM generated in a process where the old SIM was confirmed to be present in proximity
+      value:
+        latestSimChange: 2024-09-18T07:37:53.471829447Z
+        simType: "eSIM"
+        assuredTransfer: true
+    CHECK_SIM_SWAP:
+      summary: SIM swap detected
+      description: >
+        A SIM swap is detected within the requested maxAge window.
+      value:
+        swapped: true
+    CHECK_SIM_SWAP_WITH_OPTIONAL_SIM_INFORMATION:
+      summary: SIM swap detected with optional SIM information
+      description: >
+        A SIM swap is detected within the requested maxAge window, and the
+        response includes optional information about the relevant SIM swap event.
+      value:
+        swapped: true
+        simType: "pSIM"
+        assuredTransfer: false
     CHECK_2LEGS:
       summary: Check request without 3-legged access tokens
       description: Check request in 2-legs (with phoneNumber in the request body)

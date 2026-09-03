@@ -36,20 +36,10 @@ The API definition(s) are based on
 <summary>Candidate changes (auto-generated from merged PRs)</summary>
 
 ## What's Changed
-* Use standard Release Information section title by @hdamker in https://github.com/camaraproject/SimSwap/pull/243
-* Set back assets version to wip by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/245
-* [bulk] Sync Release Information section (2025-12-12-001) by @hdamker-bot in https://github.com/camaraproject/SimSwap/pull/244
-* [bulk] Add release-plan.yaml (2026-02-23-001) by @hdamker-bot in https://github.com/camaraproject/SimSwap/pull/251
-* [bulk] Enable release automation and validation by @camara-release-automation[bot] in https://github.com/camaraproject/SimSwap/pull/261
-* Update release plan for Sync26 and target versions by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/268
-* Sync common files from Commonalities r4.3 by @camara-release-automation[bot] in https://github.com/camaraproject/SimSwap/pull/269
-* fix(release-plan): set target_api_status to alpha for the alpha pre-release by @hdamker in https://github.com/camaraproject/SimSwap/pull/274
-* Update API definitions to fix CAMARA validation warnings and hints by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
 * feat: add /retrieve-age-band (SIM swap age band) endpoint by @KeldaAnders in https://github.com/camaraproject/SimSwap/pull/273
-* Fix validation errors/warnings in /retrieve-age-band (#276) by @rartych in https://github.com/camaraproject/SimSwap/pull/278
 * Fix  inconsistencies in sim-swap-subscriptions.yaml by @rartych in https://github.com/camaraproject/SimSwap/pull/280
-* Fix externalDocs validation findings from #281 by @hdamker in https://github.com/camaraproject/SimSwap/pull/282
-* Target Sync26 release as pre-release-rc instead of alpha by @hdamker in https://github.com/camaraproject/SimSwap/pull/281
+
+
 
 ## New Contributors
 * @camara-release-automation[bot] made their first contribution in https://github.com/camaraproject/SimSwap/pull/261
@@ -79,11 +69,11 @@ Changes documented below are compared to version 0.3.0.
 
 ### Changed
 
-* N/A
+* Align EventSubscriptionStarted/Updated/Ended with the Commonalities subscription template by @rartych in https://github.com/camaraproject/SimSwap/pull/280
 
 ### Fixed
 
-* N/A
+* Fixed externalDocs.url in sim-swap-subscriptions.yaml by hdamker in https://github.com/camaraproject/SimSwap/pull/282
 
 ### Removed
 
@@ -106,7 +96,7 @@ Changes documented below are compared to version 2.1.0.
 
 ### Added
 
-* N/A
+* Add /retrieve-age-band (SIM swap age band) endpoint by @KeldaAnders in https://github.com/camaraproject/SimSwap/pull/273
 
 ### Changed
 
@@ -114,7 +104,7 @@ Changes documented below are compared to version 2.1.0.
 
 ### Fixed
 
-* N/A
+* Fixed externalDocs.description capitalization in sim-swap.yaml by hdamker in https://github.com/camaraproject/SimSwap/pull/282
 
 ### Removed
 

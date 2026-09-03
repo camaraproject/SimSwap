@@ -117,6 +117,7 @@ Changes documented below are compared to version 2.1.0.
 ### Fixed
 
 * Fixed externalDocs.description capitalization in sim-swap.yaml by hdamker in https://github.com/camaraproject/SimSwap/pull/282
+* Fix validation errors/warnings in /retrieve-age-band (#276) by @rartych in https://github.com/camaraproject/SimSwap/pull/278
 
 ### Removed
 

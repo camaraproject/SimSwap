@@ -1,0 +1,16 @@
+repository:
+  repository_name: SimSwap
+  release_tag: r4.1
+  release_type: pre-release-rc
+  release_date: null
+  src_commit_sha: 7cf47864375a39c5a9b8b71dcce01bda47e55615
+apis:
+- api_name: sim-swap-subscriptions
+  api_version: 0.4.0-rc.1
+  api_title: Sim Swap Subscriptions
+- api_name: sim-swap
+  api_version: 2.2.0-rc.3
+  api_title: SIM Swap
+dependencies:
+  commonalities_release: r4.3 (0.8.0)
+  identity_consent_management_release: r4.2 (0.5.0)

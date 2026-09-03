@@ -1,4 +1,4 @@
-Feature: CAMARA SIM Swap API, vwip - Operation checkSimSwap
+Feature: CAMARA SIM Swap API, v2.2.0-rc.3 - Operation checkSimSwap
 
   # Input to be provided by the implementation to the tester
   #
@@ -9,7 +9,7 @@ Feature: CAMARA SIM Swap API, vwip - Operation checkSimSwap
   # check if SIM swap has been performed during a past period
 
   Background: Common checkSimSwap setup
-    Given the resource "/sim-swap/vwip/check"
+    Given the resource "/sim-swap/v2rc3/check"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"

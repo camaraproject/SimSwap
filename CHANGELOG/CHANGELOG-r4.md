@@ -115,7 +115,7 @@ Changes documented below are compared to version 2.1.0.
 
 ### Breaking changes
 
-* N/A
+* No breaking changes for API consumers. Compatibility risk for API providers, disclosed here without implying any SemVer-breaking change: `SimSwapInfo.monitoredPeriod` is now bounded at `minimum: 1` / `maximum: 999`; it was unbounded in 2.1.0, so a provider returning a larger value is no longer conformant by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
 
 ### Added
 

@@ -123,7 +123,7 @@ Changes documented below are compared to version 2.1.0.
 
 ### Changed
 
-* N/A
+* Align with Commonalities r4.3 by consuming the common schemas by reference: `maxLength` / `format` / range constraints across `ErrorInfo`, `XCorrelator`, `PhoneNumber`, `SimSwapInfo.latestSimChange` and `SimSwapInfo.monitoredPeriod` by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
 
 ### Fixed
 

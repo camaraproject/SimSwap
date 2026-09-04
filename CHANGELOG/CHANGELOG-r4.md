@@ -73,7 +73,9 @@ Changes documented below are compared to version 0.3.0.
 
 ### Breaking changes
 
-* N/A
+* Align sim-swap-subscriptions with Commonalities r4.3 by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272:
+  * `GET /subscriptions` now returns a `SubscriptionList` object with required `subscriptions` and `pagination` properties, instead of a bare array of `Subscription` — existing list consumers must be updated
+  * `subscriptionMaxEvents` is now bounded at `1000000`; a request above that value is rejected
 
 ### Added
 

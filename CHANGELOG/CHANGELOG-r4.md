@@ -87,6 +87,12 @@ Changes documented below are compared to version 0.3.0.
 ### Changed
 
 * Align EventSubscriptionStarted/Updated/Ended with the Commonalities subscription template by @rartych in https://github.com/camaraproject/SimSwap/pull/280
+* Align sim-swap-subscriptions with Commonalities r4.3 by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272:
+  * Consume the common schemas by reference: `maxLength` / `format` / range constraints across `ErrorInfo`, `XCorrelator`, `PhoneNumber`, `SubscriptionId`, `Sink` and the credential schemas
+  * Restructure the notification event hierarchy: the callback body schema is now `NotificationEvent`, a `oneOf` over `ApiNotificationEvent` and `SubscriptionLifecycleEvent`, replacing the single flat `CloudEvent` schema
+  * Restrict the `Protocol` enum to `HTTP` and the `SinkCredential.credentialType` enum to `ACCESSTOKEN` and `PRIVATE_KEY_JWT`, codifying restrictions that 0.3.0 already stated normatively in the field descriptions
+  * `EventSwappedData` now requires `phoneNumber` in addition to `subscriptionId`; it was optional in 0.3.0
+  * `SubscriptionAsync` now requires `id`
 
 ### Fixed
 

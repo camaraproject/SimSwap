@@ -79,7 +79,10 @@ Changes documented below are compared to version 0.3.0.
 
 ### Added
 
-* N/A
+* Align sim-swap-subscriptions with Commonalities r4.3 by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272:
+  * Pagination for `GET /subscriptions`: `page` and `perPage` query parameters, `X-Total-Count`, `X-Total-Pages` and `Link` response headers, and the `Pagination` schema
+  * `PRIVATE_KEY_JWT` sink credential type and the `PrivateKeyJWTCredential` schema
+  * Additional error codes: `OUT_OF_RANGE` (400), `INVALID_TOKEN_CONTEXT` and `SUBSCRIPTION_MISMATCH` (403), `IDENTIFIER_NOT_FOUND` (404), `CONFLICT` and `INCOMPATIBLE_STATE` (409), and `UNSUPPORTED_IDENTIFIER`, `MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED`, `MULTIEVENT_COMBINATION_TEMPORARILY_NOT_SUPPORTED` and `PRIVATE_KEY_JWT_NOT_CONFIGURED` (422)
 
 ### Changed
 

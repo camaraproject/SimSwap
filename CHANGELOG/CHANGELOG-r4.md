@@ -96,7 +96,7 @@ Changes documented below are compared to version 0.3.0.
 
 ### Fixed
 
-* Fixed externalDocs.url in sim-swap-subscriptions.yaml by hdamker in https://github.com/camaraproject/SimSwap/pull/282
+* Fixed externalDocs.url in sim-swap-subscriptions.yaml by @hdamker in https://github.com/camaraproject/SimSwap/pull/282
 
 ### Removed
 

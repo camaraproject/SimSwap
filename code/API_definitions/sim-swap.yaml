@@ -270,9 +270,10 @@ paths:
         occurred, expressed as a time band.
 
         This operation is an alternative way to expose SIM swap recency for API providers that
-        do not expose the exact SIM swap date. It does not return the actual SIM swap date and
-        is not expected to be supported in addition to `check` and `retrieve-date`. Consult your
-        provider to determine if this optional operation is available; support depends on the provider's
+        do not expose the exact SIM swap date. It does not return the actual SIM swap date.
+        This operation is optional: a provider need not implement it in addition to the
+        mandatory `check` and `retrieve-date` operations, and a provider that does not
+        implement it returns `501 NOT_IMPLEMENTED`. Support depends on the provider's
         available capabilities and commercial use case.
 
         The returned value is a technical network signal indicating recency. Consuming parties apply their own decisioning

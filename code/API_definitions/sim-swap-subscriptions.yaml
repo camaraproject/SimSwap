@@ -16,13 +16,13 @@ info:
     # API Functionality
 
     The API exposes following capabilities:
-      * **/subscriptions**: This endpoint has two operations, one that allows to retrieve the list of Sim Swap event subscriptions and another one to create new event subscriptions. The list operation supports pagination via `page` and `perPage` query parameters returning a `SubscriptionList` response.
+      * **/subscriptions**: This endpoint has two operations, one that allows to retrieve the list of Sim Swap event subscriptions and another one to create new event subscriptions. The list operation supports pagination via `page` and `perPage` query parameters returning a `SubscriptionList` with subscription items and pagination headers.     Creating new event subscriptions requires a sink, protocol, event types, and configuration; sink credentials are optional.
       * **/subscriptions/{subscriptionId}**: This endpoint also has two operations, one that allows to retrieve a particular event subscription by id and another one to delete an event subscription also using the id.
 
     ## Sim Swap notification subscription
 
     These endpoints allow to manage notification subscription on Sim Swap event.
-    The CAMARA subscription model is detailed in the CAMARA API design guideline document and follows Cloudevents specification. Sink credentials support ACCESSTOKEN and PRIVATE_KEY_JWT authentication types.
+    The CAMARA subscription model is detailed in the CAMARA API design guideline document and follows Cloudevents specification. Sink credentials support the ACCESSTOKEN and PRIVATE_KEY_JWT credential types for securing webhook delivery.
 
     The `types` field is mandatory when creating a subscription, per the CAMARA subscription model, regardless of how many event types an API defines.
 

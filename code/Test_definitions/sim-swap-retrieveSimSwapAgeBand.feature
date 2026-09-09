@@ -38,7 +38,7 @@ Feature: CAMARA SIM Swap API, vwip - Operation retrieveSimSwapAgeBand
   @retrieve_age_band_3_mid_age_swap_band_10
   Scenario: Retrieve age band showing mid-age SIM swap (band 10)
     Given a valid phone number identified by the token or provided in the request body
-    And the SIM for this phone number has been swapped in the last 30 days
+    And the SIM for this phone number has been swapped in the last 20 days
     When the request "retrieveSimSwapAgeBand" is sent
     Then the response status code is 200
     And the value of response property "$.simSwapAgeBand" == 10

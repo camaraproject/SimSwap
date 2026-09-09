@@ -24,7 +24,7 @@ info:
     These endpoints allow to manage notification subscription on Sim Swap event.
     The CAMARA subscription model is detailed in the CAMARA API design guideline document and follows Cloudevents specification. Sink credentials support ACCESSTOKEN and PRIVATE_KEY_JWT authentication types.
 
-    Since this API manages several event types, it is mandatory to provide the `types` field when creating a subscription.
+    Since this API manages events for SIM swap notifications, it is mandatory to provide the `types` field when creating a subscription.
 
     Only one event `types` is managed for this API:
       - `org.camaraproject.sim-swap-subscriptions.v0.swapped` - Event triggered when a SIM swap occurs on the associated phone number

@@ -12,12 +12,13 @@ info:
 
     The SIM Swap API can also be used to protect non-automated actions. For example, when a call center expert contacts a user to clarify or confirm a sensitive operation.
 
-    This API is used by an application to get information about a mobile line latest SIM swap date. It can be easily integrated and used through this secured API and allows SPs (Service Provider) to get this information an easy & secured way. The API provides management of 3 endpoints answering 3 distinct questions:
-    An API provider is not expected to support all of them: the age-band operation is an alternative to exposing the exact SIM swap date, and support depends on the provider's available capabilities and commercial use case.
+    This API is used by an application to get information about a mobile line latest SIM swap date. It can be easily integrated and used through this secured API and allows SPs (Service Provider) to get this information in an easy and secured way. The API provides management of 3 endpoints answering 3 distinct questions:
 
-    * When did the last SIM swap occur?
-    * Has a SIM swap occurred during last n hours?
-    * How recently did the last SIM swap occur, as a standardized time band? (alternative to the exact date)
+    * When did the last SIM swap occur? (mandatory `/retrieve-date` operation)
+    * Has a SIM swap occurred during last n hours? (mandatory `/check` operation)
+    * How recently did the last SIM swap occur, as a standardized time band? (optional `/retrieve-age-band` operation, an alternative to exposing the exact SIM swap date)
+
+    An API provider is expected to support `/check` and `/retrieve-date`. The `/retrieve-age-band` operation is optional and is an alternative for providers that do not expose the exact SIM swap date; support depends on the provider's available capabilities and commercial use case. A provider that does not implement `/retrieve-age-band` returns `501 NOT_IMPLEMENTED`.
 
     # Relevant terms and definitions
 
@@ -269,9 +270,11 @@ paths:
         occurred, expressed as a time band.
 
         This operation is an alternative way to expose SIM swap recency for API providers that
-        do not expose the exact SIM swap date. It does not return the actual SIM swap date, and
-        is not expected to be supported in addition to `check` and `retrieve-date`; support
-        depends on the provider's available capabilities and commercial use case.
+        do not expose the exact SIM swap date. It does not return the actual SIM swap date.
+        This operation is optional: a provider need not implement it in addition to the
+        mandatory `check` and `retrieve-date` operations, and a provider that does not
+        implement it returns `501 NOT_IMPLEMENTED`. Support depends on the provider's
+        available capabilities and commercial use case.
 
         The returned value is a technical network signal indicating recency. Consuming parties apply their own decisioning
         outside the API contract. Value `111` indicates the provider positively confirms a SIM
@@ -348,7 +351,8 @@ components:
           format: date-time
           maxLength: 64
           nullable: true
-          description: Timestamp of latest SIM swap performed. It must follow [RFC 3339 (https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
+          description: Timestamp of latest SIM swap performed. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone. The value is `null` when the provider cannot return it for privacy reasons (the `monitoredPeriod` mechanism applies).
+          example: "2023-07-03T14:27:08.312+02:00"
         monitoredPeriod:
           type: integer
           format: int32

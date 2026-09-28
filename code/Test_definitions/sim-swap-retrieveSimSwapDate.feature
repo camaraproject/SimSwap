@@ -1,4 +1,4 @@
-Feature: CAMARA SIM Swap API, vwip - Operation retrieveSimSwapDate
+Feature: CAMARA SIM Swap API, v2.2.0-rc.3 - Operation retrieveSimSwapDate
 
   # Input to be provided by the implementation to the tester
   #
@@ -9,7 +9,7 @@ Feature: CAMARA SIM Swap API, vwip - Operation retrieveSimSwapDate
   # Get timestamp of last MSISDN <-> IMSI pairing change for the provided phone number.
 
   Background: Common retrieveSimSwapDate setup
-    Given the resource "/sim-swap/vwip/retrieve-date"
+    Given the resource "/sim-swap/v2rc3/retrieve-date"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"

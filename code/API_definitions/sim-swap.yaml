@@ -154,11 +154,11 @@ paths:
         "401":
           $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
         "403":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic403"
+          $ref: "#/components/responses/Generic403"
         "404":
           $ref: "../common/CAMARA_common.yaml#/components/responses/Generic404"
         "422":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic422"
+          $ref: "#/components/responses/Generic422"
         "429":
           $ref: "../common/CAMARA_common.yaml#/components/responses/Generic429"
   /check:
@@ -203,17 +203,82 @@ paths:
         "401":
           $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
         "403":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic403"
+          $ref: "#/components/responses/Generic403"
         "404":
           $ref: "../common/CAMARA_common.yaml#/components/responses/Generic404"
         "422":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic422"
+          $ref: "#/components/responses/Generic422"
         "429":
           $ref: "../common/CAMARA_common.yaml#/components/responses/Generic429"
 components:
   securitySchemes:
     openId:
       $ref: "../common/CAMARA_common.yaml#/components/securitySchemes/openId"
+  responses:
+    Generic403:
+      description: Forbidden
+      headers:
+        x-correlator:
+          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 403
+                  code:
+                    enum:
+                      - PERMISSION_DENIED
+          examples:
+            GENERIC_403_PERMISSION_DENIED:
+              description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
+              value:
+                status: 403
+                code: PERMISSION_DENIED
+                message: Client does not have sufficient permissions to perform this action.
+    Generic422:
+      description: Unprocessable Content
+      headers:
+        x-correlator:
+          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 422
+                  code:
+                    enum:
+                      - SERVICE_NOT_APPLICABLE
+                      - MISSING_IDENTIFIER
+                      - UNNECESSARY_IDENTIFIER
+          examples:
+            GENERIC_422_SERVICE_NOT_APPLICABLE:
+              description: Service not applicable for the provided identifier
+              value:
+                status: 422
+                code: SERVICE_NOT_APPLICABLE
+                message: The service is not available for the provided identifier.
+            GENERIC_422_MISSING_IDENTIFIER:
+              description: phone number is not included in the request (in case of 2-legged) or the phone number identification cannot be derived from access token (in 3-legged)
+              value:
+                status: 422
+                code: MISSING_IDENTIFIER
+                message: The device cannot be identified.
+            GENERIC_422_UNNECESSARY_IDENTIFIER:
+              description: An explicit identifier is provided when a device or phone number has already been identified from the access token
+              value:
+                status: 422
+                code: UNNECESSARY_IDENTIFIER
+                message: The device is already identified by the access token.
   schemas:
     SimSwapInfo:
       type: object

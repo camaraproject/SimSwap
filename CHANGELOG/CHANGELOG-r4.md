@@ -115,7 +115,7 @@ Changes documented below are compared to version 2.1.0.
 
 ### Changed
 
-* N/A
+* Update API definitions to fix CAMARA validation warnings and hints by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
 
 ### Fixed
 

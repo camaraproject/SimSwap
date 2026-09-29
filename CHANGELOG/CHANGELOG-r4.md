@@ -86,7 +86,9 @@ Changes documented below are compared to version 0.3.0.
 
 ### Fixed
 
-* N/A
+* Fix: inconsistencies in sim-swap-subscriptions.yaml by @rartych in https://github.com/camaraproject/SimSwap/pull/280
+* Fix: externalDocs validation findings from #281 by @hdamker in https://github.com/camaraproject/SimSwap/pull/282
+* Fix: resolve r4.1 release review findings (#285, #286, #287, #289) by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/290
 
 ### Removed
 

@@ -85,17 +85,19 @@ Changes documented below are compared to version 0.3.0.
 
 ### Changed
 
-* Update API definitions to fix CAMARA validation warnings and hints by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* Aligned with the Commonalities r4.3 (0.8.0) event subscription template; most schemas are now taken from the Commonalities common files, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* **Breaking:** `GET /subscriptions` returns a paginated `SubscriptionList` object instead of an array, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* Adopted the request body strictness rule: requests with JSON bodies containing properties not declared in the specification are rejected with `400 INVALID_ARGUMENT`, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* `config.subscriptionMaxEvents` is `int32` with a maximum of 1000000, by @rartych in https://github.com/camaraproject/SimSwap/pull/280
+* Updated the API documentation for pagination, sink credentials and the event structure, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/290
 
 ### Fixed
 
-* Fix: inconsistencies in sim-swap-subscriptions.yaml by @rartych in https://github.com/camaraproject/SimSwap/pull/280
-* Fix: externalDocs validation findings from #281 by @hdamker in https://github.com/camaraproject/SimSwap/pull/282
-* Fix: resolve r4.1 release review findings (#285, #286, #287, #289) by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/290
+* N/A
 
 ### Removed
 
-* N/A
+* `protocol` values `AMQP`, `KAFKA`, `MQTT3`, `MQTT5` and `NATS`, and `sinkCredential.credentialType` values `PLAIN` and `REFRESHTOKEN`, which were already not allowed by the 0.3.0 descriptions, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
 
 ## sim-swap 2.2.0-rc.3
 

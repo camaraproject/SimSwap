@@ -120,7 +120,9 @@ Changes documented below are compared to version 2.1.0.
 
 ### Changed
 
-* Update API definitions to fix CAMARA validation warnings and hints by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* Adopted the request body strictness rule: requests with JSON bodies containing properties not declared in the specification are rejected with `400 INVALID_ARGUMENT`. Per the CAMARA API Design Guide this is not a breaking change; it is the reason for the minor version increase. By @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* Aligned with Commonalities r4.3 (0.8.0): updated mandatory `info.description` sections, added `maxLength` to `phoneNumber` and `x-correlator` (values were already bounded by the existing patterns), added bounds to the `ErrorInfo` properties, and constrained `monitoredPeriod` to `int32` in the range 1-999, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* Clarified that `latestSimChange` is `null` when the provider cannot return it for privacy reasons, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/290
 
 ### Fixed
 

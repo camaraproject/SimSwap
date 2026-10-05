@@ -74,11 +74,14 @@ Changes documented below are compared to version 0.3.0.
 
 ### Breaking changes
 
-* N/A
+* `GET /subscriptions` returns a `SubscriptionList` object with the required properties `subscriptions` and `pagination`, instead of an array of subscriptions
 
 ### Added
 
-* N/A
+* Pagination for `GET /subscriptions`: optional `page` and `perPage` query parameters, and `link`, `x-total-count` and `x-total-pages` response headers, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* `PRIVATE_KEY_JWT` as `sinkCredential.credentialType`, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* Error codes from the Commonalities r4.3 common error responses: `400 OUT_OF_RANGE` (`GET /subscriptions`), `403 INVALID_TOKEN_CONTEXT`, `403 SUBSCRIPTION_MISMATCH`, `404 IDENTIFIER_NOT_FOUND`, `409 CONFLICT`, `409 INCOMPATIBLE_STATE`, `422 MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED`, `422 MULTIEVENT_COMBINATION_TEMPORARILY_NOT_SUPPORTED`, `422 PRIVATE_KEY_JWT_NOT_CONFIGURED` and `422 UNSUPPORTED_IDENTIFIER`, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+  * Note: these codes come from the generic Commonalities r4.3 error responses. The list will be trimmed to the codes applicable to this API in the next release candidate, with the adoption of the Commonalities r4.4 error response catalogue.
 
 ### Changed
 

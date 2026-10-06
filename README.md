@@ -42,11 +42,11 @@ Incubating API Repository to evolve and maintain the definitions and documentati
 
 ### Upcoming Release Preview
 
-* Pre-release: [r4.1](https://github.com/camaraproject/SimSwap/releases/tag/r4.1) (release candidate)
-  * **sim-swap-subscriptions 0.4.0-rc.1**
-  [[YAML]](https://github.com/camaraproject/SimSwap/blob/r4.1/code/API_definitions/sim-swap-subscriptions.yaml)  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r4.1/code/API_definitions/sim-swap-subscriptions.yaml&nocors)  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r4.1/code/API_definitions/sim-swap-subscriptions.yaml)
-  * **sim-swap 2.2.0-rc.3**
-  [[YAML]](https://github.com/camaraproject/SimSwap/blob/r4.1/code/API_definitions/sim-swap.yaml)  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r4.1/code/API_definitions/sim-swap.yaml&nocors)  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r4.1/code/API_definitions/sim-swap.yaml)
+* Pre-release: [r4.2](https://github.com/camaraproject/SimSwap/releases/tag/r4.2) (release candidate)
+  * **sim-swap-subscriptions 0.4.0-rc.2**
+  [[YAML]](https://github.com/camaraproject/SimSwap/blob/r4.2/code/API_definitions/sim-swap-subscriptions.yaml)  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r4.2/code/API_definitions/sim-swap-subscriptions.yaml&nocors)  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r4.2/code/API_definitions/sim-swap-subscriptions.yaml)
+  * **sim-swap 2.2.0-rc.4**
+  [[YAML]](https://github.com/camaraproject/SimSwap/blob/r4.2/code/API_definitions/sim-swap.yaml)  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r4.2/code/API_definitions/sim-swap.yaml&nocors)  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r4.2/code/API_definitions/sim-swap.yaml)
 
 
 _The above section is automatically synchronized by CAMARA project-administration._

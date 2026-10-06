@@ -166,26 +166,26 @@ Feature: CAMARA Sim Swap Subscriptions API, vwip - Operations on subscriptions
     And the response body property "$.sinkCredential.credentialType", if present, is set to value "ACCESSTOKEN"
     And the response body property "$.sinkCredential.accessTokenExpiresUtc", if present, is set to the same value of the request property "$.sinkCredential.accessTokenExpiresUtc"
 
-  @sim_swap_subscriptions_13_Create_sim_swap_subscriptions_subscription_sync_with_private_jwt_key_sink_credential_out_of_band_provisioning
-  Scenario: Create sim-swap-subscriptions subscription (sync creation) with PRIVATE_JWT_KEY sinkCredential, out-of-band provisioning
+  @sim_swap_subscriptions_13_Create_sim_swap_subscriptions_subscription_sync_with_private_key_jwt_sink_credential_out_of_band_provisioning
+  Scenario: Create sim-swap-subscriptions subscription (sync creation) with PRIVATE_KEY_JWT sinkCredential, out-of-band provisioning
   # Some implementations may only support asynchronous subscription creation
   # Some implementations may only support out_of_band provisioning
     Given that subscriptions are created synchronously
     And a valid subscription request body
-    And the request property "$.sinkCredential.credentialType" is set to "PRIVATE_JWT_KEY"
+    And the request property "$.sinkCredential.credentialType" is set to "PRIVATE_KEY_JWT"
     When the request "createSimSwapSubscription" is sent
     Then the response code is 201
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has the same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/Subscription"
 
-  @sim_swap_subscriptions_14_Create_sim_swap_subscriptions_subscription_sync_with_private_jwt_key_sink_credential_in_band_provisioning
-  Scenario: Create sim-swap-subscriptions subscription (sync creation) with PRIVATE_JWT_KEY sinkCredential, in-band provisioning
+  @sim_swap_subscriptions_14_Create_sim_swap_subscriptions_subscription_sync_with_private_key_jwt_sink_credential_in_band_provisioning
+  Scenario: Create sim-swap-subscriptions subscription (sync creation) with PRIVATE_KEY_JWT sinkCredential, in-band provisioning
   # Some implementations may only support asynchronous subscription creation
   # Some implementations may additionally support in_band provisioning
     Given that subscriptions are created synchronously
     And a valid subscription request body
-    And the request property "$.sinkCredential.credentialType" is set to "PRIVATE_JWT_KEY"
+    And the request property "$.sinkCredential.credentialType" is set to "PRIVATE_KEY_JWT"
     And the request property "$.sinkCredential.clientId" is set to a valid value
     And the request property "$.sinkCredential.tokenUri" is set to a valid value
     When the request "createSimSwapSubscription" is sent
@@ -193,7 +193,7 @@ Feature: CAMARA Sim Swap Subscriptions API, vwip - Operations on subscriptions
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has the same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/Subscription"
-    And the response body property "$.sinkCredential.credentialType" is set to value "PRIVATE_JWT_KEY"
+    And the response body property "$.sinkCredential.credentialType" is set to value "PRIVATE_KEY_JWT"
     And the response body property "$.sinkCredential.jwksUri" is set to a valid value
 
   @sim_swap_subscriptions_15_Operation_to_retrieve_subscription_based_on_an_existing_subscription-id_access_token_sink_credential_returned
@@ -208,17 +208,17 @@ Feature: CAMARA Sim Swap Subscriptions API, vwip - Operations on subscriptions
     And the response body property "$.sinkCredential.credentialType", if present, is set to value "ACCESSTOKEN"
     And the response body property "$.sinkCredential.accessTokenExpiresUtc", if present, is set to the same value of the request property "$.sinkCredential.accessTokenExpiresUtc"
 
-  @sim_swap_subscriptions_16_Operation_to_retrieve_subscription_based_on_an_existing_subscription-id_private_jwt_key_sink_credential_returned
+  @sim_swap_subscriptions_16_Operation_to_retrieve_subscription_based_on_an_existing_subscription-id_private_key_jwt_sink_credential_returned
   # Some implementations may decide to not return the sinkCredential in the response (data minimization principle)
-  # Mainly applicable for in-band provisioning of PRIVATE_JWT_KEY mode for a given subscription
-  Scenario: Get a subscription based on existing subscription-id, with PRIVATE_JWT_KEY sinkCredential returned.
+  # Mainly applicable for in-band provisioning of PRIVATE_KEY_JWT mode for a given subscription
+  Scenario: Get a subscription based on existing subscription-id, with PRIVATE_KEY_JWT sinkCredential returned.
     Given the path parameter "subscriptionId" is set to the identifier of an existing sim-swap-subscriptions subscription
     When the request "retrieveSimSwapSubscription" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has the same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/Subscription"
-    And the response body property "$.sinkCredential.credentialType" is set to value "PRIVATE_JWT_KEY"
+    And the response body property "$.sinkCredential.credentialType" is set to value "PRIVATE_KEY_JWT"
     And the response body property "$.sinkCredential.jwksUri" is set to a valid value
 
 ########################### Error response scenarios ############################################
@@ -435,19 +435,6 @@ Feature: CAMARA Sim Swap Subscriptions API, vwip - Operations on subscriptions
     And the response property "$.code" is "NOT_FOUND"
     And the response property "$.message" contains a user friendly text
 
-######## Specific Subscription error scenario if multi-event is not permitted ################
-
-  @sim_swap_subscriptions_60_creation_with_unsupported_multiple_event_type
-  Scenario: Multi event subscription not supported
-    Given the API provider only allows one event to be subscribed per subscription request
-    And a valid subscription request body
-    And the request body property "$.types" is set to an array with 2 valid items
-    When the request "createSimSwapSubscription" is sent
-    Then the response code is 422
-    And the response property "$.status" is 422
-    And the response property "$.code" is "MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED"
-    And the response property "$.message" contains a user friendly text
-
 ######## Specific Subscription error scenario if Private JWT Key is not pre-configured ################
 
   @sim_swap_subscriptions_61_creation_with_private_jwt_key_not_configured
@@ -469,14 +456,6 @@ Feature: CAMARA Sim Swap Subscriptions API, vwip - Operations on subscriptions
     When the request "createSimSwapSubscription" is sent
     Then the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
-    And the response property "$.message" contains a user friendly text
-
-  @sim_swap_subscriptions_C02.02_phone_number_not_found
-  Scenario: Phone number not found
-    Given the request body property "$.config.subscriptionDetail.phoneNumber" is set to a valid but non-existing phone number
-    When the request "createSimSwapSubscription" is sent
-    Then the response property "$.status" is 404
-    And the response property "$.code" is "IDENTIFIER_NOT_FOUND"
     And the response property "$.message" contains a user friendly text
 
   @sim_swap_subscriptions_C02.03_unnecessary_phone_number
@@ -502,6 +481,96 @@ Feature: CAMARA Sim Swap Subscriptions API, vwip - Operations on subscriptions
     Given the request body property "$.config.subscriptionDetail.phoneNumber" is set to a valid phone number not supported by the service
     When the request "createSimSwapSubscription" is sent
     Then the response property "$.status" is 422
-    And the response property "$.code" is "UNSUPPORTED_IDENTIFIER"
+    And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
+    And the response property "$.message" contains a user friendly text
+
+######## Subscription Pagination Scenarios (Optional depending on API initiative) ################
+
+# Check applicability of below tests according to the nature of the API initiative Use Cases
+
+  @sim_swap_subscriptions_70_pagination_default_values
+  Scenario: Subscription list pagination with default values for page and perPage
+    Given an API client with more than 20 sim-swap-subscriptions subscriptions created
+    When the request "retrieveSimSwapSubscriptionList" is sent without setting query parameters "page" and "perPage"
+    Then the response code is 200
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has the same value as the request header "x-correlator"
+    And the response header "Link" contains a link to the next page with rel="next"
+    And the response body complies with the OAS schema at "#/components/schemas/SubscriptionList"
+    And the response body property "$.subscriptions" has 20 items and each item complies with the OAS schema at "#/components/schemas/Subscription"
+    And the response body property "$.pagination" complies with the OAS schema at "#/components/schemas/Pagination"
+    And the response body property "$.pagination.page" is 1
+    And the response body property "$.pagination.perPage" is 20
+
+  @sim_swap_subscriptions_71_pagination_custom_values
+  Scenario: Subscription list pagination with custom values for page and perPage
+    Given an API client with more than 40 sim-swap-subscriptions subscriptions created
+    When the request "retrieveSimSwapSubscriptionList" is sent with query parameters "page" set to 1 and "perPage" set to 20
+    Then the response code is 200
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has the same value as the request header "x-correlator"
+    And the response header "Link" contains a link to the next page with rel="next"
+    And the response header "X-Total-Pages" is equal to the value of the response body property "$.pagination.totalPages"
+    And the response header "X-Total-Count" is equal to the value of the response body property "$.pagination.totalCount"
+    And the response body complies with the OAS schema at "#/components/schemas/SubscriptionList"
+    And the response body property "$.subscriptions" has 20 items and each item complies with the OAS schema at "#/components/schemas/Subscription"
+    And the response body property "$.pagination" complies with the OAS schema at "#/components/schemas/Pagination"
+    And the response body property "$.pagination.page" is 1
+    And the response body property "$.pagination.perPage" is 20
+    And the response body property "$.pagination.totalPages", if present, is greater than 2
+    And the response body property "$.pagination.totalCount", if present, is greater than 40
+
+  @sim_swap_subscriptions_72_pagination_middle_page
+  Scenario: Subscription list pagination fetching a middle page of the list
+    Given an API client with more than 40 sim-swap-subscriptions subscriptions created
+    When the request "retrieveSimSwapSubscriptionList" is sent with query parameters "page" set to 2 and "perPage" set to 20
+    Then the response code is 200
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has the same value as the request header "x-correlator"
+    And the response header "Link" contains a link to the previous page with rel="prev" and a link to the next page with rel="next"
+    And the response header "X-Total-Pages" is equal to the value of the response body property "$.pagination.totalPages"
+    And the response header "X-Total-Count" is equal to the value of the response body property "$.pagination.totalCount"
+    And the response body complies with the OAS schema at "#/components/schemas/SubscriptionList"
+    And the response body property "$.subscriptions" has 20 items and each item complies with the OAS schema at "#/components/schemas/Subscription"
+    And the response body property "$.pagination" complies with the OAS schema at "#/components/schemas/Pagination"
+    And the response body property "$.pagination.page" is 2
+    And the response body property "$.pagination.perPage" is 20
+    And the response body property "$.pagination.totalPages", if present, is greater than 2
+    And the response body property "$.pagination.totalCount", if present, is greater than 40
+
+  @sim_swap_subscriptions_73_pagination_last_page
+  Scenario: Subscription list pagination fetching the last page of the list
+    Given an API client with more than 40 and less than 60 sim-swap-subscriptions subscriptions created
+    When the request "retrieveSimSwapSubscriptionList" is sent with query parameters "page" set to 3 and "perPage" set to 20
+    Then the response code is 200
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has the same value as the request header "x-correlator"
+    And the response header "Link" contains a link to the previous page with rel="prev"
+    And the response header "X-Total-Pages" is equal to the value of the response body property "$.pagination.totalPages"
+    And the response header "X-Total-Count" is equal to the value of the response body property "$.pagination.totalCount"
+    And the response body complies with the OAS schema at "#/components/schemas/SubscriptionList"
+    And the response body property "$.subscriptions" has between 1 and 20 items and each item complies with the OAS schema at "#/components/schemas/Subscription"
+    And the response body property "$.pagination" complies with the OAS schema at "#/components/schemas/Pagination"
+    And the response body property "$.pagination.page" is 3
+    And the response body property "$.pagination.perPage" is 20
+    And the response body property "$.pagination.totalPages", if present, is 3
+    And the response body property "$.pagination.totalCount", if present, is greater than 40 and less than 60
+
+  @sim_swap_subscriptions_74_pagination_invalid_page_parameter
+  Scenario: Subscription list pagination with invalid value for page parameter
+    Given an API client with more than 20 sim-swap-subscriptions subscriptions created
+    When the request "retrieveSimSwapSubscriptionList" is sent with query parameter "page" set to any value less than 1 and "perPage" set to 20
+    Then the response code is 400
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
+  @sim_swap_subscriptions_75_pagination_invalid_perPage_parameter
+  Scenario: Subscription list pagination with invalid value for perPage parameter
+    Given an API client with more than 20 sim-swap-subscriptions subscriptions created
+    When the request "retrieveSimSwapSubscriptionList" is sent with query parameter "page" set to 1 and "perPage" set to any value outside the range [1-100]
+    Then the response code is 400
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 

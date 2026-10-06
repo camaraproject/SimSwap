@@ -220,11 +220,11 @@ paths:
         "401":
           $ref: "../common/CAMARA_common.yaml#/components/responses/Unauthenticated401"
         "403":
-          $ref: "../common/CAMARA_event_common.yaml#/components/responses/SubscriptionPermissionDenied403"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/PermissionDenied403"
         "409":
           $ref: "../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionConflict409"
         "422":
-          $ref: "../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionPhoneNumber422"
+          $ref: "#/components/responses/CreateSimSwapSubscription422"
         "429":
           $ref: "../common/CAMARA_common.yaml#/components/responses/TooManyRequests429"
     get:
@@ -352,6 +352,37 @@ components:
       required: true
       schema:
         $ref: "../common/CAMARA_event_common.yaml#/components/schemas/SubscriptionId"
+  responses:
+    CreateSimSwapSubscription422:
+      description: Unprocessable Content
+      headers:
+        x-correlator:
+          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 422
+                  code:
+                    enum:
+                      - SERVICE_NOT_APPLICABLE
+                      - MISSING_IDENTIFIER
+                      - UNNECESSARY_IDENTIFIER
+                      - PRIVATE_KEY_JWT_NOT_CONFIGURED
+          examples:
+            GENERIC_422_SERVICE_NOT_APPLICABLE:
+              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_422_SERVICE_NOT_APPLICABLE"
+            GENERIC_422_MISSING_IDENTIFIER_PHONE_NUMBER:
+              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_422_MISSING_IDENTIFIER_PHONE_NUMBER"
+            GENERIC_422_UNNECESSARY_IDENTIFIER_PHONE_NUMBER:
+              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_422_UNNECESSARY_IDENTIFIER_PHONE_NUMBER"
+            GENERIC_422_PRIVATE_KEY_JWT_NOT_CONFIGURED:
+              $ref: "../common/CAMARA_event_common.yaml#/components/examples/GENERIC_422_PRIVATE_KEY_JWT_NOT_CONFIGURED"
   schemas:
     CreateSubscriptionDetail:
       description: The detail of the requested event subscription
@@ -373,6 +404,13 @@ components:
           properties:
             subscriptionDetail:
               $ref: "#/components/schemas/CreateSubscriptionDetail"
+            initialEvent:
+              type: boolean
+              description: |
+                When set to true, the API server sends an initial notification of the subscribed
+                event type at subscription creation time if the current state of the subject
+                matches the event. When false or omitted, no initial notification is sent.
+              default: false
 
     ApiEventType:
       type: string

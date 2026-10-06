@@ -30,18 +30,24 @@ Incubating API Repository to evolve and maintain the definitions and documentati
 > [!NOTE]
 > Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. **For best results, use the latest available release**.
 
-* **NEW**: The latest public release is [r3.3](https://github.com/camaraproject/SimSwap/releases/tag/r3.3) (Fall25), with the following API versions:
-  * **sim-swap-subscriptions v0.3.0**
-  [[YAML]](https://github.com/camaraproject/SimSwap/blob/r3.3/code/API_definitions/sim-swap-subscriptions.yaml)
-  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.3/code/API_definitions/sim-swap-subscriptions.yaml&nocors)
-  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.3/code/API_definitions/sim-swap-subscriptions.yaml)
-  * **sim-swap v2.1.0**
-  [[YAML]](https://github.com/camaraproject/SimSwap/blob/r3.3/code/API_definitions/sim-swap.yaml)
-  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.3/code/API_definitions/sim-swap.yaml&nocors)
-  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.3/code/API_definitions/sim-swap.yaml)
+* The latest public release is [r3.3](https://github.com/camaraproject/SimSwap/releases/tag/r3.3), with the following API versions:
+  * **sim-swap-subscriptions 0.3.0**
+  [[YAML]](https://github.com/camaraproject/SimSwap/blob/r3.3/code/API_definitions/sim-swap-subscriptions.yaml)  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.3/code/API_definitions/sim-swap-subscriptions.yaml&nocors)  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.3/code/API_definitions/sim-swap-subscriptions.yaml)
+  * **sim-swap 2.1.0**
+  [[YAML]](https://github.com/camaraproject/SimSwap/blob/r3.3/code/API_definitions/sim-swap.yaml)  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.3/code/API_definitions/sim-swap.yaml&nocors)  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r3.3/code/API_definitions/sim-swap.yaml)
+
 * The latest public release is always available here: https://github.com/camaraproject/SimSwap/releases/latest
 * Other releases of this repository are available in https://github.com/camaraproject/SimSwap/releases
-* For changes see [CHANGELOG.md](https://github.com/camaraproject/SimSwap/blob/main/CHANGELOG.md)
+* For changes see [CHANGELOG](https://github.com/camaraproject/SimSwap/tree/main/CHANGELOG)
+
+### Upcoming Release Preview
+
+* Pre-release: [r4.1](https://github.com/camaraproject/SimSwap/releases/tag/r4.1) (release candidate)
+  * **sim-swap-subscriptions 0.4.0-rc.1**
+  [[YAML]](https://github.com/camaraproject/SimSwap/blob/r4.1/code/API_definitions/sim-swap-subscriptions.yaml)  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r4.1/code/API_definitions/sim-swap-subscriptions.yaml&nocors)  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r4.1/code/API_definitions/sim-swap-subscriptions.yaml)
+  * **sim-swap 2.2.0-rc.3**
+  [[YAML]](https://github.com/camaraproject/SimSwap/blob/r4.1/code/API_definitions/sim-swap.yaml)  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r4.1/code/API_definitions/sim-swap.yaml&nocors)  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r4.1/code/API_definitions/sim-swap.yaml)
+
 
 _The above section is automatically synchronized by CAMARA project-administration._
 <!-- CAMARA:RELEASE-INFO:END -->

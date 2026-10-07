@@ -69,26 +69,28 @@ info:
     In cases where personal data is processed by the API and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of three-legged access tokens is mandatory. This ensures that the API remains in compliance with privacy regulations, upholding the principles of transparency and user-centric privacy-by-design.
     <!-- CAMARA:MANDATORY:authorization-and-authentication:END -->
 
-    # Identifying the device from the access token
+    <!-- CAMARA:MANDATORY:identifying-phone-number-from-access-token:BEGIN -->
+    # Identifying the phone number from the access token
 
-    This API requires the API consumer to identify a device as the subject of the API as follows:
-    - When the API is invoked using a two-legged access token, the subject will be identified from the optional `phoneNumber` identifier, which therefore MUST be provided.
-    - When a three-legged access token is used however, this optional `phoneNumber` identifier MUST NOT be provided, as the subject will be uniquely identified from the access token.
+    This API requires the API consumer to identify a phone number as the subject of the API as follows:
+    - When the API is invoked using a two-legged access token, the subject will be identified from the optional `phoneNumber` field, which therefore MUST be provided.
+    - When a three-legged access token is used however, this optional identifier MUST NOT be provided, as the subject will be uniquely identified from the access token.
 
     This approach simplifies API usage for API consumers using a three-legged access token to invoke the API by relying on the information that is associated with the access token and was identified during the authentication process.
 
     ## Error handling:
 
-    - If the subject cannot be identified from the access token and the optional `phoneNumber` identifier is not included in the request, then the server will return an error with the `422 MISSING_IDENTIFIER` error code.
+    - If the subject cannot be identified from the access token and the optional `phoneNumber` field is not included in the request, then the server will return an error with the `422 MISSING_IDENTIFIER` error code.
 
-    - If the subject can be identified from the access token and the optional `phoneNumber` identifier is also included in the request, then the server will return an error with the `422 UNNECESSARY_IDENTIFIER` error code. This will be the case even if the same device is identified by these two methods, as the server is unable to make this comparison.
+    - If the subject can be identified from the access token and the optional `phoneNumber` field is also included in the request, then the server will return an error with the `422 UNNECESSARY_IDENTIFIER` error code. This will be the case even if the same phone number is identified by these two methods, as the server is unable to make this comparison.
+    <!-- CAMARA:MANDATORY:identifying-phone-number-from-access-token:END -->
 
     <!-- CAMARA:MANDATORY:additional-error-responses:BEGIN -->
     # Additional CAMARA error responses
 
       The list of error codes in this API specification is not exhaustive. Therefore the API specification MAY not document some non-mandatory error statuses as indicated in `CAMARA API Design Guide`.
 
-      Please refer to the `CAMARA_common.yaml` of the Commonalities Release associated to this API version for a complete list of error responses. The applicable Commonalities Release can be identified in the `API Readiness Checklist` document associated to this API version.
+      Please refer to the `CAMARA_common.yaml` of the Commonalities Release associated to this API version for a complete list of error responses. The applicable Commonalities Release can be identified from the `x-camara-commonalities` field, the changelog and the metadata of the released API version.
 
       As a specific rule, error `501 - NOT_IMPLEMENTED` can be only a possible error response if it is explicitly documented in the API.
     <!-- CAMARA:MANDATORY:additional-error-responses:END -->
@@ -107,7 +109,7 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: wip
-  x-camara-commonalities: 0.6
+  x-camara-commonalities: 0.9.0
 
 externalDocs:
   description: Product documentation at CAMARA
@@ -176,15 +178,15 @@ paths:
                     x-correlator:
                       $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
                 "400":
-                  $ref: "../common/CAMARA_common.yaml#/components/responses/Generic400"
+                  $ref: "../common/CAMARA_common.yaml#/components/responses/BadRequest400"
                 "401":
-                  $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
+                  $ref: "../common/CAMARA_common.yaml#/components/responses/Unauthenticated401"
                 "403":
-                  $ref: "../common/CAMARA_common.yaml#/components/responses/Generic403"
+                  $ref: "../common/CAMARA_common.yaml#/components/responses/PermissionDenied403"
                 "410":
-                  $ref: "../common/CAMARA_common.yaml#/components/responses/Generic410"
+                  $ref: "../common/CAMARA_event_common.yaml#/components/responses/SinkGone410"
                 "429":
-                  $ref: "../common/CAMARA_common.yaml#/components/responses/Generic429"
+                  $ref: "../common/CAMARA_common.yaml#/components/responses/TooManyRequests429"
               security:
                 - {}
                 - notificationsBearerAuth: []
@@ -216,15 +218,15 @@ paths:
         "400":
           $ref: "../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionBadRequest400"
         "401":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Unauthenticated401"
         "403":
-          $ref: "../common/CAMARA_event_common.yaml#/components/responses/SubscriptionPermissionDenied403"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/PermissionDenied403"
         "409":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic409"
+          $ref: "../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionConflict409"
         "422":
-          $ref: "../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionUnprocessableEntity422"
+          $ref: "#/components/responses/CreateSimSwapSubscription422"
         "429":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic429"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/TooManyRequests429"
     get:
       tags:
         - Sim Swap Subscription
@@ -260,11 +262,11 @@ paths:
                 SUBSCRIPTIONS_3LEGS:
                   $ref: "#/components/examples/SUBSCRIPTIONS_3LEGS"
         "400":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic400"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/BadRequest400"
         "401":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Unauthenticated401"
         "403":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic403"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/PermissionDenied403"
   /subscriptions/{subscriptionId}:
     get:
       tags:
@@ -296,11 +298,11 @@ paths:
         "400":
           $ref: "../common/CAMARA_event_common.yaml#/components/responses/SubscriptionIdRequired400"
         "401":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Unauthenticated401"
         "403":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic403"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/PermissionDenied403"
         "404":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic404"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/NotFound404"
     delete:
       tags:
         - Sim Swap Subscription
@@ -331,11 +333,11 @@ paths:
         "400":
           $ref: "../common/CAMARA_event_common.yaml#/components/responses/SubscriptionIdRequired400"
         "401":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Unauthenticated401"
         "403":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic403"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/PermissionDenied403"
         "404":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic404"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/NotFound404"
 components:
   securitySchemes:
     openId:
@@ -350,6 +352,37 @@ components:
       required: true
       schema:
         $ref: "../common/CAMARA_event_common.yaml#/components/schemas/SubscriptionId"
+  responses:
+    CreateSimSwapSubscription422:
+      description: Unprocessable Content
+      headers:
+        x-correlator:
+          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 422
+                  code:
+                    enum:
+                      - SERVICE_NOT_APPLICABLE
+                      - MISSING_IDENTIFIER
+                      - UNNECESSARY_IDENTIFIER
+                      - PRIVATE_KEY_JWT_NOT_CONFIGURED
+          examples:
+            GENERIC_422_SERVICE_NOT_APPLICABLE:
+              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_422_SERVICE_NOT_APPLICABLE"
+            GENERIC_422_MISSING_IDENTIFIER_PHONE_NUMBER:
+              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_422_MISSING_IDENTIFIER_PHONE_NUMBER"
+            GENERIC_422_UNNECESSARY_IDENTIFIER_PHONE_NUMBER:
+              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_422_UNNECESSARY_IDENTIFIER_PHONE_NUMBER"
+            GENERIC_422_PRIVATE_KEY_JWT_NOT_CONFIGURED:
+              $ref: "../common/CAMARA_event_common.yaml#/components/examples/GENERIC_422_PRIVATE_KEY_JWT_NOT_CONFIGURED"
   schemas:
     CreateSubscriptionDetail:
       description: The detail of the requested event subscription
@@ -360,28 +393,17 @@ components:
 
     Config:
       description: |
-        Implementation-specific configuration parameters needed by the subscription manager for acquiring events.
-        In CAMARA we have predefined attributes like `subscriptionExpireTime` or `subscriptionMaxEvents` to limit subscription lifetime.
-        Event type attributes must be defined in `subscriptionDetail`
-      type: object
-      required:
-        - subscriptionDetail
-      properties:
-        subscriptionDetail:
-          $ref: "#/components/schemas/CreateSubscriptionDetail"
-        subscriptionExpireTime:
-          type: string
-          format: date-time
-          maxLength: 64
-          example: 2023-01-17T13:18:23.682Z
-          description: The subscription expiration time (in date-time format) requested by the API consumer. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
-        subscriptionMaxEvents:
-          type: integer
-          format: int32
-          description: Identifies the maximum number of event reports to be generated (>=1) requested by the API consumer - Once this number is reached, the subscription ends.
-          minimum: 1
-          maximum: 1000000
-          example: 5
+        Implementation-specific configuration parameters needed by the subscription manager
+        for acquiring events. Extends `ConfigBase` from `CAMARA_event_common.yaml` with the
+        required, API-specific `subscriptionDetail` property.
+      allOf:
+        - $ref: "../common/CAMARA_event_common.yaml#/components/schemas/ConfigBase"
+        - type: object
+          required:
+            - subscriptionDetail
+          properties:
+            subscriptionDetail:
+              $ref: "#/components/schemas/CreateSubscriptionDetail"
 
     ApiEventType:
       type: string
@@ -432,7 +454,9 @@ components:
         protocol:
           $ref: "../common/CAMARA_event_common.yaml#/components/schemas/Protocol"
         sink:
-          $ref: "#/components/schemas/Sink"
+          description: The address to which events shall be delivered using the selected protocol.
+          allOf:
+            - $ref: "../common/CAMARA_event_common.yaml#/components/schemas/Sink"
         types:
           description: |
             Camara Event types eligible to be delivered by this subscription.
@@ -502,13 +526,15 @@ components:
         protocol:
           $ref: "../common/CAMARA_event_common.yaml#/components/schemas/Protocol"
         sink:
-          $ref: "#/components/schemas/Sink"
+          description: The address to which events shall be delivered using the selected protocol.
+          allOf:
+            - $ref: "../common/CAMARA_event_common.yaml#/components/schemas/Sink"
         sinkCredential:
           $ref: "../common/CAMARA_event_common.yaml#/components/schemas/SinkCredential"
         types:
           description: |
             Camara Event types eligible to be delivered by this subscription.
-            Note: As of now we enforce to have only event type per subscription.
+            Note: For the current Commonalities API design guidelines, only one event type per subscription is allowed
           type: array
           minItems: 1
           maxItems: 1
@@ -632,14 +658,6 @@ components:
           properties:
             data:
               $ref: "../common/CAMARA_event_common.yaml#/components/schemas/SubscriptionEnded"
-
-    Sink:
-      description: The address to which events shall be delivered using the selected protocol.
-      type: string
-      format: uri
-      maxLength: 2048
-      pattern: ^https:\/\/.+$
-      example: "https://endpoint.example.com/sink"
 
     HTTPSubscriptionRequest:
       description: Subscription request for HTTP-based event delivery.

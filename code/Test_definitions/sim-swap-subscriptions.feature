@@ -1,345 +1,565 @@
-Feature: CAMARA sim swap subscriptions  API, vwip
+Feature: CAMARA Sim Swap Subscriptions API, vwip - Operations on subscriptions
+
   # Input to be provided by the implementation to the tester
   #
   # Testing assets:
-  # * A mobile line identified by its phone number "phoneNumber" associated with a sim card 1
-  # * Be able to perform a sim swap for this mobile line shifting from sim card 1 to sim card 2
-  # * a callback url identified as "callbackUrl" allows to receive notification
+  #   A sink-url identified as "callbackUrl", which receives notifications
+  #   A mobile line identified by its phone number associated with a sim card 1
+  #   Be able to perform a sim swap for this mobile line shifting from sim card 1 to sim card 2
   #
   # References to OAS spec schemas refer to schemas specified in sim-swap-subscriptions.yaml
 
-  Background: Common subscriptions setup
+  Background: Common sim-swap-subscriptions setup
     Given the resource "/sim-swap-subscriptions/vwip/subscriptions" as BaseURL
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
     And the request body is set by default to a request body compliant with the schema
 
-##########################
-# Happy path scenarios
-##########################
+############################ Happy Path Scenarios #############################################
 
-  # These first scenarios serves as a minimum
+# Note: Depending on the API managed personal data specific scenario update may be required to specify use of 2-legs or 3-legs access token.
 
-  @sim_swap_subscription_creation_01_sync_creation
-  Scenario: Check sync subscription creation - This scenario could be bypass if async creation is provided (following scenario)
-    Given use BaseURL
-    When the HTTP "POST" request is sent
-    And "$.types"="org.camaraproject.sim-swap-subscriptions.v0.swapped"
-    And "$.protocol"="HTTP"
-    And a valid phone number identified by the token or provided in the request body
-    And "$.sink" is set to provided callbackUrl
-    Then the response property "$.status" is 201
-    And the response header "Content-Type" is "application/json"
-    And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with the OAS schema at "#/components/schemas/Subscription"
-    And types, protocol, sink and config.subscriptionDetail.phoneNumber are present with provided value
-    And startsAt is valued with a datetime corresponding to the date time of the response
-
-  @sim_swap_subscription_creation_02_async_creation
-  Scenario: Check async subscription creation - This scenario could be bypass if previous scenario is provided
-    Given use BaseURL
-    When the HTTP "POST" request is sent
-    And "$.types"="org.camaraproject.sim-swap-subscriptions.v0.swapped"
-    And "$.protocol"="HTTP"
-    And a valid phone number identified by the token or provided in the request body
-    And "$.sink" is set to provided callbackUrl
-    Then the response property "$.status" is 202
-    And the response header "Content-Type" is "application/json"
-    And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with the OAS schema at "#/components/schemas/SubscriptionAsync"
-
-  @sim_swap_subscription_retrieve_03_retrieve_by_id
-  Scenario: Check existing subscription is retrieved by id
-    Given a subscription is existing and identified by an "id"
-    And use BaseURL
-    When the HTTP "GET" request is sent with subscriptionId="id"
-    Then the response property "$.status" is 200
-    And the response header "Content-Type" is "application/json"
-    And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with the OAS schema at "#/components/schemas/Subscription"
-
-  @sim_swap_subscription_retrieve_04_retrieve_list_2legs
-  Scenario: Check existing subscription(s) is/are retreived in list
-    Given at least one subscription is existing for the API client making this request
-    And use BaseURL
-    When the HTTP "GET" request is sent
-    Then the response property "$.status" is 200
-    And the response header "Content-Type" is "application/json"
-    And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with an array of OAS schema defined at "#/components/schemas/Subscription"
-    And subscription(s) is/are listed
-
-  @sim_swap_subscription_retrieve_07_retrieve_list_3legs
-  Scenario: Check existing subscription(s) is/are retrieved in list
-    Given a subscription is existing for a phoneNumber
-    And this phone number is identified by the token
-    And use BaseURL
-    When the HTTP "GET" request is sent
-    Then the response property "$.status" is 200
-    And the response header "Content-Type" is "application/json"
-    And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with an array of OAS schema defined at "#/components/schemas/Subscription"
-    And the subscriptions for this phoneNumber are listed
-
-  @sim_swap_subscription_retrieve_08_retrieve_empty_list_3legs
-  Scenario: Check no existing subscription is retrieved in list
-    Given no subscription is existing for a phoneNumber
-    And this phone number is identified by the token
-    And use BaseURL
-    When the HTTP "GET" request is sent
-    Then the response property "$.status" is 200
-    And the response header "Content-Type" is "application/json"
-    And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body is an empty list
-
-  @sim_swap_subscription_delete_05_delete_subscription
-  Scenario: Check deletion of existing subscription & triggering of subscription-ended event
-    Given a subscription is existing and identified by an "id"
-    And use BaseURL
-    When the HTTP "DELETE" request is sent with subscriptionId="id"
-    Then the response property "$.status" is 204
-    And the response header "Content-Type" is "application/json"
-    And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with the OAS schema at "#/components/schemas/Subscription"
-    And The callback notification application receives subscription-ended event at provided callbackUrl
-    And notification body complies with the OAS schema at "#/components/schemas/Subscription/CloudEvent"
-    And type="org.camaraproject.sim-swap-subscriptions.v0.subscription-ended"
-    And data.phoneNumber="$.phoneNumber"
-    And data.subscriptionId is valued with the subcriptionId
-    And time is valued by the date time of subscription termination
-
-  @sim_swap_subscription_creation_06_swapped
-  Scenario: Check swapped event is triggered when a sim swap is performed on the device
-    Given use BaseURL
-    When the HTTP "POST" request is sent
-    And "$.types"="org.camaraproject.sim-swap-subscriptions.v0.swapped"
-    And "$.protocol"="HTTP"
-    And "$.config.subscriptionDetail.phoneNumber" is set with with provided phoneNumber
-    And "$.sink" is set to provided callbackUrl
-    Then the response property "$.status" is 201
-    And subcriptionId is provided
-    And sims swap is performed on this mobile line
-    And The callback notification application receives swapped event at provided callbackUrl
-    And notification body complies with the OAS schema at "#/components/schemas/Subscription/CloudEvent"
-    And type="org.camaraproject.sim-swap-subscriptions.v0.swapped"
-    And data.phoneNumber="$.phoneNumber"
-    And data.subscriptionId is valued with the subcriptionId
-    And time is valued by the date time of the sim swap
-
-  @sim_swap_subscription_creation_07_subscription_ends_on_max_events
-  Scenario: Receive notification for subscription-ended event on max events reached
-    Given a valid subscription request body
-    And the request body property "$config.subscriptionMaxEvents" is set to 1
+  @sim_swap_subscriptions_01_Create_sim_swap_subscriptions_subscription_sync
+  Scenario: Create sim-swap-subscriptions subscription (sync creation)
+  # Some implementations may only support asynchronous subscription creation
+    Given that subscriptions are created synchronously
+    And a valid subscription request body
     When the request "createSimSwapSubscription" is sent
     Then the response code is 201
-    And the sim of the device was swapped
-    And event notification "swapped" is received on callback-url
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has the same value as the request header "x-correlator"
+    And the response body complies with the OAS schema at "#/components/schemas/Subscription"
+
+  @sim_swap_subscriptions_02_Create_sim_swap_subscriptions_subscription_async
+  Scenario: Create sim-swap-subscriptions subscription (async creation)
+  # Some implementations may only support synchronous subscription creation
+    Given that subscriptions are created asynchronously
+    And a valid subscription request body
+    When the request "createSimSwapSubscription" is sent
+    Then the response code is 202
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has the same value as the request header "x-correlator"
+    And the response body complies with the OAS schema at "#/components/schemas/SubscriptionAsync"
+
+  @sim_swap_subscriptions_03_subscription_creation_event_validation
+  Scenario: Receive notification for subscription-started event on creation
+    Given a valid subscription request body
+    When the request "createSimSwapSubscription" is sent
+    Then the response code is 201 or 202
+    And event notification "subscription-started" is received on callback-url
+    And notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionStarted"
+    And type="org.camaraproject.sim-swap-subscriptions.v0.subscription-started"
+    And the response property "$.initiationReason" is "SUBSCRIPTION_CREATED"
+
+  @sim_swap_subscriptions_04_Operation_to_retrieve_list_of_subscriptions_when_no_records
+  Scenario: Get a list of sim-swap-subscriptions subscriptions when no subscriptions available
+    Given a client without sim-swap-subscriptions subscriptions created
+    When the request "retrieveSimSwapSubscriptionList" is sent
+    Then the response code is 200
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has the same value as the request header "x-correlator"
+    And the response body complies with the OAS schema at "#/components/schemas/SubscriptionList"
+    And the response body property "$.subscriptions" is an empty array
+    And the response body property "$.pagination" complies with the OAS schema at "#/components/schemas/Pagination"
+
+  @sim_swap_subscriptions_05_Operation_to_retrieve_list_of_subscriptions
+  Scenario: Get a list of subscriptions
+    Given a client with sim-swap-subscriptions subscriptions created
+    When the request "retrieveSimSwapSubscriptionList" is sent
+    Then the response code is 200
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has the same value as the request header "x-correlator"
+    And the response body complies with the OAS schema at "#/components/schemas/SubscriptionList"
+    And each item in the response body property "$.subscriptions" complies with the OAS schema at "#/components/schemas/Subscription"
+    And the response body property "$.pagination" complies with the OAS schema at "#/components/schemas/Pagination"
+
+  @sim_swap_subscriptions_06_Operation_to_retrieve_subscription_based_on_an_existing_subscription-id
+  Scenario: Get a subscription based on existing subscription-id.
+    Given the path parameter "subscriptionId" is set to the identifier of an existing sim-swap-subscriptions subscription
+    When the request "retrieveSimSwapSubscription" is sent
+    Then the response code is 200
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has the same value as the request header "x-correlator"
+    And the response body complies with the OAS schema at "#/components/schemas/Subscription"
+
+  @sim_swap_subscriptions_07_Operation_to_delete_subscription_based_on_an_existing_subscription-id
+  Scenario: Delete a subscription based on existing subscription-id.
+    Given the path parameter "subscriptionId" is set to the identifier of an existing sim-swap-subscriptions subscription
+    When the request "deleteSimSwapSubscription" is sent
+    Then the response code is 202 or 204
+    And the response header "x-correlator" has the same value as the request header "x-correlator"
+    And if the response property "$.status" is 204 then the response body is not available
+    And if the response property "$.status" is 202 then the response body complies with the OAS schema at "#/components/schemas/SubscriptionAsync"
+
+  @sim_swap_subscriptions_08_subscription_ends_on_expiry
+  Scenario: Receive notification for subscription-ended event on expiry
+    Given an existing sim-swap-subscriptions subscription with some value for the property "expiresAt" in the near future
+    When the subscription is expired
+    Then the event notification "subscription-ended" is received on callback-url
+    And notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnded"
+    And type="org.camaraproject.sim-swap-subscriptions.v0.subscription-ended"
+    And the response property "$.terminationReason" is "SUBSCRIPTION_EXPIRED"
+
+  @sim_swap_subscriptions_09_subscription_ends_on_max_events
+  Scenario: Receive notification for subscription-ended event on max events reached
+    Given an existing sim-swap-subscriptions subscription with the property "config.subscriptionMaxEvents" set to 1
+    When the event subscribed occurs
+    Then event notification "swapped" is received on callback-url
     And event notification "subscription-ended" is received on callback-url
-    And notification body complies with the OAS schema at "##/components/schemas/EventSubscriptionEnded"
+    And notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnded"
     And type="org.camaraproject.sim-swap-subscriptions.v0.subscription-ended"
     And the response property "$.terminationReason" is "MAX_EVENTS_REACHED"
 
-#########################
-# Rainy Day scenario
-#########################
+  @sim_swap_subscriptions_10_subscription_delete_event_validation
+  Scenario: Receive notification for subscription-ended event on deletion
+    Given the path parameter "subscriptionId" is set to the identifier of an existing sim-swap-subscriptions subscription
+    When the request "deleteSimSwapSubscription" is sent
+    Then the response code is 202 or 204
+    And event notification "subscription-ended" is received on callback-url
+    And notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnded"
+    And type="org.camaraproject.sim-swap-subscriptions.v0.subscription-ended"
+    And the response property "$.terminationReason" is "SUBSCRIPTION_DELETED"
 
-# No test definition for 429 #
+######################### SIM Swap specific happy path scenario ##############################
 
-##################
-# Error code 400
-##################
+  @sim_swap_subscriptions_swapped_event_validation
+  Scenario: Receive notification for swapped event when a SIM swap is performed
+    Given a valid subscription request body
+    And the request body property "$.types" is set to "org.camaraproject.sim-swap-subscriptions.v0.swapped"
+    When the request "createSimSwapSubscription" is sent
+    Then the response code is 201
+    And a SIM swap is performed on the subscribed mobile line
+    And event notification "swapped" is received on callback-url
+    And notification body complies with the OAS schema at "#/components/schemas/CloudEvent"
+    And type="org.camaraproject.sim-swap-subscriptions.v0.swapped"
+    And data.subscriptionId is valued with the subscriptionId
 
-  @sim_swap_subscription_creation_20_invalid_protocol
-  Scenario: subscription creation with invalid protocol
-    Given use BaseURL
-    When the HTTP "POST" request is sent
-    And "$.types"="org.camaraproject.sim-swap-subscriptions.v0.swapped"
-    And "$.protocol"<>"HTTP"
-    And "$.config.subscriptionDetail.phoneNumber" is set with with provided phoneNumber
-    And "$.sink" is set to provided callbackUrl
+######################### Additional Happy Path Scenarios ##############################
+
+  @sim_swap_subscriptions_12_Create_sim_swap_subscriptions_subscription_sync_with_accesstoken_sink_credential
+  Scenario: Create sim-swap-subscriptions subscription (sync creation) with ACCESSTOKEN sinkCredential
+  # Some implementations may only support asynchronous subscription creation
+  # Some implementations may decide to not return the sinkCredential in the response (data minimization principle)
+    Given that subscriptions are created synchronously
+    And a valid subscription request body
+    And the request property "$.sinkCredential.credentialType" is set to "ACCESSTOKEN"
+    And the request property "$.sinkCredential.accessTokenType" is set to "bearer"
+    And the request property "$.sinkCredential.accessToken" is set to a valid access token
+    And the request property "$.sinkCredential.accessTokenExpiresUtc" is set to a valid expiry date in the future
+    When the request "createSimSwapSubscription" is sent
+    Then the response code is 201
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has the same value as the request header "x-correlator"
+    And the response body complies with the OAS schema at "#/components/schemas/Subscription"
+    And the response body property "$.sinkCredential.credentialType", if present, is set to value "ACCESSTOKEN"
+    And the response body property "$.sinkCredential.accessTokenExpiresUtc", if present, is set to the same value of the request property "$.sinkCredential.accessTokenExpiresUtc"
+
+  @sim_swap_subscriptions_13_Create_sim_swap_subscriptions_subscription_sync_with_private_key_jwt_sink_credential_out_of_band_provisioning
+  Scenario: Create sim-swap-subscriptions subscription (sync creation) with PRIVATE_KEY_JWT sinkCredential, out-of-band provisioning
+  # Some implementations may only support asynchronous subscription creation
+  # Some implementations may only support out_of_band provisioning
+    Given that subscriptions are created synchronously
+    And a valid subscription request body
+    And the request property "$.sinkCredential.credentialType" is set to "PRIVATE_KEY_JWT"
+    When the request "createSimSwapSubscription" is sent
+    Then the response code is 201
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has the same value as the request header "x-correlator"
+    And the response body complies with the OAS schema at "#/components/schemas/Subscription"
+
+  @sim_swap_subscriptions_14_Create_sim_swap_subscriptions_subscription_sync_with_private_key_jwt_sink_credential_in_band_provisioning
+  Scenario: Create sim-swap-subscriptions subscription (sync creation) with PRIVATE_KEY_JWT sinkCredential, in-band provisioning
+  # Some implementations may only support asynchronous subscription creation
+  # Some implementations may additionally support in_band provisioning
+    Given that subscriptions are created synchronously
+    And a valid subscription request body
+    And the request property "$.sinkCredential.credentialType" is set to "PRIVATE_KEY_JWT"
+    And the request property "$.sinkCredential.clientId" is set to a valid value
+    And the request property "$.sinkCredential.tokenUri" is set to a valid value
+    When the request "createSimSwapSubscription" is sent
+    Then the response code is 201
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has the same value as the request header "x-correlator"
+    And the response body complies with the OAS schema at "#/components/schemas/Subscription"
+    And the response body property "$.sinkCredential.credentialType" is set to value "PRIVATE_KEY_JWT"
+    And the response body property "$.sinkCredential.jwksUri" is set to a valid value
+
+  @sim_swap_subscriptions_15_Operation_to_retrieve_subscription_based_on_an_existing_subscription-id_access_token_sink_credential_returned
+  # Some implementations may decide to not return the sinkCredential in the response (data minimization principle)
+  Scenario: Get a subscription based on existing subscription-id, with ACCESSTOKEN sinkCredential returned.
+    Given the path parameter "subscriptionId" is set to the identifier of an existing sim-swap-subscriptions subscription
+    When the request "retrieveSimSwapSubscription" is sent
+    Then the response code is 200
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has the same value as the request header "x-correlator"
+    And the response body complies with the OAS schema at "#/components/schemas/Subscription"
+    And the response body property "$.sinkCredential.credentialType", if present, is set to value "ACCESSTOKEN"
+    And the response body property "$.sinkCredential.accessTokenExpiresUtc", if present, is set to the same value of the request property "$.sinkCredential.accessTokenExpiresUtc"
+
+  @sim_swap_subscriptions_16_Operation_to_retrieve_subscription_based_on_an_existing_subscription-id_private_key_jwt_sink_credential_returned
+  # Some implementations may decide to not return the sinkCredential in the response (data minimization principle)
+  # Mainly applicable for in-band provisioning of PRIVATE_KEY_JWT mode for a given subscription
+  Scenario: Get a subscription based on existing subscription-id, with PRIVATE_KEY_JWT sinkCredential returned.
+    Given the path parameter "subscriptionId" is set to the identifier of an existing sim-swap-subscriptions subscription
+    When the request "retrieveSimSwapSubscription" is sent
+    Then the response code is 200
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has the same value as the request header "x-correlator"
+    And the response body complies with the OAS schema at "#/components/schemas/Subscription"
+    And the response body property "$.sinkCredential.credentialType" is set to value "PRIVATE_KEY_JWT"
+    And the response body property "$.sinkCredential.jwksUri" is set to a valid value
+
+########################### Error response scenarios ############################################
+########################### Subscription creation scenarios #####################################
+
+  @sim_swap_subscriptions_20_creation_sim_swap_subscriptions_subscription_with_invalid_parameter
+  Scenario: Create sim-swap-subscriptions subscription with invalid parameter
+    Given the request body is not compliant with the schema "#/components/schemas/SubscriptionRequest"
+    When the request "createSimSwapSubscription" is sent
+    Then the response code is 400
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
+  @sim_swap_subscriptions_21_creation_of_subscription_with_expiry_time_in_past
+  Scenario: Expiry time in past
+    Given a valid sim-swap-subscriptions subscription request body
+    And request body property "$.config.subscriptionExpireTime" in the past
+    When the request "createSimSwapSubscription" is sent
+    Then the response code is 400
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
+  @sim_swap_subscriptions_subscription_22_creation_with_invalid_eventType
+  Scenario: Subscription creation with invalid event type
+    Given a valid sim-swap-subscriptions subscription request body
+    And the request body property "$.types" is set to invalid value
+    When the request "createSimSwapSubscription" is sent
+    Then the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
+  @sim_swap_subscriptions_subscription_23_invalid_protocol
+  Scenario: Subscription creation with invalid protocol
+    Given a valid sim-swap-subscriptions subscription request body
+    And the request property "$.protocol" is not set to "HTTP"
+    When the request "createSimSwapSubscription" is sent
     Then the response property "$.status" is 400
     And the response property "$.code" is "INVALID_PROTOCOL"
     And the response property "$.message" contains a user friendly text
 
-  @sim_swap_subscription_creation_21_invalid_credential
-  Scenario: subscription creation with invalid credential
-    Given use BaseURL
-    When the HTTP "POST" request is sent
-    And "$.types"="org.camaraproject.sim-swap-subscriptions.v0.swapped"
-    And "$.protocol"="HTTP"
-    And "$.config.subscriptionDetail.phoneNumber" is set with with provided phoneNumber
-    And "$.sink" is set to provided callbackUrl
-    And "$.sinkCredential.credentialType" <> "ACCESSTOKEN"
-    And "$.sinkCredential.accessTokenType" = "bearer"
-    And "$.sinkCredential.accessToken" is valued with a valid value
-    And "$.sinkCredential.accessTokenExpiresUtc" is valued with a valid value
+  @sim_swap_subscriptions_subscription_24_invalid_credential
+  Scenario: Subscription creation with invalid credential
+    Given a valid sim-swap-subscriptions subscription request body
+    And the request property "$.protocol" is set to "HTTP"
+    And the request property "$.sinkCredential.credentialType" is not set to "ACCESSTOKEN" and is not set to "PRIVATE_KEY_JWT"
+    When the request "createSimSwapSubscription" is sent
     Then the response property "$.status" is 400
     And the response property "$.code" is "INVALID_CREDENTIAL"
     And the response property "$.message" contains a user friendly text
 
-  @sim_swap_subscription_creation_22_invalid_token
-  Scenario: subscription creation with invalid token
-    Given use BaseURL
-    When the HTTP "POST" request is sent
-    And "$.types"="org.camaraproject.sim-swap-subscriptions.v0.swapped"
-    And "$.protocol"="HTTP"
-    And "$.config.subscriptionDetail.phoneNumber" is set with with provided phoneNumber
-    And "$.sink" is set to provided callbackUrl
-    And "$.sinkCredential.credentialType" = "ACCESSTOKEN"
-    And "$.sinkCredential.accessTokenType" <> "bearer"
-    And "$.sinkCredential.accessToken" is valued with a valid value
-    And "$.sinkCredential.accessTokenExpiresUtc" is valued with a valid value
+  @sim_swap_subscriptions_subscription_25_invalid_token
+  Scenario: Subscription creation with invalid token
+    Given a valid sim-swap-subscriptions subscription request body
+    And the request property "$.protocol" is set to "HTTP"
+    And the request property "$.sinkCredential.credentialType" is set to "ACCESSTOKEN"
+    And the request property "$.sinkCredential.accessTokenType" is not set to "bearer"
+    And the request property "$.sinkCredential.accessToken" is valued with a valid value
+    And the request property "$.sinkCredential.accessTokenExpiresUtc" is valued with a valid value
+    When the request "createSimSwapSubscription" is sent
     Then the response property "$.status" is 400
     And the response property "$.code" is "INVALID_TOKEN"
     And the response property "$.message" contains a user friendly text
 
-  @sim_swap_subscription_creation_23_invalid_eventType
-  Scenario: subscription creation with invalid event type
-    Given use BaseURL
-    When the HTTP "POST" request is sent
-    And "$.types"<>"org.camaraproject.sim-swap-subscriptions.v0.swapped"
-    And "$.protocol"="HTTP"
-    And "$.config.subscriptionDetail.phoneNumber" is set with with provided phoneNumber
-    And "$.sink" is set to provided callbackUrl
+  @sim_swap_subscriptions_subscription_26_invalid_url
+  Scenario: Subscription creation with invalid url
+    Given a valid sim-swap-subscriptions subscription request body
+    And the request property "$.protocol" is set to "HTTP"
+    And the request property "$.sink" is set to "invalid-url"
+    When the request "createSimSwapSubscription" is sent
     Then the response property "$.status" is 400
-    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.code" is "INVALID_SINK"
     And the response property "$.message" contains a user friendly text
 
-  @sim_swap_subscription_creation_24_invalid_subscription_expire_time
-  Scenario: subscription creation with invalid expire time
-    Given use BaseURL
-    When the HTTP "POST" request is sent
-    And "$.types"="org.camaraproject.sim-swap-subscriptions.v0.swapped"
-    And "$.protocol"="HTTP"
-    And "$.config.subscriptionDetail.phoneNumber" is set with with provided phoneNumber
-    And "$.sink" is set to provided callbackUrl
-    And "$.config.subscriptionExpireTime" is set in the past
-    Then the response property "$.status" is 400
-    And the response property "$.code" is "INVALID_ARGUMENT"
-    And the response property "$.message" contains a user friendly text
-
-  @sim_swap_subscription_creation_25_require_input_properties_missing
-  Scenario Outline: subscription creation with required properties missing
-    Given use BaseURL
-    When the HTTP "POST" request is sent
-    And the request body property "<input_property>" is not included
-    Then the response property "$.status" is 400
-    And the response property "$.code" is "INVALID_ARGUMENT"
-    And the response property "$.message" contains a user friendly text
-
-    Examples:
-      | input_property                           |
-      | $.protocol                               |
-      | $.sink                                   |
-      | $.types                                  |
-      | $.config.subscriptionDetail.phoneNumber  |
-
-  @sim_swap_subscription_creation_26_invalid_sink
-  Scenario: subscription creation with invalid sink
-    Given use BaseURL
-    When the HTTP "POST" request is sent
-    And "$.types"="org.camaraproject.sim-swap-subscriptions.v0.swapped"
-    And "$.protocol"="HTTP"
-    And "$.config.subscriptionDetail.phoneNumber" is set with with provided phoneNumber
-    And "$.sink" is not set to an url
-    And "$.config.subscriptionExpireTime" is set in the past
-    Then the response property "$.status" is 400
-    And the response property "$.code" is "INVALID_ARGUMENT"
-    And the response property "$.message" contains a user friendly text
-
-##################
-# Error Code 401
-##################
-
-  @sim_swap_subscription_creation_40_no_authorization_header
-  Scenario: No Authorization header
-    Given the header "Authorization" is removed
-    And use BaseUrL
-    And the request body is set to a valid request body
-    When the HTTP "POST" request is sent
-    Then the response property "$.status" is 401
-    And the response property "$.code" is "UNAUTHENTICATED"
-    And the response property "$.message" contains a user friendly text
-
-  @sim_swap_subscription_creation_41_expired_access_token
-  Scenario: Expired access token
-    Given the header "Authorization" is set to an expired access token
-    And use BaseUrL
-    And the request body is set to a valid request body
-    When the HTTP "POST" request is sent
-    Then the response property "$.status" is 401
-    And the response property "$.code" is "UNAUTHENTICATED"
-    And the response property "$.message" contains a user friendly text
-
-  @sim_swap_subscription_creation_42_invalid_access_token
-  Scenario: Invalid access token
-    Given the header "Authorization" is set to an invalid access token
-    And use BaseUrL
-    And the request body is set to a valid request body
-    When the HTTP "POST" request is sent
-    Then the response header "Content-Type" is "application/json"
+  @sim_swap_subscriptions_27_no_authorization_header_for_create_subscription
+  Scenario: No Authorization header for create subscription
+    Given a valid sim-swap-subscriptions subscription request body
+    And the request does not include the "Authorization" header
+    When the request "createSimSwapSubscription" is sent
+    Then the response status code is 401
     And the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-##################
-# Error Code 404
-##################
+  @sim_swap_subscriptions_28_expired_access_token_for_create_subscription
+  Scenario: Expired access token for create subscription
+    Given a valid sim-swap-subscriptions subscription request body and header "Authorization" is expired
+    When the request "createSimSwapSubscription" is sent
+    Then the response status code is 401
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
 
-  @sim_swap_subscription_retrieve_80_not_found_retrieve_by_id
-  Scenario: Request to retrieve a non-existing subscription
-    Given use BaseURL
-    When the HTTP "GET" request is sent with subscriptionId set to non-existing subscription id
-    Then the response property "$.status" is 404
+  @sim_swap_subscriptions_29_invalid_access_token_for_create_subscription
+  Scenario: Invalid access token for create subscription
+    Given a valid sim-swap-subscriptions subscription request body
+    And header "Authorization" set to an invalid access token
+    When the request "createSimSwapSubscription" is sent
+    Then the response status code is 401
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
+
+########################### Subscription retrieval scenarios #####################################
+
+  @sim_swap_subscriptions_30_no_authorization_header_for_get_subscription
+  Scenario: No Authorization header for get subscription
+    Given header "Authorization" is not present
+    And path parameter "subscriptionId" is set to the identifier of an existing sim-swap-subscriptions subscription
+    When the request "retrieveSimSwapSubscription" is sent
+    Then the response status code is 401
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
+
+  @sim_swap_subscriptions_31_expired_access_token_for_get_subscription
+  Scenario: Expired access token for get subscription
+    Given the header "Authorization" is set to expired token
+    And path parameter "subscriptionId" is set to the identifier of an existing sim-swap-subscriptions subscription
+    When the request "retrieveSimSwapSubscription" is sent
+    Then the response status code is 401
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
+
+  @sim_swap_subscriptions_32_invalid_access_token_for_get_subscription
+  Scenario: Invalid access token for get subscription
+    Given the header "Authorization" set to an invalid access token
+    And path parameter "subscriptionId" is set to the identifier of an existing sim-swap-subscriptions subscription
+    When the request "retrieveSimSwapSubscription" is sent
+    Then the response status code is 401
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
+
+  @sim_swap_subscriptions_33_get_unknown_sim_swap_subscriptions_subscription_for_a_device
+  Scenario: Get method for sim-swap-subscriptions subscription with subscription-id unknown to the system
+    Given the path parameter "subscriptionId" is set to a value not corresponding to any existing subscription
+    When the request "retrieveSimSwapSubscription" is sent
+    Then the response code is 404
+    And the response property "$.status" is 404
     And the response property "$.code" is "NOT_FOUND"
     And the response property "$.message" contains a user friendly text
 
-  @sim_swap_subscription_delete_81_not_found_delete_by_id
-  Scenario: Request to delete a non-existing subscription
-    Given use BaseURL
-    When the HTTP "DELETE" request is sent subscriptionId set to non-existing subscription id
-    Then the response property "$.status" is 404
+########################### Subscription list retrieval scenarios #####################################
+
+  @sim_swap_subscriptions_40_no_authorization_header_for_list_subscription
+  Scenario: No Authorization header for list subscription
+    Given header "Authorization" is not present
+    When the request "retrieveSimSwapSubscriptionList" is sent
+    Then the response status code is 401
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
+
+  @sim_swap_subscriptions_41_expired_access_token_for_list_subscription
+  Scenario: Expired access token for list subscription
+    Given the header "Authorization" is set to expired token
+    When the request "retrieveSimSwapSubscriptionList" is sent
+    Then the response status code is 401
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
+
+  @sim_swap_subscriptions_42_invalid_access_token_for_list_subscription
+  Scenario: Invalid access token for list subscription
+    Given the header "Authorization" set to an invalid access token
+    When the request "retrieveSimSwapSubscriptionList" is sent
+    Then the response status code is 401
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
+
+########################### Subscription deletion scenarios #####################################
+
+  @sim_swap_subscriptions_50_no_authorization_header_for_delete_subscription
+  Scenario: No Authorization header for delete subscription
+    Given header "Authorization" is set without a token
+    And path parameter "subscriptionId" is set to the identifier of an existing sim-swap-subscriptions subscription
+    When the request "deleteSimSwapSubscription" is sent
+    Then the response status code is 401
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
+
+  @sim_swap_subscriptions_51_expired_access_token_for_delete_subscription
+  Scenario: Expired access token for delete subscription
+    Given header "Authorization" is set with an expired token
+    And path parameter "subscriptionId" is set to the identifier of an existing sim-swap-subscriptions subscription
+    When the request "deleteSimSwapSubscription" is sent
+    Then the response status code is 401
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
+
+  @sim_swap_subscriptions_52_invalid_access_token_for_delete_subscription
+  Scenario: Invalid access token for delete subscription
+    Given header "Authorization" set to an invalid access token
+    And path parameter "subscriptionId" is set to the identifier of an existing sim-swap-subscriptions subscription
+    When the request "deleteSimSwapSubscription" is sent
+    Then the response status code is 401
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
+
+  @sim_swap_subscriptions_53_delete_invalid_sim_swap_subscriptions_subscription
+  Scenario: Delete sim-swap-subscriptions subscription with subscription-id unknown to the system
+    Given the path parameter "subscriptionId" is set to a value not corresponding to any existing subscription
+    When the request "deleteSimSwapSubscription" is sent
+    Then the response code is 404
+    And the response property "$.status" is 404
     And the response property "$.code" is "NOT_FOUND"
     And the response property "$.message" contains a user friendly text
 
-##################
-# Error Code 422
-##################
+######## Specific Subscription error scenario if Private JWT Key is not pre-configured ################
 
-  @sim_swap_subscription_creation_101_phone_number_token_mismatch
-  Scenario: Inconsistent access token context for the phone number
-    # To test this, a token have to be obtained for a different phone number
-    Given the request body property "$.config.subscriptionDetail.phoneNumber" is set to a valid testing phone number
-    And the header "Authorization" is set to a valid access token identifying a phone number
-    And use BaseUrL
-    When the HTTP "POST" request is sent
+  @sim_swap_subscriptions_61_creation_with_private_jwt_key_not_configured
+  Scenario: Private JWT Key not configured for subscription creation
+    Given the API provider requires the use of a Private JWT key mechanism for subscription creation authentication
+    And the Private JWT key mechanism is not pre-configured in the environment
+    And a valid subscription request body with the property "$.sinkCredential.credentialType" set to "PRIVATE_KEY_JWT"
+    When the request "createSimSwapSubscription" is sent
+    Then the response code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "PRIVATE_KEY_JWT_NOT_CONFIGURED"
+    And the response property "$.message" contains a user friendly text
+
+######## SIM Swap specific 422 error scenarios ################
+
+  @sim_swap_subscriptions_C02.01_phone_number_not_schema_compliant
+  Scenario: Phone number value does not comply with the schema
+    Given the request body property "$.config.subscriptionDetail.phoneNumber" does not comply with the OAS schema at "#/components/schemas/PhoneNumber"
+    When the request "createSimSwapSubscription" is sent
+    Then the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
+  @sim_swap_subscriptions_C02.03_unnecessary_phone_number
+  Scenario: Phone number not to be included when it can be deduced from the access token
+    Given the header "Authorization" is set to a valid access token identifying a phone number
+    And the request body property "$.config.subscriptionDetail.phoneNumber" is set to a valid phone number
+    When the request "createSimSwapSubscription" is sent
     Then the response property "$.status" is 422
     And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
     And the response property "$.message" contains a user friendly text
 
-  @sim_swap_subscription_creation_100_not_applicable
-  Scenario: request for an unapplicable phone number for sim swap subscription
-    # To test this it is required to have a phone number not compatible with sim swap subscription
-    Given use BaseUrL
-    When the HTTP "POST" request is sent
-    And "$.types"="org.camaraproject.sim-swap-subscriptions.v0.swapped"
-    And "$.protocol"="HTTP"
-    And "$.config.subscriptionDetail.phoneNumber" is set to a valid testing device that does not allow sim swap subscription
-    And "$.sink" is set to provided callbackUrl
-    Then the response property "$.status" is 422
-    And the response property "$.code" is "UNSUPPORTED_IDENTIFIER"
-    And the response property "$.message" contains a user friendly text
-
-  @sim_swap_subscription_creation_102_missing_identifier
-  Scenario: request without any device identifier for sim swap subscription
-    Given use BaseUrL
-    When the HTTP "POST" request is sent
-    And "$.types"="org.camaraproject.sim-swap-subscriptions.v0.swapped"
-    And "$.protocol"="HTTP"
-    And "$.config.subscriptionDetail.phoneNumber" is not valued
-    And the valid access token does no identified a device
-    And "$.sink" is set to provided callbackUrl
+  @sim_swap_subscriptions_C02.04_missing_phone_number
+  Scenario: Phone number not included and cannot be deducted from the access token
+    Given the header "Authorization" is set to a valid access token not identifying a phone number
+    And the request body property "$.config.subscriptionDetail.phoneNumber" is not included
+    When the request "createSimSwapSubscription" is sent
     Then the response property "$.status" is 422
     And the response property "$.code" is "MISSING_IDENTIFIER"
     And the response property "$.message" contains a user friendly text
+
+  @sim_swap_subscriptions_C02.05_phone_number_not_supported
+  Scenario: Phone number not supported by the service
+    Given the request body property "$.config.subscriptionDetail.phoneNumber" is set to a valid phone number not supported by the service
+    When the request "createSimSwapSubscription" is sent
+    Then the response property "$.status" is 422
+    And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
+    And the response property "$.message" contains a user friendly text
+
+######## Subscription Pagination Scenarios (Optional depending on API initiative) ################
+
+# Check applicability of below tests according to the nature of the API initiative Use Cases
+
+  @sim_swap_subscriptions_70_pagination_default_values
+  Scenario: Subscription list pagination with default values for page and perPage
+    Given an API client with more than 20 sim-swap-subscriptions subscriptions created
+    When the request "retrieveSimSwapSubscriptionList" is sent without setting query parameters "page" and "perPage"
+    Then the response code is 200
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has the same value as the request header "x-correlator"
+    And the response header "Link" contains a link to the next page with rel="next"
+    And the response body complies with the OAS schema at "#/components/schemas/SubscriptionList"
+    And the response body property "$.subscriptions" has 20 items and each item complies with the OAS schema at "#/components/schemas/Subscription"
+    And the response body property "$.pagination" complies with the OAS schema at "#/components/schemas/Pagination"
+    And the response body property "$.pagination.page" is 1
+    And the response body property "$.pagination.perPage" is 20
+
+  @sim_swap_subscriptions_71_pagination_custom_values
+  Scenario: Subscription list pagination with custom values for page and perPage
+    Given an API client with more than 40 sim-swap-subscriptions subscriptions created
+    When the request "retrieveSimSwapSubscriptionList" is sent with query parameters "page" set to 1 and "perPage" set to 20
+    Then the response code is 200
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has the same value as the request header "x-correlator"
+    And the response header "Link" contains a link to the next page with rel="next"
+    And the response header "X-Total-Pages" is equal to the value of the response body property "$.pagination.totalPages"
+    And the response header "X-Total-Count" is equal to the value of the response body property "$.pagination.totalCount"
+    And the response body complies with the OAS schema at "#/components/schemas/SubscriptionList"
+    And the response body property "$.subscriptions" has 20 items and each item complies with the OAS schema at "#/components/schemas/Subscription"
+    And the response body property "$.pagination" complies with the OAS schema at "#/components/schemas/Pagination"
+    And the response body property "$.pagination.page" is 1
+    And the response body property "$.pagination.perPage" is 20
+    And the response body property "$.pagination.totalPages", if present, is greater than 2
+    And the response body property "$.pagination.totalCount", if present, is greater than 40
+
+  @sim_swap_subscriptions_72_pagination_middle_page
+  Scenario: Subscription list pagination fetching a middle page of the list
+    Given an API client with more than 40 sim-swap-subscriptions subscriptions created
+    When the request "retrieveSimSwapSubscriptionList" is sent with query parameters "page" set to 2 and "perPage" set to 20
+    Then the response code is 200
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has the same value as the request header "x-correlator"
+    And the response header "Link" contains a link to the previous page with rel="prev" and a link to the next page with rel="next"
+    And the response header "X-Total-Pages" is equal to the value of the response body property "$.pagination.totalPages"
+    And the response header "X-Total-Count" is equal to the value of the response body property "$.pagination.totalCount"
+    And the response body complies with the OAS schema at "#/components/schemas/SubscriptionList"
+    And the response body property "$.subscriptions" has 20 items and each item complies with the OAS schema at "#/components/schemas/Subscription"
+    And the response body property "$.pagination" complies with the OAS schema at "#/components/schemas/Pagination"
+    And the response body property "$.pagination.page" is 2
+    And the response body property "$.pagination.perPage" is 20
+    And the response body property "$.pagination.totalPages", if present, is greater than 2
+    And the response body property "$.pagination.totalCount", if present, is greater than 40
+
+  @sim_swap_subscriptions_73_pagination_last_page
+  Scenario: Subscription list pagination fetching the last page of the list
+    Given an API client with more than 40 and less than 60 sim-swap-subscriptions subscriptions created
+    When the request "retrieveSimSwapSubscriptionList" is sent with query parameters "page" set to 3 and "perPage" set to 20
+    Then the response code is 200
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has the same value as the request header "x-correlator"
+    And the response header "Link" contains a link to the previous page with rel="prev"
+    And the response header "X-Total-Pages" is equal to the value of the response body property "$.pagination.totalPages"
+    And the response header "X-Total-Count" is equal to the value of the response body property "$.pagination.totalCount"
+    And the response body complies with the OAS schema at "#/components/schemas/SubscriptionList"
+    And the response body property "$.subscriptions" has between 1 and 20 items and each item complies with the OAS schema at "#/components/schemas/Subscription"
+    And the response body property "$.pagination" complies with the OAS schema at "#/components/schemas/Pagination"
+    And the response body property "$.pagination.page" is 3
+    And the response body property "$.pagination.perPage" is 20
+    And the response body property "$.pagination.totalPages", if present, is 3
+    And the response body property "$.pagination.totalCount", if present, is greater than 40 and less than 60
+
+  @sim_swap_subscriptions_74_pagination_invalid_page_parameter
+  Scenario: Subscription list pagination with invalid value for page parameter
+    Given an API client with more than 20 sim-swap-subscriptions subscriptions created
+    When the request "retrieveSimSwapSubscriptionList" is sent with query parameter "page" set to any value less than 1 and "perPage" set to 20
+    Then the response code is 400
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
+  @sim_swap_subscriptions_75_pagination_invalid_perPage_parameter
+  Scenario: Subscription list pagination with invalid value for perPage parameter
+    Given an API client with more than 20 sim-swap-subscriptions subscriptions created
+    When the request "retrieveSimSwapSubscriptionList" is sent with query parameter "page" set to 1 and "perPage" set to any value outside the range [1-100]
+    Then the response code is 400
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+

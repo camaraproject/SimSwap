@@ -244,7 +244,11 @@ components:
             GENERIC_422_MISSING_IDENTIFIER:
               $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_422_MISSING_IDENTIFIER_PHONE_NUMBER"
             GENERIC_422_UNSUPPORTED_IDENTIFIER:
-              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_422_UNSUPPORTED_IDENTIFIER"
+              description: None of the provided identifiers is supported by the implementation
+              value:
+                status: 422
+                code: UNSUPPORTED_IDENTIFIER
+                message: The identifier provided is not supported.
             GENERIC_422_UNNECESSARY_IDENTIFIER:
               $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_422_UNNECESSARY_IDENTIFIER_PHONE_NUMBER"
   schemas:

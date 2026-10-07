@@ -627,12 +627,13 @@ components:
         - subscriptionId
       properties:
         phoneNumber:
+          allOf:
+            - $ref: "../common/CAMARA_common.yaml#/components/schemas/PhoneNumber"
           description: |
             Phone number of the subscription subject in E.164 format.
             Included only when the subscription was created with a two-legged access token.
             MUST NOT be included when a three-legged access token was used, as the API
             consumer may not be permitted to know the identity behind the access token.
-          $ref: "../common/CAMARA_common.yaml#/components/schemas/PhoneNumber"
         subscriptionId:
           $ref: "../common/CAMARA_event_common.yaml#/components/schemas/SubscriptionId"
 

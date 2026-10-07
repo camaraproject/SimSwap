@@ -160,7 +160,7 @@ paths:
         "404":
           $ref: "../common/CAMARA_common.yaml#/components/responses/IdentifierNotFound404"
         "422":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/PhoneNumberIdentifier422"
+          $ref: "#/components/responses/SimSwapUnprocessableEntity422"
         "429":
           $ref: "../common/CAMARA_common.yaml#/components/responses/TooManyRequests429"
   /check:
@@ -209,13 +209,48 @@ paths:
         "404":
           $ref: "../common/CAMARA_common.yaml#/components/responses/IdentifierNotFound404"
         "422":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/PhoneNumberIdentifier422"
+          $ref: "#/components/responses/SimSwapUnprocessableEntity422"
         "429":
           $ref: "../common/CAMARA_common.yaml#/components/responses/TooManyRequests429"
 components:
   securitySchemes:
     openId:
       $ref: "../common/CAMARA_common.yaml#/components/securitySchemes/openId"
+  responses:
+    SimSwapUnprocessableEntity422:
+      description: Unprocessable Content
+      headers:
+        x-correlator:
+          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 422
+                  code:
+                    enum:
+                      - SERVICE_NOT_APPLICABLE
+                      - MISSING_IDENTIFIER
+                      - UNSUPPORTED_IDENTIFIER
+                      - UNNECESSARY_IDENTIFIER
+          examples:
+            GENERIC_422_SERVICE_NOT_APPLICABLE:
+              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_422_SERVICE_NOT_APPLICABLE"
+            GENERIC_422_MISSING_IDENTIFIER:
+              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_422_MISSING_IDENTIFIER_PHONE_NUMBER"
+            GENERIC_422_UNSUPPORTED_IDENTIFIER:
+              description: None of the provided identifiers is supported by the implementation
+              value:
+                status: 422
+                code: UNSUPPORTED_IDENTIFIER
+                message: The identifier provided is not supported.
+            GENERIC_422_UNNECESSARY_IDENTIFIER:
+              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_422_UNNECESSARY_IDENTIFIER_PHONE_NUMBER"
   schemas:
     SimSwapInfo:
       type: object
@@ -228,7 +263,7 @@ components:
           format: date-time
           maxLength: 64
           nullable: true
-          description: Timestamp of latest SIM swap performed. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone. The value is `null` when the provider cannot return it for privacy reasons (the `monitoredPeriod` mechanism applies).
+          description: Timestamp of latest SIM swap performed, in RFC 3339 date-time format with time zone. The value is `null` when the provider cannot return it for privacy reasons (the `monitoredPeriod` mechanism applies).
           example: "2023-07-03T14:27:08.312+02:00"
         monitoredPeriod:
           type: integer

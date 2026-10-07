@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Sim Swap Subscriptions
+  title: SIM Swap Subscriptions
   description: |
     This API provides the customer with the ability to subscribe to events related to a SIM swap operation performed on an associated phone number.
 
@@ -121,14 +121,14 @@ servers:
         default: http://localhost:9091
         description: API root, defined by the service provider, e.g. `api.example.com` or `api.example.com/somepath`
 tags:
-  - name: Sim Swap Subscription
+  - name: SIM Swap Subscription
     description: Operation to manage event subscription on sim swap event (swapped)
 
 paths:
   /subscriptions:
     post:
       tags:
-        - Sim Swap Subscription
+        - SIM Swap Subscription
       summary: "Create a sim swap event subscription for a phone number"
       description: Create a sim swap event subscription for a phone number
       operationId: createSimSwapSubscription
@@ -229,7 +229,7 @@ paths:
           $ref: "../common/CAMARA_common.yaml#/components/responses/TooManyRequests429"
     get:
       tags:
-        - Sim Swap Subscription
+        - SIM Swap Subscription
       summary: "Retrieve a list of sim swap event subscription"
       description: Retrieve a list of sim swap event subscription(s)
       operationId: retrieveSubscriptionList
@@ -270,7 +270,7 @@ paths:
   /subscriptions/{subscriptionId}:
     get:
       tags:
-        - Sim Swap Subscription
+        - SIM Swap Subscription
       summary: "Retrieve a sim swap event subscription for a phone number"
       description: retrieve event subscription information for a given subscription.
       operationId: retrieveSubscription
@@ -305,7 +305,7 @@ paths:
           $ref: "../common/CAMARA_common.yaml#/components/responses/NotFound404"
     delete:
       tags:
-        - Sim Swap Subscription
+        - SIM Swap Subscription
       summary: "Delete a sim swap event subscription"
       operationId: deleteSubscription
       description: delete a  given event subscription.
@@ -372,6 +372,7 @@ components:
                     enum:
                       - SERVICE_NOT_APPLICABLE
                       - MISSING_IDENTIFIER
+                      - UNSUPPORTED_IDENTIFIER
                       - UNNECESSARY_IDENTIFIER
                       - PRIVATE_KEY_JWT_NOT_CONFIGURED
           examples:
@@ -379,6 +380,12 @@ components:
               $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_422_SERVICE_NOT_APPLICABLE"
             GENERIC_422_MISSING_IDENTIFIER_PHONE_NUMBER:
               $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_422_MISSING_IDENTIFIER_PHONE_NUMBER"
+            GENERIC_422_UNSUPPORTED_IDENTIFIER:
+              description: None of the provided identifiers is supported by the implementation
+              value:
+                status: 422
+                code: UNSUPPORTED_IDENTIFIER
+                message: The identifier provided is not supported.
             GENERIC_422_UNNECESSARY_IDENTIFIER_PHONE_NUMBER:
               $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_422_UNNECESSARY_IDENTIFIER_PHONE_NUMBER"
             GENERIC_422_PRIVATE_KEY_JWT_NOT_CONFIGURED:
@@ -624,11 +631,16 @@ components:
       description: Event detail structure for sim swap data events
       type: object
       required:
-        - phoneNumber
         - subscriptionId
       properties:
         phoneNumber:
-          $ref: "../common/CAMARA_common.yaml#/components/schemas/PhoneNumber"
+          allOf:
+            - $ref: "../common/CAMARA_common.yaml#/components/schemas/PhoneNumber"
+          description: |
+            Phone number of the subscription subject in E.164 format.
+            Included only when the subscription was created with a two-legged access token.
+            MUST NOT be included when a three-legged access token was used, as the API
+            consumer may not be permitted to know the identity behind the access token.
         subscriptionId:
           $ref: "../common/CAMARA_event_common.yaml#/components/schemas/SubscriptionId"
 
@@ -748,7 +760,7 @@ components:
           subscriptionDetail:
             phoneNumber: "+123456789"
           subscriptionExpireTime: "2025-01-17T13:18:23.682Z"
-        id: "1119920371"
+        id: 550e8400-e29b-41d4-a716-446655440000
         startsAt: "2024-06-07T16:10:15.302Z"
         expiresAt: "2024-06-07T16:10:15.302Z"
         status: ACTIVATION_REQUESTED
@@ -762,7 +774,7 @@ components:
         config:
           subscriptionDetail: {}
           subscriptionExpireTime: "2025-01-17T13:18:23.682Z"
-        id: "1119920371"
+        id: 550e8400-e29b-41d4-a716-446655440000
         startsAt: "2024-06-07T16:10:15.302Z"
         expiresAt: "2024-06-07T16:10:15.302Z"
         status: ACTIVATION_REQUESTED
@@ -778,7 +790,7 @@ components:
               subscriptionDetail:
                 phoneNumber: "+123456789"
               subscriptionExpireTime: "2025-01-17T13:18:23.682Z"
-            id: "1119920371"
+            id: 550e8400-e29b-41d4-a716-446655440000
             startsAt: "2024-06-07T16:10:15.302Z"
             expiresAt: "2024-06-07T16:10:15.302Z"
             status: ACTIVATION_REQUESTED
@@ -798,7 +810,7 @@ components:
             config:
               subscriptionDetail: {}
               subscriptionExpireTime: "2025-01-17T13:18:23.682Z"
-            id: "1119920371"
+            id: 550e8400-e29b-41d4-a716-446655440000
             startsAt: "2024-06-07T16:10:15.302Z"
             expiresAt: "2024-06-07T16:10:15.302Z"
             status: ACTIVATION_REQUESTED

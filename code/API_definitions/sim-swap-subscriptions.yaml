@@ -404,13 +404,6 @@ components:
           properties:
             subscriptionDetail:
               $ref: "#/components/schemas/CreateSubscriptionDetail"
-            initialEvent:
-              type: boolean
-              description: |
-                When set to true, the API server sends an initial notification of the subscribed
-                event type at subscription creation time if the current state of the subject
-                matches the event. When false or omitted, no initial notification is sent.
-              default: false
 
     ApiEventType:
       type: string

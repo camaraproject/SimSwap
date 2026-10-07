@@ -121,17 +121,6 @@ Feature: CAMARA Sim Swap Subscriptions API, vwip - Operations on subscriptions
     And type="org.camaraproject.sim-swap-subscriptions.v0.subscription-ended"
     And the response property "$.terminationReason" is "SUBSCRIPTION_DELETED"
 
-######################### Scenario in case initialEvent is managed ##############################
-
-  @sim_swap_subscriptions_11_subscription_creation_initial_event
-  Scenario: Receive initial event notification on creation
-    Given the API supports initial events to be sent
-    And a valid subscription request body with property "$.config.initialEvent" set to true
-    When the request "createSimSwapSubscription" is sent
-    Then the response code is 201 or 202
-    And an event notification of the subscribed type is received on callback-url
-    And notification body complies with the OAS schema at "#/components/schemas/CloudEvent"
-
 ######################### SIM Swap specific happy path scenario ##############################
 
   @sim_swap_subscriptions_swapped_event_validation

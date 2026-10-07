@@ -263,7 +263,7 @@ components:
           format: date-time
           maxLength: 64
           nullable: true
-          description: Timestamp of latest SIM swap performed, in date-time format with time zone. The value is `null` when the provider cannot return it for privacy reasons (the `monitoredPeriod` mechanism applies).
+          description: Timestamp of latest SIM swap performed, in RFC 3339 date-time format with time zone. The value is `null` when the provider cannot return it for privacy reasons (the `monitoredPeriod` mechanism applies).
           example: "2023-07-03T14:27:08.312+02:00"
         monitoredPeriod:
           type: integer

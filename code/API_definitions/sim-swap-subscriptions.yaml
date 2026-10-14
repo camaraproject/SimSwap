@@ -16,12 +16,12 @@ info:
     # API Functionality
 
     The API exposes following capabilities:
-      * **/subscriptions**: This endpoint has two operations, one that allows to retrieve the list of Sim Swap event subscriptions and another one to create new event subscriptions. The list operation supports pagination via `page` and `perPage` query parameters returning a `SubscriptionList` with subscription items and pagination headers. Creating new event subscriptions requires a sink, protocol, event types, and configuration; sink credentials are optional.
+      * **/subscriptions**: This endpoint has two operations, one that allows to retrieve the list of SIM Swap event subscriptions and another one to create new event subscriptions. The list operation supports pagination via `page` and `perPage` query parameters returning a `SubscriptionList` with subscription items and pagination headers. Creating new event subscriptions requires a sink, protocol, event types, and configuration; sink credentials are optional.
       * **/subscriptions/{subscriptionId}**: This endpoint also has two operations, one that allows to retrieve a particular event subscription by id and another one to delete an event subscription also using the id.
 
-    ## Sim Swap notification subscription
+    ## SIM Swap notification subscription
 
-    These endpoints allow to manage notification subscription on Sim Swap event.
+    These endpoints allow to manage notification subscription on SIM Swap event.
     The CAMARA subscription model is detailed in the CAMARA API design guideline document and follows Cloudevents specification. Sink credentials support the ACCESSTOKEN and PRIVATE_KEY_JWT credential types for securing webhook delivery.
 
     The `types` field is mandatory when creating a subscription, per the CAMARA subscription model, regardless of how many event types an API defines.
@@ -53,7 +53,7 @@ info:
       These rules apply for subscription:
 
       - If 3-legged access token is used, the POST and GET{id} requests & responses must NOT provide the ``phoneNumber``. For GET (list) only subscription(s) for this exactly phone number is/are retrieved (implicit filtering).
-      - If 2-legged access token is used, for POST and GET{id}, the presence of ``phoneNumber`` in the request & response is mandatory. For GET (list) the device identifier (``phoneNumber``) could be used as filtering criteria.
+      - If 2-legged access token is used, for POST and GET{id}, the presence of ``phoneNumber`` in the request & response is mandatory. For GET (list) the phone number (``phoneNumber``) could be used as filtering criteria.
 
       #### sinkCredential presence:
 
@@ -122,15 +122,15 @@ servers:
         description: API root, defined by the service provider, e.g. `api.example.com` or `api.example.com/somepath`
 tags:
   - name: SIM Swap Subscription
-    description: Operation to manage event subscription on sim swap event (swapped)
+    description: Operation to manage event subscription on SIM swap event (swapped)
 
 paths:
   /subscriptions:
     post:
       tags:
         - SIM Swap Subscription
-      summary: "Create a sim swap event subscription for a phone number"
-      description: Create a sim swap event subscription for a phone number
+      summary: "Create a SIM swap event subscription for a phone number"
+      description: Create a SIM swap event subscription for a phone number
       operationId: createSimSwapSubscription
       parameters:
         - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
@@ -156,7 +156,7 @@ paths:
               summary: "notifications callback"
               description: |
                 Important: this endpoint is to be implemented by the API consumer.
-                The sim swap server will call this endpoint whenever a swapped event occurs.
+                The SIM swap server will call this endpoint whenever a swapped event occurs.
               operationId: postNotification
               parameters:
                 - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
@@ -230,8 +230,8 @@ paths:
     get:
       tags:
         - SIM Swap Subscription
-      summary: "Retrieve a list of sim swap event subscription"
-      description: Retrieve a list of sim swap event subscription(s)
+      summary: "Retrieve a list of SIM swap event subscription"
+      description: Retrieve a list of SIM swap event subscription(s)
       operationId: retrieveSubscriptionList
       parameters:
         - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
@@ -271,7 +271,7 @@ paths:
     get:
       tags:
         - SIM Swap Subscription
-      summary: "Retrieve a sim swap event subscription for a phone number"
+      summary: "Retrieve a SIM swap event subscription for a phone number"
       description: retrieve event subscription information for a given subscription.
       operationId: retrieveSubscription
       security:
@@ -306,7 +306,7 @@ paths:
     delete:
       tags:
         - SIM Swap Subscription
-      summary: "Delete a sim swap event subscription"
+      summary: "Delete a SIM swap event subscription"
       operationId: deleteSubscription
       description: delete a  given event subscription.
       security:
@@ -317,7 +317,7 @@ paths:
         - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
       responses:
         "204":
-          description: Sim swap notification subscription deleted
+          description: SIM swap notification subscription deleted
           headers:
             x-correlator:
               $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
@@ -372,7 +372,6 @@ components:
                     enum:
                       - SERVICE_NOT_APPLICABLE
                       - MISSING_IDENTIFIER
-                      - UNSUPPORTED_IDENTIFIER
                       - UNNECESSARY_IDENTIFIER
                       - PRIVATE_KEY_JWT_NOT_CONFIGURED
           examples:
@@ -380,12 +379,6 @@ components:
               $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_422_SERVICE_NOT_APPLICABLE"
             GENERIC_422_MISSING_IDENTIFIER_PHONE_NUMBER:
               $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_422_MISSING_IDENTIFIER_PHONE_NUMBER"
-            GENERIC_422_UNSUPPORTED_IDENTIFIER:
-              description: None of the provided identifiers is supported by the implementation
-              value:
-                status: 422
-                code: UNSUPPORTED_IDENTIFIER
-                message: The identifier provided is not supported.
             GENERIC_422_UNNECESSARY_IDENTIFIER_PHONE_NUMBER:
               $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_422_UNNECESSARY_IDENTIFIER_PHONE_NUMBER"
             GENERIC_422_PRIVATE_KEY_JWT_NOT_CONFIGURED:
@@ -415,7 +408,7 @@ components:
     ApiEventType:
       type: string
       description: |
-        swapped - Event triggered when a sim swap occurs on the line
+        swapped - Event triggered when a SIM swap occurs on the line
       enum:
         - org.camaraproject.sim-swap-subscriptions.v0.swapped
 
@@ -800,7 +793,7 @@ components:
           totalCount: 1
           totalPages: 1
     SUBSCRIPTIONS_3LEGS:
-      description: A list of API consumer subscriptions. If a 3-legged access token is used, the list is specific to the device associated with that token.
+      description: A list of API consumer subscriptions. If a 3-legged access token is used, the list is specific to the phone number associated with that token.
       value:
         subscriptions:
           - protocol: HTTP

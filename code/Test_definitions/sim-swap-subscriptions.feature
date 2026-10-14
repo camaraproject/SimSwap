@@ -562,4 +562,3 @@ Feature: CAMARA Sim Swap Subscriptions API, vwip - Operations on subscriptions
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
-

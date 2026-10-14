@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Sim Swap Subscriptions
+  title: SIM Swap Subscriptions
   description: |
     This API provides the customer with the ability to subscribe to events related to a SIM swap operation performed on an associated phone number.
 
@@ -16,12 +16,12 @@ info:
     # API Functionality
 
     The API exposes following capabilities:
-      * **/subscriptions**: This endpoint has two operations, one that allows to retrieve the list of Sim Swap event subscriptions and another one to create new event subscriptions. The list operation supports pagination via `page` and `perPage` query parameters returning a `SubscriptionList` with subscription items and pagination headers. Creating new event subscriptions requires a sink, protocol, event types, and configuration; sink credentials are optional.
+      * **/subscriptions**: This endpoint has two operations, one that allows to retrieve the list of SIM Swap event subscriptions and another one to create new event subscriptions. The list operation supports pagination via `page` and `perPage` query parameters returning a `SubscriptionList` with subscription items and pagination headers. Creating new event subscriptions requires a sink, protocol, event types, and configuration; sink credentials are optional.
       * **/subscriptions/{subscriptionId}**: This endpoint also has two operations, one that allows to retrieve a particular event subscription by id and another one to delete an event subscription also using the id.
 
-    ## Sim Swap notification subscription
+    ## SIM Swap notification subscription
 
-    These endpoints allow to manage notification subscription on Sim Swap event.
+    These endpoints allow to manage notification subscription on SIM Swap event.
     The CAMARA subscription model is detailed in the CAMARA API design guideline document and follows Cloudevents specification. Sink credentials support the ACCESSTOKEN and PRIVATE_KEY_JWT credential types for securing webhook delivery.
 
     The `types` field is mandatory when creating a subscription, per the CAMARA subscription model, regardless of how many event types an API defines.
@@ -53,7 +53,7 @@ info:
       These rules apply for subscription:
 
       - If 3-legged access token is used, the POST and GET{id} requests & responses must NOT provide the ``phoneNumber``. For GET (list) only subscription(s) for this exactly phone number is/are retrieved (implicit filtering).
-      - If 2-legged access token is used, for POST and GET{id}, the presence of ``phoneNumber`` in the request & response is mandatory. For GET (list) the device identifier (``phoneNumber``) could be used as filtering criteria.
+      - If 2-legged access token is used, for POST and GET{id}, the presence of ``phoneNumber`` in the request & response is mandatory. For GET (list) the phone number (``phoneNumber``) could be used as filtering criteria.
 
       #### sinkCredential presence:
 
@@ -121,16 +121,16 @@ servers:
         default: http://localhost:9091
         description: API root, defined by the service provider, e.g. `api.example.com` or `api.example.com/somepath`
 tags:
-  - name: Sim Swap Subscription
-    description: Operation to manage event subscription on sim swap event (swapped)
+  - name: SIM Swap Subscription
+    description: Operation to manage event subscription on SIM swap event (swapped)
 
 paths:
   /subscriptions:
     post:
       tags:
-        - Sim Swap Subscription
-      summary: "Create a sim swap event subscription for a phone number"
-      description: Create a sim swap event subscription for a phone number
+        - SIM Swap Subscription
+      summary: "Create a SIM swap event subscription for a phone number"
+      description: Create a SIM swap event subscription for a phone number
       operationId: createSimSwapSubscription
       parameters:
         - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
@@ -156,7 +156,7 @@ paths:
               summary: "notifications callback"
               description: |
                 Important: this endpoint is to be implemented by the API consumer.
-                The sim swap server will call this endpoint whenever a swapped event occurs.
+                The SIM swap server will call this endpoint whenever a swapped event occurs.
               operationId: postNotification
               parameters:
                 - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
@@ -229,9 +229,9 @@ paths:
           $ref: "../common/CAMARA_common.yaml#/components/responses/TooManyRequests429"
     get:
       tags:
-        - Sim Swap Subscription
-      summary: "Retrieve a list of sim swap event subscription"
-      description: Retrieve a list of sim swap event subscription(s)
+        - SIM Swap Subscription
+      summary: "Retrieve a list of SIM swap event subscription"
+      description: Retrieve a list of SIM swap event subscription(s)
       operationId: retrieveSubscriptionList
       parameters:
         - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
@@ -270,8 +270,8 @@ paths:
   /subscriptions/{subscriptionId}:
     get:
       tags:
-        - Sim Swap Subscription
-      summary: "Retrieve a sim swap event subscription for a phone number"
+        - SIM Swap Subscription
+      summary: "Retrieve a SIM swap event subscription for a phone number"
       description: retrieve event subscription information for a given subscription.
       operationId: retrieveSubscription
       security:
@@ -305,8 +305,8 @@ paths:
           $ref: "../common/CAMARA_common.yaml#/components/responses/NotFound404"
     delete:
       tags:
-        - Sim Swap Subscription
-      summary: "Delete a sim swap event subscription"
+        - SIM Swap Subscription
+      summary: "Delete a SIM swap event subscription"
       operationId: deleteSubscription
       description: delete a  given event subscription.
       security:
@@ -317,7 +317,7 @@ paths:
         - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
       responses:
         "204":
-          description: Sim swap notification subscription deleted
+          description: SIM swap notification subscription deleted
           headers:
             x-correlator:
               $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
@@ -408,7 +408,7 @@ components:
     ApiEventType:
       type: string
       description: |
-        swapped - Event triggered when a sim swap occurs on the line
+        swapped - Event triggered when a SIM swap occurs on the line
       enum:
         - org.camaraproject.sim-swap-subscriptions.v0.swapped
 
@@ -624,11 +624,16 @@ components:
       description: Event detail structure for sim swap data events
       type: object
       required:
-        - phoneNumber
         - subscriptionId
       properties:
         phoneNumber:
-          $ref: "../common/CAMARA_common.yaml#/components/schemas/PhoneNumber"
+          allOf:
+            - $ref: "../common/CAMARA_common.yaml#/components/schemas/PhoneNumber"
+          description: |
+            Phone number of the subscription subject in E.164 format.
+            Included only when the subscription was created with a two-legged access token.
+            MUST NOT be included when a three-legged access token was used, as the API
+            consumer may not be permitted to know the identity behind the access token.
         subscriptionId:
           $ref: "../common/CAMARA_event_common.yaml#/components/schemas/SubscriptionId"
 
@@ -748,7 +753,7 @@ components:
           subscriptionDetail:
             phoneNumber: "+123456789"
           subscriptionExpireTime: "2025-01-17T13:18:23.682Z"
-        id: "1119920371"
+        id: 550e8400-e29b-41d4-a716-446655440000
         startsAt: "2024-06-07T16:10:15.302Z"
         expiresAt: "2024-06-07T16:10:15.302Z"
         status: ACTIVATION_REQUESTED
@@ -762,7 +767,7 @@ components:
         config:
           subscriptionDetail: {}
           subscriptionExpireTime: "2025-01-17T13:18:23.682Z"
-        id: "1119920371"
+        id: 550e8400-e29b-41d4-a716-446655440000
         startsAt: "2024-06-07T16:10:15.302Z"
         expiresAt: "2024-06-07T16:10:15.302Z"
         status: ACTIVATION_REQUESTED
@@ -778,7 +783,7 @@ components:
               subscriptionDetail:
                 phoneNumber: "+123456789"
               subscriptionExpireTime: "2025-01-17T13:18:23.682Z"
-            id: "1119920371"
+            id: 550e8400-e29b-41d4-a716-446655440000
             startsAt: "2024-06-07T16:10:15.302Z"
             expiresAt: "2024-06-07T16:10:15.302Z"
             status: ACTIVATION_REQUESTED
@@ -788,7 +793,7 @@ components:
           totalCount: 1
           totalPages: 1
     SUBSCRIPTIONS_3LEGS:
-      description: A list of API consumer subscriptions. If a 3-legged access token is used, the list is specific to the device associated with that token.
+      description: A list of API consumer subscriptions. If a 3-legged access token is used, the list is specific to the phone number associated with that token.
       value:
         subscriptions:
           - protocol: HTTP
@@ -798,7 +803,7 @@ components:
             config:
               subscriptionDetail: {}
               subscriptionExpireTime: "2025-01-17T13:18:23.682Z"
-            id: "1119920371"
+            id: 550e8400-e29b-41d4-a716-446655440000
             startsAt: "2024-06-07T16:10:15.302Z"
             expiresAt: "2024-06-07T16:10:15.302Z"
             status: ACTIVATION_REQUESTED

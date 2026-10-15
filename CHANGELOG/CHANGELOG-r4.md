@@ -68,7 +68,8 @@ Changes documented below are compared to version 0.4.0-rc.1.
 
 ### Changed
 
-* N/A
+* Align Commonalities r4.4 to Sim Swap and Subscriptions by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/295
+* fix: "SIM Swap" capitalisation standardised across all operation summaries, descriptions and tags; subscription operation examples unified to UUID format by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/305
 
 ### Fixed
 

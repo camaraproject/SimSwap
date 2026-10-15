@@ -72,7 +72,7 @@ Changes documented below are compared to version 0.4.0-rc.1.
 
 ### Fixed
 
-* N/A
+* fix: make phoneNumber optional in EventSwappedData — included only for 2-legged token subscriptions to avoid exposing subscriber identity by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/305
 
 ### Removed
 

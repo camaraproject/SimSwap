@@ -99,7 +99,8 @@ Changes documented below are compared to version 2.2.0-rc.3.
 
 ### Changed
 
-* N/A
+* Align Commonalities r4.4 to Sim Swap and Subscriptions by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/295
+* fix: `latestSimChange` description updated to explicitly reference RFC 3339 date-time format by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/305
 
 ### Fixed
 

@@ -77,7 +77,7 @@ Changes documented below are compared to version 0.4.0-rc.1.
 
 ### Removed
 
-* N/A
+* Error codes not applicable to this API, removed with the Commonalities r4.4 error catalogue: `400 OUT_OF_RANGE` (`GET /subscriptions`), `403 INVALID_TOKEN_CONTEXT`, `403 SUBSCRIPTION_MISMATCH`, `404 IDENTIFIER_NOT_FOUND`, `409 CONFLICT`, `409 INCOMPATIBLE_STATE`, `422 MULTIEVENT_*`, `422 UNSUPPORTED_IDENTIFIER`, `429 QUOTA_EXCEEDED` by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/295
 
 ## sim-swap 2.2.0-rc.4
 

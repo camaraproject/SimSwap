@@ -109,7 +109,7 @@ Changes documented below are compared to version 2.2.0-rc.3.
 
 ### Removed
 
-* N/A
+* Error codes not applicable to this API, removed with the Commonalities r4.4 error catalogue: `404 NOT_FOUND`, `429 QUOTA_EXCEEDED`, `400 OUT_OF_RANGE` (`POST /retrieve-date`) by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/295
 
 **Full Changelog**: https://github.com/camaraproject/SimSwap/compare/r4.1...r4.2
 

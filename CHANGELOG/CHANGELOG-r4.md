@@ -61,7 +61,7 @@ Changes documented below are compared to version 0.4.0-rc.1.
 
 ### Breaking changes
 
-* N/A
+* fix:`phoneNumber` in the `swapped` event data (`EventSwappedData`) is optional again, as it was in 0.3.0, and only included for subscriptions created with a two-legged access token. This reverts the requirement introduced in 0.4.0-rc.1, so event receivers can no longer rely on it, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/305
 
 ### Added
 
@@ -69,15 +69,17 @@ Changes documented below are compared to version 0.4.0-rc.1.
 
 ### Changed
 
-* N/A
+* Aligned with Commonalities r4.4 (0.9.0): error responses taken from the r4.4 error catalogue, mandatory `info.description` sections updated by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/295
+* "SIM Swap" capitalisation standardised across all operation summaries, descriptions and tags; subscription operation examples unified to UUID format by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/305
 
 ### Fixed
 
-* N/A
+* fix: `phoneNumber` in `EventSwappedData` made optional again, as in 0.3.0: it is only included for subscriptions created with a two-legged access token, so the subscriber identity is not exposed to API consumers using a three-legged access token, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/305
+* fix: harmonise "SIM swap" casing and subscriptionId examples (fixes #308) by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/309
 
 ### Removed
 
-* N/A
+* Error codes not applicable to this API, removed with the Commonalities r4.4 error catalogue: `400 OUT_OF_RANGE` (`GET /subscriptions`), `403 INVALID_TOKEN_CONTEXT`, `403 SUBSCRIPTION_MISMATCH`, `404 IDENTIFIER_NOT_FOUND`, `409 CONFLICT`, `409 INCOMPATIBLE_STATE`, `422 MULTIEVENT_*`, `422 UNSUPPORTED_IDENTIFIER`, `429 QUOTA_EXCEEDED` by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/295
 
 ## sim-swap 2.2.0-rc.4
 
@@ -100,15 +102,16 @@ Changes documented below are compared to version 2.2.0-rc.3.
 
 ### Changed
 
-* N/A
+* Aligned with Commonalities r4.4 (0.9.0): error responses taken from the r4.4 error catalogue, mandatory `info.description` sections updated by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/295
+* `latestSimChange` description updated to explicitly reference RFC 3339 date-time format by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/305
 
 ### Fixed
 
-* N/A
+* fix: harmonise "SIM swap" casing and subscriptionId examples (fixes #308) by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/309
 
 ### Removed
 
-* N/A
+* Error codes not applicable to this API, removed with the Commonalities r4.4 error catalogue: `404 NOT_FOUND`, `429 QUOTA_EXCEEDED`, `400 OUT_OF_RANGE` (`POST /retrieve-date`) by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/295
 
 **Full Changelog**: https://github.com/camaraproject/SimSwap/compare/r4.1...r4.2
 

@@ -101,7 +101,7 @@ Changes documented below are compared to version 2.2.0-rc.3.
 ### Changed
 
 * Aligned with Commonalities r4.4 (0.9.0): error responses taken from the r4.4 error catalogue, mandatory `info.description` sections updated by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/295
-* fix: `latestSimChange` description updated to explicitly reference RFC 3339 date-time format by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/305
+* `latestSimChange` description updated to explicitly reference RFC 3339 date-time format by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/305
 
 ### Fixed
 

@@ -1,4 +1,4 @@
-Feature: CAMARA SIM Swap Subscriptions API, vwip - Operations on subscriptions
+Feature: CAMARA SIM Swap Subscriptions API, v0.4.0-rc.2 - Operations on subscriptions
 
   # Input to be provided by the implementation to the tester
   #
@@ -10,7 +10,7 @@ Feature: CAMARA SIM Swap Subscriptions API, vwip - Operations on subscriptions
   # References to OAS spec schemas refer to schemas specified in sim-swap-subscriptions.yaml
 
   Background: Common sim-swap-subscriptions setup
-    Given the resource "/sim-swap-subscriptions/vwip/subscriptions" as BaseURL
+    Given the resource "/sim-swap-subscriptions/v0.4rc2/subscriptions" as BaseURL
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"

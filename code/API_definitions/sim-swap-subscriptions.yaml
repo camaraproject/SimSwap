@@ -44,7 +44,7 @@ info:
     This endpoint describes the event notification received on subscription listener side when the event occurred. As for subscription, detailed description of the event notification is provided in the CAMARA API design guideline document.
 
     **WARNING**: This callback endpoint must be exposed on the listener side as `POST /{$request.body#/sink}`
-      will be posted by the sim swap resource server to the webhook url provided by notification
+      will be posted by the SIM swap resource server to the webhook url provided by notification
       listener.
 
     ### Data Minimization
@@ -621,7 +621,7 @@ components:
               $ref: "#/components/schemas/EventSwappedData"
 
     EventSwappedData:
-      description: Event detail structure for sim swap data events
+      description: Event detail structure for SIM swap data events
       type: object
       required:
         - subscriptionId
@@ -684,7 +684,7 @@ components:
 
   examples:
     SWAPPED:
-      description: The cloud event when the line was sim swapped
+      description: The cloud event when the line was SIM swapped
       value:
         id: "123655"
         source: supertelco.notificationSendServer12
@@ -693,11 +693,11 @@ components:
         datacontenttype: application/json
         data:
           phoneNumber: "+123456788"
-          subscriptionId: 2ghy-55gg-7iup-yuo9
+          subscriptionId: 550e8400-e29b-41d4-a716-446655440000
         time: 2023-01-18T13:18:23.682Z
 
     SUBSCRIPTION_ENDS:
-      description: The cloud event when a sim swap subscription ends
+      description: The cloud event when a SIM swap subscription ends
       value:
         id: "123658"
         source: supertelco.notificationSendServer12
@@ -706,7 +706,7 @@ components:
         datacontenttype: application/json
         data:
           terminationReason: SUBSCRIPTION_EXPIRED
-          subscriptionId: 2ghy-55gg-7iup-yuo9
+          subscriptionId: 550e8400-e29b-41d4-a716-446655440000
           terminationDescription: subscription expire time reached
         time: 2023-01-19T13:18:23.682Z
 

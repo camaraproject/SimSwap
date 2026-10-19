@@ -60,7 +60,7 @@ Changes documented below are compared to version 0.4.0-rc.1.
 
 ### Breaking changes
 
-* `phoneNumber` is no longer required in the `swapped` event data (`EventSwappedData`); it is only included for 2-legged token subscriptions. Event receivers can no longer rely on it, as it was required in 0.4.0-rc.1 by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/305
+* `phoneNumber` in the `swapped` event data (`EventSwappedData`) is optional again, as it was in 0.3.0, and only included for subscriptions created with a two-legged access token. This reverts the requirement introduced in 0.4.0-rc.1, so event receivers can no longer rely on it, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/305
 
 ### Added
 

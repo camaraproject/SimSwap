@@ -69,7 +69,7 @@ Changes documented below are compared to version 0.4.0-rc.1.
 ### Changed
 
 * Aligned with Commonalities r4.4 (0.9.0): error responses taken from the r4.4 error catalogue, mandatory `info.description` sections updated by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/295
-* fix: "SIM Swap" capitalisation standardised across all operation summaries, descriptions and tags; subscription operation examples unified to UUID format by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/305
+* "SIM Swap" capitalisation standardised across all operation summaries, descriptions and tags; subscription operation examples unified to UUID format by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/305
 
 ### Fixed
 

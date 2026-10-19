@@ -32,7 +32,7 @@ info:
 
       - If no swap has been performed and the network operator supports unlimited SimSwap monitoring timeframe, the API will return the SIM activation date (the timestamp of the first time that the SIM connected to the network).
 
-      - If the latest SIM swap date (or the activation date if no SIM swap) cannot be communicated due to local regulations (or MNO internal privacy policies) preventing the safekeeping of the information for longer than the stated period, a `null` value will be returned. Optionally, a `monitoredPeriod` could be provided to indicate monitored time frame (in days) supported by the MNO. In this case the response must be treated as "there were no sim swap events during 'monitoredPeriod'. Either the parameter is optional, it is recommended to support it in SimSwap implementations.
+      - If the latest SIM swap date (or the activation date if no SIM swap) cannot be communicated due to local regulations (or MNO internal privacy policies) preventing the safekeeping of the information for longer than the stated period, a `null` value will be returned. Optionally, a `monitoredPeriod` could be provided to indicate monitored time frame (in days) supported by the MNO. In this case the response must be treated as "there were no SIM swap events during 'monitoredPeriod'. Either the parameter is optional, it is recommended to support it in SimSwap implementations.
 
     - POST check: Checks if SIM swap has been performed during a past period (defined in the request with 'maxAge' attribute) for a given phone number.
 
@@ -104,7 +104,7 @@ tags:
   - name: Retrieve SIM Swap Date
     description: operation to retrieve latest SIM swap change date
   - name: Check SIM Swap
-    description: operation to perform a sim swap check for a past period
+    description: operation to perform a SIM swap check for a past period
 paths:
   /retrieve-date:
     post:
@@ -278,12 +278,12 @@ components:
         latestSimChange: 2024-09-18T07:37:53.471829447Z
     RETRIEVE_MONITORED_NULL:
       summary: Only null value is retrieved
-      description: As latest sim swap date is too long ago, null value is sent back
+      description: As latest SIM swap date is too long ago, null value is sent back
       value:
         latestSimChange: null
     RETRIEVE_MONITORED_PERIOD:
       summary: null is send back for the date but a monitoredPeriod is provided
-      description: As latest sim swap date is too long ago, null value is sent back with a monitored period
+      description: As latest SIM swap date is too long ago, null value is sent back with a monitored period
       value:
         latestSimChange: null
         monitoredPeriod: 120

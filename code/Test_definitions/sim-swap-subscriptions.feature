@@ -1,11 +1,11 @@
-Feature: CAMARA Sim Swap Subscriptions API, vwip - Operations on subscriptions
+Feature: CAMARA SIM Swap Subscriptions API, vwip - Operations on subscriptions
 
   # Input to be provided by the implementation to the tester
   #
   # Testing assets:
   #   A sink-url identified as "callbackUrl", which receives notifications
   #   A mobile line identified by its phone number associated with a sim card 1
-  #   Be able to perform a sim swap for this mobile line shifting from sim card 1 to sim card 2
+  #   Be able to perform a SIM swap for this mobile line shifting from sim card 1 to sim card 2
   #
   # References to OAS spec schemas refer to schemas specified in sim-swap-subscriptions.yaml
 

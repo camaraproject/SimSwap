@@ -74,7 +74,7 @@ Changes documented below are compared to version 0.4.0-rc.1.
 
 ### Fixed
 
-* fix: `phoneNumber` in `EventSwappedData` made optional again, as in 0.3.0: it is only included for subscriptions created with a two-legged access token, so the subscriber identity is not exposed to API consumers using a three-legged access token, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/305
+* `phoneNumber` in `EventSwappedData` made optional again, as in 0.3.0: it is only included for subscriptions created with a two-legged access token, so the subscriber identity is not exposed to API consumers using a three-legged access token, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/305
 * fix: harmonise "SIM swap" casing and subscriptionId examples (fixes #308) by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/309
 
 ### Removed

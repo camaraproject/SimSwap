@@ -107,7 +107,7 @@ Changes documented below are compared to version 2.2.0-rc.3.
 
 ### Fixed
 
-* fix: harmonise "SIM swap" casing and subscriptionId examples (fixes #308) by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/309
+* "SIM swap" casing harmonised in the `info.description`, tag and example descriptions by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/309
 
 ### Removed
 

@@ -132,7 +132,12 @@ Changes documented below are compared to version 2.1.0.
 
 ### Changed
 
-* N/A
+* Tags `Retrieve SIM Swap Date` and `Check SIM Swap` defined; `x-correlator`, `PhoneNumber`, the security scheme and the error responses are now referenced from `CAMARA_common.yaml` instead of being defined locally; API Readiness Checklist updated, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* Adopted the request body strictness rule: requests with JSON bodies containing properties not declared in the specification are rejected with `400 INVALID_ARGUMENT`. Per the CAMARA API Design Guide this is not a breaking change; it is the reason for the minor version increase, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* Aligned with Commonalities r4.3 (0.8.0): updated mandatory `info.description` sections, added `maxLength` to `phoneNumber` and `x-correlator` (values were already bounded by the existing patterns), added bounds to the `ErrorInfo` properties, and constrained `monitoredPeriod` to `int32` in the range 1-999, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* `latestSimChange` clarified to be `null` when the provider cannot return it for privacy reasons (the `monitoredPeriod` mechanism applies), by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/290
+* Aligned with Commonalities r4.4 (0.9.0): error responses now reference the centralised `CAMARA_common.yaml` definitions, and mandatory `info.description` sections are updated, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/295
+* `latestSimChange` description updated to explicitly reference RFC 3339 date-time format, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/305
 
 ### Fixed
 

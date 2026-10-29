@@ -437,6 +437,35 @@ Feature: CAMARA SIM Swap Subscriptions API, vwip - Operations on subscriptions
     And the response property "$.code" is "PRIVATE_KEY_JWT_NOT_CONFIGURED"
     And the response property "$.message" contains a user friendly text
 
+######## Specific Subscription creation error scenarios: 409 and 429 ################
+
+  @sim_swap_subscriptions_62_creation_with_conflicting_subscription
+  Scenario: Subscription creation conflicting with an existing subscription
+  # This test only applies if the API Provider rejects the creation of a subscription equivalent to an existing one
+  # The error code may also be "ABORTED" when the conflict is caused by a concurrent operation on the same resource
+    Given an existing sim-swap-subscriptions subscription for the subscribed mobile line and the same event type
+    And a valid subscription request body equivalent to the existing subscription
+    When the request "createSimSwapSubscription" is sent
+    Then the response status code is 409
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has the same value as the request header "x-correlator"
+    And the response property "$.status" is 409
+    And the response property "$.code" is "ALREADY_EXISTS"
+    And the response property "$.message" contains a user friendly text
+
+  @sim_swap_subscriptions_63_creation_too_many_requests
+  Scenario: Too many requests for subscription creation - rate limit exceeded
+  # This test only applies if the API Provider enforces a rate limit on the API
+    Given a valid sim-swap-subscriptions subscription request body
+    And the API consumer has exceeded the rate limit enforced by the API Provider
+    When the request "createSimSwapSubscription" is sent
+    Then the response status code is 429
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has the same value as the request header "x-correlator"
+    And the response property "$.status" is 429
+    And the response property "$.code" is "TOO_MANY_REQUESTS"
+    And the response property "$.message" contains a user friendly text
+
 ######## SIM Swap specific 422 error scenarios ################
 
   @sim_swap_subscriptions_C02.01_phone_number_not_schema_compliant

@@ -130,7 +130,7 @@ Changes documented below are compared to version 2.1.0.
 
 ### Added
 
-* N/A
+* Test scenarios for the `429 TOO_MANY_REQUESTS` error response of `checkSimSwap` and `retrieveSimSwapDate`, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/321
 
 ### Changed
 

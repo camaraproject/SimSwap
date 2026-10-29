@@ -90,6 +90,7 @@ Changes documented below are compared to version 0.3.0.
 
 * Pagination for `GET /subscriptions`: optional `page` and `perPage` query parameters, and `link`, `x-total-count` and `x-total-pages` response headers, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
 * `PRIVATE_KEY_JWT` as `sinkCredential.credentialType`, together with the `422 PRIVATE_KEY_JWT_NOT_CONFIGURED` error code, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* Test scenarios for the `409 ALREADY_EXISTS` and `429 TOO_MANY_REQUESTS` error responses of `createSimSwapSubscription`, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/321
 
 ### Changed
 

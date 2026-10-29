@@ -141,7 +141,8 @@ Changes documented below are compared to version 2.1.0.
 
 ### Fixed
 
-* N/A
+* `externalDocs.description` corrected to use the "CAMARA" capitalisation, by @hdamker in https://github.com/camaraproject/SimSwap/pull/282
+* "SIM swap" casing harmonised in the `info.description`, tag and example descriptions, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/309
 
 ### Removed
 

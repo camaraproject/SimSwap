@@ -104,7 +104,8 @@ Changes documented below are compared to version 0.3.0.
 
 ### Fixed
 
-* N/A
+* `externalDocs.url` corrected to point to the SimSwap repository instead of the CAMARA organisation page, by @hdamker in https://github.com/camaraproject/SimSwap/pull/282
+* "SIM swap" casing harmonised in the remaining descriptions; notification examples unified to UUID format for `subscriptionId`, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/309
 
 ### Removed
 

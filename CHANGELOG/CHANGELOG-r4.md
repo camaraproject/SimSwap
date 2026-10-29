@@ -108,7 +108,8 @@ Changes documented below are compared to version 0.3.0.
 
 ### Removed
 
-* N/A
+* `protocol` values `AMQP`, `KAFKA`, `MQTT3`, `MQTT5` and `NATS`, and `sinkCredential.credentialType` values `PLAIN` and `REFRESHTOKEN`, which were already not allowed by the 0.3.0 descriptions, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* Error code `QUOTA_EXCEEDED` (`429`), not applicable to this API, removed with the Commonalities r4.4 error catalogue; `TOO_MANY_REQUESTS` remains, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/295
 
 ## sim-swap 2.2.0
 

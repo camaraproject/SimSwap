@@ -148,3 +148,18 @@ Feature: CAMARA SIM Swap API, vwip - Operation retrieveSimSwapDate
     And the response property "$.status" is 422
     And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
     And the response property "$.message" contains a user friendly text
+
+  # Generic 429 errors
+
+  @retrieve_sim_swap_date_429.1_too_many_requests
+  Scenario: Too many requests - rate limit exceeded
+    # This test only applies if the API Provider enforces a rate limit on the API
+    Given a valid phone number identified by the token or provided in the request body
+    And the API consumer has exceeded the rate limit enforced by the API Provider
+    When the request "retrieveSimSwapDate" is sent
+    Then the response status code is 429
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response property "$.status" is 429
+    And the response property "$.code" is "TOO_MANY_REQUESTS"
+    And the response property "$.message" contains a user friendly text

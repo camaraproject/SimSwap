@@ -84,7 +84,7 @@ Changes documented below are compared to version 0.3.0.
 
 ### Breaking changes
 
-* N/A
+* `GET /subscriptions` returns a paginated `SubscriptionList` object with the required properties `subscriptions` and `pagination`, instead of an array of subscriptions, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
 
 ### Added
 

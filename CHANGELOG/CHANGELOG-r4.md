@@ -2,6 +2,7 @@
 
 <!-- TOC:START -->
 ## Table of Contents
+- **[r4.3](#r43)**
 - [r4.2](#r42)
 - [r4.1](#r41)
 <!-- TOC:END -->
@@ -14,6 +15,99 @@ The below sections record the changes for each API version in each release as fo
 * for the first release-candidate, all changes since the last public release
 * for subsequent release-candidate(s), only the delta to the previous release-candidate
 * for a public release, the consolidated changes since the previous public release
+
+# r4.3
+
+## Release Notes
+
+This public release contains the definition and documentation of
+* sim-swap-subscriptions 0.4.0
+* sim-swap 2.2.0
+
+The API definition(s) are based on
+* Commonalities r4.4 (0.9.0)
+* Identity and Consent Management r4.2 (0.5.0)
+
+## sim-swap-subscriptions 0.4.0
+
+**sim-swap-subscriptions 0.4.0 is an initial public version of this API.**
+
+Changes documented below are compared to version 0.3.0.
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r4.3/code/API_definitions/sim-swap-subscriptions.yaml&nocors)
+  - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r4.3/code/API_definitions/sim-swap-subscriptions.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/r4.3/code/API_definitions/sim-swap-subscriptions.yaml)
+
+### Breaking changes
+
+* `GET /subscriptions` returns a paginated `SubscriptionList` object with the required properties `subscriptions` and `pagination`, instead of an array of subscriptions, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+
+### Added
+
+* Pagination for `GET /subscriptions`: optional `page` and `perPage` query parameters, and `link`, `x-total-count` and `x-total-pages` response headers, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* `PRIVATE_KEY_JWT` as `sinkCredential.credentialType`, together with the `422 PRIVATE_KEY_JWT_NOT_CONFIGURED` error code, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* Test scenarios for the `409 ALREADY_EXISTS` and `429 TOO_MANY_REQUESTS` error responses of `createSimSwapSubscription`, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/321
+
+### Changed
+
+* Mandatory `info.description` sections added or updated (authorization and authentication, additional error responses, request body strictness), `servers` API root variable described, and API Readiness Checklist updated, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* Aligned with the Commonalities r4.3 (0.8.0) event subscription template: security schemes, `PhoneNumber`, `SubscriptionId`, `Config`, the notification event schemas and the error responses are now referenced from `CAMARA_common.yaml` and `CAMARA_event_common.yaml` instead of being defined locally, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* Adopted the request body strictness rule: requests with JSON bodies containing properties not declared in the specification are rejected with `400 INVALID_ARGUMENT`, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* `config.subscriptionMaxEvents` is `int32` with a maximum of 1000000, by @rartych in https://github.com/camaraproject/SimSwap/pull/280
+* `info.description` extended to document the pagination of `GET /subscriptions` (`page` and `perPage`) and the supported sink credential types (`ACCESSTOKEN` and `PRIVATE_KEY_JWT`), and to state that `types` is mandatory when creating a subscription, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/290
+* Aligned with Commonalities r4.4 (0.9.0): error responses now reference the centralised `CAMARA_common.yaml` definitions, and mandatory `info.description` sections are updated, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/295
+* "SIM swap" capitalisation standardised across all operation summaries, descriptions and tags; subscription operation examples unified to UUID format, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/305
+* Clarified that `phoneNumber` in the `swapped` event data (`EventSwappedData`) is only included for subscriptions created with a two-legged access token, so the subscriber identity is not exposed to API consumers using a three-legged access token, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/305
+
+### Fixed
+
+* `externalDocs.url` corrected to point to the SimSwap repository instead of the CAMARA organisation page, by @hdamker in https://github.com/camaraproject/SimSwap/pull/282
+* "SIM swap" casing harmonised in the remaining descriptions; notification examples unified to UUID format for `subscriptionId`, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/309
+
+### Removed
+
+* `protocol` values `AMQP`, `KAFKA`, `MQTT3`, `MQTT5` and `NATS`, and `sinkCredential.credentialType` values `PLAIN` and `REFRESHTOKEN`, which were already not allowed by the 0.3.0 descriptions, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* Error code `QUOTA_EXCEEDED` (`429`), not applicable to this API, removed with the Commonalities r4.4 error catalogue; `TOO_MANY_REQUESTS` remains, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/295
+
+## sim-swap 2.2.0
+
+**sim-swap 2.2.0 is a minor update of this API.**
+
+Changes documented below are compared to version 2.1.0.
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r4.3/code/API_definitions/sim-swap.yaml&nocors)
+  - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/SimSwap/r4.3/code/API_definitions/sim-swap.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/SimSwap/blob/r4.3/code/API_definitions/sim-swap.yaml)
+
+### Breaking changes
+
+* N/A
+
+### Added
+
+* Test scenarios for the `429 TOO_MANY_REQUESTS` error response of `checkSimSwap` and `retrieveSimSwapDate`, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/321
+
+### Changed
+
+* Tags `Retrieve SIM Swap Date` and `Check SIM Swap` defined; `x-correlator`, `PhoneNumber`, the security scheme and the error responses are now referenced from `CAMARA_common.yaml` instead of being defined locally; API Readiness Checklist updated, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* Adopted the request body strictness rule: requests with JSON bodies containing properties not declared in the specification are rejected with `400 INVALID_ARGUMENT`. Per the CAMARA API Design Guide this is not a breaking change; it is the reason for the minor version increase, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* Aligned with Commonalities r4.3 (0.8.0): updated mandatory `info.description` sections, added `maxLength` to `phoneNumber` and `x-correlator` (values were already bounded by the existing patterns), added bounds to the `ErrorInfo` properties, and constrained `monitoredPeriod` to `int32` in the range 1-999, by @bigludo7 in https://github.com/camaraproject/SimSwap/pull/272
+* `latestSimChange` clarified to be `null` when the provider cannot return it for privacy reasons (the `monitoredPeriod` mechanism applies), by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/290
+* Aligned with Commonalities r4.4 (0.9.0): error responses now reference the centralised `CAMARA_common.yaml` definitions, and mandatory `info.description` sections are updated, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/295
+* `latestSimChange` description updated to explicitly reference RFC 3339 date-time format, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/305
+
+### Fixed
+
+* `externalDocs.description` corrected to use the "CAMARA" capitalisation, by @hdamker in https://github.com/camaraproject/SimSwap/pull/282
+* "SIM swap" casing harmonised in the `info.description`, tag and example descriptions, by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/309
+
+### Removed
+
+* Error codes not applicable to this API, removed with the Commonalities r4.4 error catalogue: `NOT_FOUND` (`404`, replaced by `IDENTIFIER_NOT_FOUND`), `QUOTA_EXCEEDED` (`429`, `TOO_MANY_REQUESTS` remains), and `OUT_OF_RANGE` (`400`) in `POST /retrieve-date` (still applicable in `POST /check`), by @albertoramosmonagas in https://github.com/camaraproject/SimSwap/pull/295
+
+**Full Changelog**: https://github.com/camaraproject/SimSwap/compare/r3.3...r4.3
 
 # r4.2
 

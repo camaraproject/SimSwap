@@ -136,8 +136,8 @@ Feature: CAMARA Sim Swap Subscriptions API, vwip - Operations on subscriptions
     And a SIM swap is performed on the subscribed mobile line
     And event notification "swapped" is received on callback-url
     And notification body complies with the OAS schema at "#/components/schemas/CloudEvent"
-    And type="org.camaraproject.sim-swap-subscriptions.v0.swapped"
-    And data.subscriptionId is valued with the subscriptionId
+    And the notification property "$.type" is "org.camaraproject.sim-swap-subscriptions.v0.swapped"
+    And the notification property "$.data.subscriptionId" is response property "$.id"
 
 ######################### Additional Happy Path Scenarios ##############################
 

@@ -49,8 +49,9 @@ Feature: CAMARA SIM Swap Subscriptions API, vwip - Operations on subscriptions
     Then the response code is 201 or 202
     And event notification "subscription-started" is received on callback-url
     And notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionStarted"
-    And type="org.camaraproject.sim-swap-subscriptions.v0.subscription-started"
-    And the response property "$.initiationReason" is "SUBSCRIPTION_CREATED"
+    And the notification property "$.type" is "org.camaraproject.sim-swap-subscriptions.v0.subscription-started"
+    And the notification property "$.data.subscriptionId" is response property "$.id"
+    And the notification property "$.data.initiationReason" is "SUBSCRIPTION_CREATED"
 
   @sim_swap_subscriptions_04_Operation_to_retrieve_list_of_subscriptions_when_no_records
   Scenario: Get a list of sim-swap-subscriptions subscriptions when no subscriptions available
@@ -94,22 +95,24 @@ Feature: CAMARA SIM Swap Subscriptions API, vwip - Operations on subscriptions
 
   @sim_swap_subscriptions_08_subscription_ends_on_expiry
   Scenario: Receive notification for subscription-ended event on expiry
-    Given an existing sim-swap-subscriptions subscription with some value for the property "expiresAt" in the near future
+    Given an existing sim-swap-subscriptions subscription with identity "id" and some value for the property "expiresAt" in the near future
     When the subscription is expired
     Then the event notification "subscription-ended" is received on callback-url
     And notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnded"
-    And type="org.camaraproject.sim-swap-subscriptions.v0.subscription-ended"
-    And the response property "$.terminationReason" is "SUBSCRIPTION_EXPIRED"
+    And the notification property "$.type" is "org.camaraproject.sim-swap-subscriptions.v0.subscription-ended"
+    And the notification property "$.data.subscriptionId" is "id"
+    And the notification property "$.data.terminationReason" is "SUBSCRIPTION_EXPIRED"
 
   @sim_swap_subscriptions_09_subscription_ends_on_max_events
   Scenario: Receive notification for subscription-ended event on max events reached
-    Given an existing sim-swap-subscriptions subscription with the property "config.subscriptionMaxEvents" set to 1
+    Given an existing sim-swap-subscriptions subscription with identity "id" and the property "$.config.subscriptionMaxEvents" set to 1
     When the event subscribed occurs
     Then event notification "swapped" is received on callback-url
     And event notification "subscription-ended" is received on callback-url
     And notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnded"
-    And type="org.camaraproject.sim-swap-subscriptions.v0.subscription-ended"
-    And the response property "$.terminationReason" is "MAX_EVENTS_REACHED"
+    And the notification property "$.type" is "org.camaraproject.sim-swap-subscriptions.v0.subscription-ended"
+    And the notification property "$.data.subscriptionId" is "id"
+    And the notification property "$.data.terminationReason" is "MAX_EVENTS_REACHED"
 
   @sim_swap_subscriptions_10_subscription_delete_event_validation
   Scenario: Receive notification for subscription-ended event on deletion
@@ -118,8 +121,9 @@ Feature: CAMARA SIM Swap Subscriptions API, vwip - Operations on subscriptions
     Then the response code is 202 or 204
     And event notification "subscription-ended" is received on callback-url
     And notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnded"
-    And type="org.camaraproject.sim-swap-subscriptions.v0.subscription-ended"
-    And the response property "$.terminationReason" is "SUBSCRIPTION_DELETED"
+    And the notification property "$.type" is "org.camaraproject.sim-swap-subscriptions.v0.subscription-ended"
+    And the notification property "$.data.subscriptionId" is "subscriptionId"
+    And the notification property "$.data.terminationReason" is "SUBSCRIPTION_DELETED"
 
 ######################### SIM Swap specific happy path scenario ##############################
 
@@ -131,9 +135,9 @@ Feature: CAMARA SIM Swap Subscriptions API, vwip - Operations on subscriptions
     Then the response code is 201
     And a SIM swap is performed on the subscribed mobile line
     And event notification "swapped" is received on callback-url
-    And notification body complies with the OAS schema at "#/components/schemas/CloudEvent"
-    And type="org.camaraproject.sim-swap-subscriptions.v0.swapped"
-    And data.subscriptionId is valued with the subscriptionId
+    And notification body complies with the OAS schema at "#/components/schemas/EventSwapped"
+    And the notification property "$.type" is "org.camaraproject.sim-swap-subscriptions.v0.swapped"
+    And the notification property "$.data.subscriptionId" is response property "$.id"
 
 ######################### Additional Happy Path Scenarios ##############################
 

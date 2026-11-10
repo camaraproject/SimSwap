@@ -135,7 +135,7 @@ Feature: CAMARA Sim Swap Subscriptions API, vwip - Operations on subscriptions
     Then the response code is 201
     And a SIM swap is performed on the subscribed mobile line
     And event notification "swapped" is received on callback-url
-    And notification body complies with the OAS schema at "#/components/schemas/CloudEvent"
+    And notification body complies with the OAS schema at "#/components/schemas/EventSwapped"
     And the notification property "$.type" is "org.camaraproject.sim-swap-subscriptions.v0.swapped"
     And the notification property "$.data.subscriptionId" is response property "$.id"
 

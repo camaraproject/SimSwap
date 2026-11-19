@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: SIM Swap
   description: |
-    The SIM swap API provides a programmable interface for developers and other users (capabilities consumers) to request the last date of a SIM swap performed on the mobile line, to check whether a SIM swap has been performed during a past period, or — as an alternative when the exact SIM swap date is not exposed — to retrieve a standardized recency band for the last SIM swap event.
+    The SIM swap API provides a programmable interface for developers and other users (capabilities consumers) to request the last date of a SIM swap performed on the mobile line, or, to check whether a SIM swap has been performed during a past period.
 
     # Introduction
 
@@ -12,12 +12,10 @@ info:
 
     The SIM Swap API can also be used to protect non-automated actions. For example, when a call center expert contacts a user to clarify or confirm a sensitive operation.
 
-    This API is used by an application to get information about a mobile line latest SIM swap date. It can be easily integrated and used through this secured API and allows SPs (Service Provider) to get this information an easy & secured way. The API provides management of 3 endpoints answering 3 distinct questions:
-    An API provider is not expected to support all of them: the age-band operation is an alternative to exposing the exact SIM swap date, and support depends on the provider's available capabilities and commercial use case.
+    This API is used by an application to get information about a mobile line latest SIM swap date. It can be easily integrated and used through this secured API and allows SPs (Service Provider) to get this information in an easy and secured way. The API provides management of 2 endpoints answering 2 distinct questions:
 
     * When did the last SIM swap occur?
     * Has a SIM swap occurred during last n hours?
-    * How recently did the last SIM swap occur, as a standardized time band? (alternative to the exact date)
 
     # Relevant terms and definitions
 
@@ -28,13 +26,13 @@ info:
 
     # API functionality
 
-    The API provides 3 operations:
+    The API provides 2 operations:
 
     - POST retrieve-date : Provides timestamp of latest SIM swap, if any, for a given phone number.
 
       - If no swap has been performed and the network operator supports unlimited SimSwap monitoring timeframe, the API will return the SIM activation date (the timestamp of the first time that the SIM connected to the network).
 
-      - If the latest SIM swap date (or the activation date if no SIM swap) cannot be communicated due to local regulations (or MNO internal privacy policies) preventing the safekeeping of the information for longer than the stated period, a `null` value will be returned. Optionally, a `monitoredPeriod` could be provided to indicate monitored time frame (in days) supported by the MNO. In this case the response must be treated as "there were no sim swap events during 'monitoredPeriod'. Either the parameter is optional, it is recommended to support it in SimSwap implementations.
+      - If the latest SIM swap date (or the activation date if no SIM swap) cannot be communicated due to local regulations (or MNO internal privacy policies) preventing the safekeeping of the information for longer than the stated period, a `null` value will be returned. Optionally, a `monitoredPeriod` could be provided to indicate monitored time frame (in days) supported by the MNO. In this case the response must be treated as "there were no SIM swap events during 'monitoredPeriod'. Either the parameter is optional, it is recommended to support it in SimSwap implementations.
 
     - POST check: Checks if SIM swap has been performed during a past period (defined in the request with 'maxAge' attribute) for a given phone number.
 
@@ -82,6 +80,7 @@ info:
         | 111 | SIM swap has never happened; positively confirmed (and never ported). Sentinel, not an ordinal band |
 
     <!-- CAMARA:MANDATORY:authorization-and-authentication:BEGIN -->
+
     # Authorization and authentication
 
     The "Camara Security and Interoperability Profile" provides details of how an API consumer requests an access token. Please refer to Identity and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the profile.
@@ -91,37 +90,36 @@ info:
     In cases where personal data is processed by the API and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of three-legged access tokens is mandatory. This ensures that the API remains in compliance with privacy regulations, upholding the principles of transparency and user-centric privacy-by-design.
     <!-- CAMARA:MANDATORY:authorization-and-authentication:END -->
 
+    <!-- CAMARA:MANDATORY:identifying-phone-number-from-access-token:BEGIN -->
+
     # Identifying the phone number from the access token
 
-    This API requires the API consumer to identify a phone number as the subject of the API. There is 2 ways to retrieve it depending on the authorization flow used:
-    - When the API is invoked using a two-legged access token, the phone number will be identified from the optional `phoneNumber` identifier, which therefore MUST be provided.
-    - When a three-legged access token is used however, this optional `phoneNumber` identifier MUST NOT be provided, as the phone number will be uniquely identified from the access token.
+    This API requires the API consumer to identify a phone number as the subject of the API as follows:
+    - When the API is invoked using a two-legged access token, the subject will be identified from the optional `phoneNumber` field, which therefore MUST be provided.
+    - When a three-legged access token is used however, this optional identifier MUST NOT be provided, as the subject will be uniquely identified from the access token.
 
     This approach simplifies API usage for API consumers using a three-legged access token to invoke the API by relying on the information that is associated with the access token and was identified during the authentication process.
 
     ## Error handling:
 
-    - If the phoneNumber cannot be identified from the access token and the optional `phoneNumber` identifier is not included in the request, then the server will return an error with the `422 MISSING_IDENTIFIER` error code.
+    - If the subject cannot be identified from the access token and the optional `phoneNumber` field is not included in the request, then the server will return an error with the `422 MISSING_IDENTIFIER` error code.
 
-    - If the phoneNumber can be identified from the access token and the optional `phoneNumber` identifier is also included in the request, then the server will return an error with the `422 UNNECESSARY_IDENTIFIER` error code. This will be the case even if the same device is identified by these two methods, as the server is unable to make this comparison.
-
-    - `/retrieve-age-band` is an OPTIONAL operation. A provider that does not implement it MUST return `501 NOT_IMPLEMENTED` so that a consumer receives a clear, interoperable signal (rather than a `404` or undefined behaviour) and can fall back to `/check` and/or `/retrieve-date`.
-
-    - A provider that exposes `/retrieve-age-band` MUST support the complete standardized band model. Partial support is not permitted, as it would create false interoperability. If a provider cannot support the required granularity, or cannot determine the correct band due to historical retention limitations, it MUST either return `422 SERVICE_NOT_APPLICABLE` (structural non-applicability for the provided identifier) or not expose `/retrieve-age-band` at all.
-
-    - Transient backend or data-source failures MUST be returned as standard server-side errors (5xx, see `CAMARA_common.yaml`), never as `422 SERVICE_NOT_APPLICABLE`; `SERVICE_NOT_APPLICABLE` covers structural non-applicability only.
+    - If the subject can be identified from the access token and the optional `phoneNumber` field is also included in the request, then the server will return an error with the `422 UNNECESSARY_IDENTIFIER` error code. This will be the case even if the same phone number is identified by these two methods, as the server is unable to make this comparison.
+    <!-- CAMARA:MANDATORY:identifying-phone-number-from-access-token:END -->
 
     <!-- CAMARA:MANDATORY:additional-error-responses:BEGIN -->
+
     # Additional CAMARA error responses
 
       The list of error codes in this API specification is not exhaustive. Therefore the API specification MAY not document some non-mandatory error statuses as indicated in `CAMARA API Design Guide`.
 
-      Please refer to the `CAMARA_common.yaml` of the Commonalities Release associated to this API version for a complete list of error responses. The applicable Commonalities Release can be identified in the `API Readiness Checklist` document associated to this API version.
+      Please refer to the `CAMARA_common.yaml` of the Commonalities Release associated to this API version for a complete list of error responses. The applicable Commonalities Release can be identified from the `x-camara-commonalities` field, the changelog and the metadata of the released API version.
 
       As a specific rule, error `501 - NOT_IMPLEMENTED` can be only a possible error response if it is explicitly documented in the API.
     <!-- CAMARA:MANDATORY:additional-error-responses:END -->
 
     <!-- CAMARA:MANDATORY:request-body-strictness:BEGIN -->
+
     # Request body strictness
 
     This API rejects requests with JSON request bodies that contain properties not declared in this specification, at any nesting level. Unknown properties result in a `400 INVALID_ARGUMENT` response.
@@ -137,9 +135,9 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: wip
-  x-camara-commonalities: 0.6
+  x-camara-commonalities: 0.9.0
 externalDocs:
-  description: Product documentation at Camara
+  description: Product documentation at CAMARA
   url: https://github.com/camaraproject/SimSwap
 servers:
   - url: "{apiRoot}/sim-swap/vwip"
@@ -151,9 +149,7 @@ tags:
   - name: Retrieve SIM Swap Date
     description: operation to retrieve latest SIM swap change date
   - name: Check SIM Swap
-    description: operation to perform a sim swap check for a past period
-  - name: Retrieve SIM Swap Age Band
-    description: operation to retrieve a standardized time-band indication of how recently a SIM swap occurred, as an alternative to the exact SIM swap date
+    description: operation to perform a SIM swap check for a past period
 paths:
   /retrieve-date:
     post:
@@ -203,17 +199,17 @@ paths:
                 RETRIEVE_DATE_WITH_OPTIONAL_SIM_INFORMATION:
                   $ref: "#/components/examples/RETRIEVE_DATE_WITH_OPTIONAL_SIM_INFORMATION"
         "400":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic400"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/BadRequest400"
         "401":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Unauthenticated401"
         "403":
-          $ref: "#/components/responses/Generic403"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/PermissionDenied403"
         "404":
-          $ref: "#/components/responses/Generic404"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/IdentifierNotFound404"
         "422":
-          $ref: "#/components/responses/Generic422"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/PhoneNumberIdentifier422"
         "429":
-          $ref: "#/components/responses/Generic429"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/TooManyRequests429"
   /check:
     post:
       security:
@@ -257,99 +253,17 @@ paths:
                 CHECK_SIM_SWAP_WITH_OPTIONAL_SIM_INFORMATION:
                   $ref: "#/components/examples/CHECK_SIM_SWAP_WITH_OPTIONAL_SIM_INFORMATION"
         "400":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic400"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/BadRequestWithRange400"
         "401":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Unauthenticated401"
         "403":
-          $ref: "#/components/responses/Generic403"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/PermissionDenied403"
         "404":
-          $ref: "#/components/responses/Generic404"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/IdentifierNotFound404"
         "422":
-          $ref: "#/components/responses/Generic422"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/PhoneNumberIdentifier422"
         "429":
-          $ref: "#/components/responses/Generic429"
-
-  # Alternative operation: exposes SIM swap recency as a time band for providers that do not expose the exact SIM swap date.
-  # Support is optional and provider-dependent.
-  # Returns the age-band value only.
-  /retrieve-age-band:
-    post:
-      security:
-        - openId:
-            - sim-swap:retrieve-age-band
-        - openId:
-            - sim-swap
-      tags:
-        - Retrieve SIM Swap Age Band
-      summary: Retrieve SIM swap age band
-      description: |
-        Returns a standardized `simSwapAgeBand` value indicating how recently a SIM swap
-        occurred, expressed as a time band.
-
-        This operation is an alternative way to expose SIM swap recency for API providers that
-        do not expose the exact SIM swap date. It does not return the actual SIM swap date, and
-        is not expected to be supported in addition to `check` and `retrieve-date`; support
-        depends on the provider's available capabilities and commercial use case.
-
-        The returned value is a technical network signal indicating recency. Consuming parties apply their own decisioning
-        outside the API contract. Value `111` indicates the provider positively confirms a SIM
-        swap has never happened and the number has never been ported (a sentinel, not an ordinal
-        band). This operation is OPTIONAL: a provider that does not implement it returns
-        `501 NOT_IMPLEMENTED`. A provider that exposes it MUST support the complete standardized
-        band model. If the service is structurally not applicable for the provided identifier —
-        including a valid subscriber for whom no real-time profile is available, or a provider that
-        cannot support the required granularity or determine the band due to retention limitations
-        — it returns `422 SERVICE_NOT_APPLICABLE` (or does not expose the operation). Transient
-        backend or data-source failures are returned as `5xx`, never `422`.
-      operationId: retrieveSimSwapAgeBand
-      parameters:
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
-      requestBody:
-        description: |
-          Create a SIM swap age band request for a phone number.
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateSimSwapAgeBand"
-            examples:
-              AGEBAND_3LEGS:
-                $ref: "#/components/examples/AGEBAND_3LEGS"
-              AGEBAND_2LEGS:
-                $ref: "#/components/examples/AGEBAND_2LEGS"
-        required: true
-      responses:
-        "200":
-          description: Returns the standardized SIM swap age-band value for the given phone number
-          headers:
-            x-correlator:
-              $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SimSwapAgeBandInfo"
-              examples:
-                AGEBAND_RECENT:
-                  $ref: "#/components/examples/AGEBAND_RECENT"
-                AGEBAND_WITHIN_72H:
-                  $ref: "#/components/examples/AGEBAND_WITHIN_72H"
-                AGEBAND_NO_SWAP:
-                  $ref: "#/components/examples/AGEBAND_NO_SWAP"
-                AGEBAND_LONG_TERM:
-                  $ref: "#/components/examples/AGEBAND_LONG_TERM"
-        "400":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic400"
-        "401":
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
-        "403":
-          $ref: "#/components/responses/Generic403"
-        "404":
-          $ref: "#/components/responses/Generic404"
-        "422":
-          $ref: "#/components/responses/Generic422"
-        "429":
-          $ref: "#/components/responses/Generic429"
-        "501":
-          $ref: "#/components/responses/Generic501"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/TooManyRequests429"
 components:
   securitySchemes:
     openId:
@@ -366,7 +280,8 @@ components:
           format: date-time
           maxLength: 64
           nullable: true
-          description: Timestamp of latest SIM swap performed. It must follow [RFC 3339 (https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
+          description: Timestamp of latest SIM swap performed, in RFC 3339 date-time format with time zone. The value is `null` when the provider cannot return it for privacy reasons (the `monitoredPeriod` mechanism applies).
+          example: "2023-07-03T14:27:08.312+02:00"
         monitoredPeriod:
           type: integer
           format: int32
@@ -513,160 +428,6 @@ components:
       properties:
         phoneNumber:
           $ref: "#/components/schemas/PhoneNumber"
-    CreateSimSwapAgeBand:
-      type: object
-      description: Definition of the data that must be provided in the request body for retrieve-age-band operation
-      properties:
-        phoneNumber:
-          $ref: "#/components/schemas/PhoneNumber"
-  responses:
-    Generic403:
-      description: Forbidden
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 403
-                  code:
-                    enum:
-                      - PERMISSION_DENIED
-          examples:
-            GENERIC_403_PERMISSION_DENIED:
-              description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
-              value:
-                status: 403
-                code: PERMISSION_DENIED
-                message: Client does not have sufficient permissions to perform this action.
-    Generic404:
-      description: Not found
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 404
-                  code:
-                    enum:
-                      - NOT_FOUND
-                      - IDENTIFIER_NOT_FOUND
-          examples:
-            GENERIC_404_NOT_FOUND:
-              description: Resource is not found
-              value:
-                status: 404
-                code: NOT_FOUND
-                message: The specified resource is not found.
-    Generic422:
-      description: Unprocessable Content
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 422
-                  code:
-                    enum:
-                      - SERVICE_NOT_APPLICABLE
-                      - MISSING_IDENTIFIER
-                      - UNNECESSARY_IDENTIFIER
-          examples:
-            GENERIC_422_SERVICE_NOT_APPLICABLE:
-              description: Service not applicable for the provided identifier. For the age-band operation this includes a valid subscriber for whom no real-time profile is available to determine the band (a structural condition, not a transient failure).
-              value:
-                status: 422
-                code: SERVICE_NOT_APPLICABLE
-                message: The service is not available for the provided identifier.
-            GENERIC_422_MISSING_IDENTIFIER:
-              description: phone number is not included in the request (in case of 2-legged) or the phone number identification cannot be derived from access token (in 3-legged)
-              value:
-                status: 422
-                code: MISSING_IDENTIFIER
-                message: The device cannot be identified.
-            GENERIC_422_UNNECESSARY_IDENTIFIER:
-              description: An explicit identifier is provided when a device or phone number has already been identified from the access token
-              value:
-                status: 422
-                code: UNNECESSARY_IDENTIFIER
-                message: The device is already identified by the access token.
-    Generic429:
-      description: Too Many Requests
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 429
-                  code:
-                    enum:
-                      - QUOTA_EXCEEDED
-                      - TOO_MANY_REQUESTS
-          examples:
-            GENERIC_429_QUOTA_EXCEEDED:
-              description: Request is rejected due to exceeding a business quota limit
-              value:
-                status: 429
-                code: QUOTA_EXCEEDED
-                message: Rejected due to exceeding a business quota limit.
-            GENERIC_429_TOO_MANY_REQUESTS:
-              description: API Server request limit is overpassed
-              value:
-                status: 429
-                code: TOO_MANY_REQUESTS
-                message: Rejected due to request rate limit overpassed.
-    Generic501:
-      description: Not Implemented
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 501
-                  code:
-                    enum:
-                      - NOT_IMPLEMENTED
-          examples:
-            GENERIC_501_NOT_IMPLEMENTED:
-              description: The provider does not implement this optional operation. Consumers can fall back to /check and/or /retrieve-date.
-              value:
-                status: 501
-                code: NOT_IMPLEMENTED
-                message: This functionality is not implemented by the provider.
   examples:
     RETRIEVE_DATE:
       summary: Lastest SIM swap date is send back
@@ -675,12 +436,12 @@ components:
         latestSimChange: 2024-09-18T07:37:53.471829447Z
     RETRIEVE_MONITORED_NULL:
       summary: Only null value is retrieved
-      description: As latest sim swap date is too long ago, null value is sent back
+      description: As latest SIM swap date is too long ago, null value is sent back
       value:
         latestSimChange: null
     RETRIEVE_MONITORED_PERIOD:
       summary: null is send back for the date but a monitoredPeriod is provided
-      description: As latest sim swap date is too long ago, null value is sent back with a monitored period
+      description: As latest SIM swap date is too long ago, null value is sent back with a monitored period
       value:
         latestSimChange: null
         monitoredPeriod: 120
@@ -727,32 +488,3 @@ components:
       description: Retrieve request with 3-legged access tokens
       value:
         {}
-    AGEBAND_2LEGS:
-      summary: Age band request without 3-legged access tokens
-      description: Age band request in 2-legs (with phoneNumber in the request body)
-      value:
-        phoneNumber: "+346661113334"
-    AGEBAND_3LEGS:
-      summary: Age band request with 3-legged access tokens
-      description: Age band request with 3-legged access tokens
-      value: {}
-    AGEBAND_RECENT:
-      summary: Most recent SIM swap falls in the 12h–1d band
-      description: Most recent SIM swap falls in the 12h–1d band
-      value:
-        simSwapAgeBand: 3
-    AGEBAND_WITHIN_72H:
-      summary: Most recent SIM swap falls in the 2d–3d band (i.e. within 72h)
-      description: Most recent SIM swap falls in the 2d–3d band (i.e. within 72h)
-      value:
-        simSwapAgeBand: 5
-    AGEBAND_NO_SWAP:
-      summary: Provider positively confirms a SIM swap has never happened and the number was never ported
-      description: Provider positively confirms a SIM swap has never happened and the number was never ported
-      value:
-        simSwapAgeBand: 111
-    AGEBAND_LONG_TERM:
-      summary: Most recent SIM swap was 3 years ago or more
-      description: Most recent SIM swap was 3 years ago or more
-      value:
-        simSwapAgeBand: 17

@@ -26,7 +26,6 @@ Feature: CAMARA SIM Swap API, vwip - Operation retrieveSimSwapDate
     And the response body complies with the OAS schema at "/components/schemas/SimSwapInfo"
 
   # Scenarios testing specific situations
-
   @retrieve_sim_swap_date_2_valid_sim_swap
   Scenario: Retrieve SIM swap date for a valid SIM swap
     Given a valid phone number identified by the token or provided in the request body
@@ -91,7 +90,7 @@ Feature: CAMARA SIM Swap API, vwip - Operation retrieveSimSwapDate
     And the response optionally contains the property "$.simType" with value "pSIM"
     And the response optionally contains the property "$.assuredTransfer" with value false
 
-# This scenario applies when a SIM swap is detected and optional SIM information is returned.
+  # This scenario applies when a SIM swap is detected and optional SIM information is returned.
   @check_sim_swap_8_optional_sim_swap_information_esim_assured
   Scenario: Check SIM swap with eSIM and assured transfer information
     Given a valid phone number identified by the token or provided in the request body
@@ -104,7 +103,7 @@ Feature: CAMARA SIM Swap API, vwip - Operation retrieveSimSwapDate
     And the response optionally contains the property "$.simType" with value "eSIM"
     And the response optionally contains the property "$.assuredTransfer" with value true
 
-# This scenario applies when a SIM swap is detected and optional SIM information is returned.
+  # This scenario applies when a SIM swap is detected and optional SIM information is returned.
   @check_sim_swap_9_optional_sim_swap_information_psim_not_assured
   Scenario: Check SIM swap with pSIM and non-assured transfer information
     Given a valid phone number identified by the token or provided in the request body
@@ -118,7 +117,6 @@ Feature: CAMARA SIM Swap API, vwip - Operation retrieveSimSwapDate
     And the response optionally contains the property "$.assuredTransfer" with value false
 
   # Generic 401 errors
-
   @retrieve_sim_swap_date_401.1_no_authorization_header
   Scenario: No Authorization header
     Given the header "Authorization" is removed
@@ -150,8 +148,7 @@ Feature: CAMARA SIM Swap API, vwip - Operation retrieveSimSwapDate
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-    # Error scenarios for management of input parameter phoneNumber
-
+  # Error scenarios for management of input parameter phoneNumber
   @retrieve_sim_swap_date_C02.01_phone_number_not_schema_compliant
   Scenario: Phone number value does not comply with the schema
     Given the header "Authorization" is set to a valid access token which does not identify a single phone number
@@ -204,7 +201,6 @@ Feature: CAMARA SIM Swap API, vwip - Operation retrieveSimSwapDate
     And the response property "$.message" contains a user friendly text
 
   # Generic 429 errors
-
   @retrieve_sim_swap_date_429.1_too_many_requests
   Scenario: Too many requests - rate limit exceeded
     # This test only applies if the API Provider enforces a rate limit on the API

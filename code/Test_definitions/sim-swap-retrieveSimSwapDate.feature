@@ -76,7 +76,7 @@ Feature: CAMARA SIM Swap API, vwip - Operation retrieveSimSwapDate
     And the response property "$.latestSimChange" contains a valid timestamp
     And the response optionally contains the property "$.simType" with value "eSIM"
     And the response optionally contains the property "$.assuredTransfer" with value true
-    
+
   # This scenario applies when the returned information includes the physical SIM type
   # and the transfer is known not to be assured.
   @retrieve_sim_swap_date_7_optional_sim_swap_information_psim_not_assured
